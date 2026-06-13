@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Movies & TV Endpoints — AlzAPI Docs</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c63ff' stroke-width='2'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="/docs/shared.css"></head>
+<body>
+<nav><a href="/" class="logo"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Alz<em>API</em></a><div class="nav-center"><a href="/" class="nav-link">Home</a><a href="/docs" class="nav-link active">Docs</a><a href="/playground" class="nav-link">Playground</a><a href="https://cloud.alz.name.ng" target="_blank" class="nav-link">AlzCloud</a></div><span class="badge-free">FREE</span></nav>
+<div class="layout"><aside><div class="aside-label">Overview</div><a href="/docs" class="aside-link"><span class="aside-icon">📖</span> Introduction</a><div class="aside-label">Categories</div><a href="/docs/ai" class="aside-link"><span class="aside-icon">🤖</span> AI</a><a href="/docs/youtube" class="aside-link"><span class="aside-icon">▶</span> YouTube</a><a href="/docs/social" class="aside-link"><span class="aside-icon">📲</span> Social Media</a><a href="/docs/movies" class="aside-link active"><span class="aside-icon">🎬</span> Movies & TV</a><a href="/docs/music" class="aside-link"><span class="aside-icon">🎵</span> Music</a><a href="/docs/currency" class="aside-link"><span class="aside-icon">💱</span> Currency & Crypto</a><a href="/docs/search" class="aside-link"><span class="aside-icon">🔍</span> Search & Wikipedia</a><a href="/docs/ip" class="aside-link"><span class="aside-icon">🌐</span> IP Geolocation</a><div class="aside-label">Tools</div><a href="/playground" class="aside-link"><span class="aside-icon">⚡</span> Playground</a><a href="/api" class="aside-link"><span class="aside-icon">{}</span> API Info JSON</a></aside>
+<main>
+<div class="page-header"><div class="breadcrumb"><a href="/docs">Docs</a><span>/</span>Movies & TV</div><div class="cat-badge c-movie" style="margin-bottom:.75rem">🎬 Movies & TV</div><h1 class="page-title">Movies & TV Endpoints</h1><p class="page-desc">Search movies and TV shows, get full details with cast and trailers, and browse trending or popular lists — powered by TMDB.</p></div>
+
+<div class="ep-block" id="search"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/movies/search</code><a href="/playground?tab=movies" class="try-btn">Try it →</a></div><p class="ep-desc">Search for movies and TV shows. Returns title, poster, rating, overview, release date, and TMDB ID.</p></div>
+<div class="ep-section-label">Query Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>q</code></td><td>string</td><td><span class="req">required</span></td><td>Movie or TV show name to search</td></tr>
+</tbody></table>
+<div class="ep-section-label">Example Request</div><div class="code-block"><div class="code-lang">GET</div><pre>https://api.alz.name.ng/api/movies/search?q=The+Dark+Knight</pre></div>
+<div class="ep-section-label">Example Response</div><div class="code-block"><div class="code-lang">JSON</div><pre><span class="j-p">{</span>
+  <span class="j-k">"success"</span>: <span class="j-b">true</span>,
+  <span class="j-k">"results"</span>: <span class="j-p">[{</span>
+    <span class="j-k">"id"</span>: <span class="j-n">155</span>,
+    <span class="j-k">"title"</span>: <span class="j-s">"The Dark Knight"</span>,
+    <span class="j-k">"overview"</span>: <span class="j-s">"Batman raises the stakes..."</span>,
+    <span class="j-k">"poster"</span>: <span class="j-s">"https://image.tmdb.org/t/p/w500/..."</span>,
+    <span class="j-k">"rating"</span>: <span class="j-n">9.0</span>,
+    <span class="j-k">"release_date"</span>: <span class="j-s">"2008-07-18"</span>
+  <span class="j-p">}]</span>
+<span class="j-p">}</span></pre></div></div>
+
+<div class="ep-block" id="id"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/movies/:id</code><a href="/playground?tab=movies" class="try-btn">Try it →</a></div><p class="ep-desc">Get full details for a specific movie or TV show by its TMDB ID, including cast, crew, trailers, and similar titles.</p></div>
+<div class="ep-section-label">Path Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>:id</code></td><td>integer</td><td><span class="req">required</span></td><td>TMDB movie or show ID (get from search results)</td></tr>
+</tbody></table>
+<div class="ep-section-label">Example Request</div><div class="code-block"><div class="code-lang">GET</div><pre>https://api.alz.name.ng/api/movies/155</pre></div></div>
+
+<div class="ep-block" id="trending"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/movies/trending</code><a href="/playground?tab=movies" class="try-btn">Try it →</a></div><p class="ep-desc">Get this week's trending movies and TV shows.</p></div>
+<div class="ep-section-label">Example Request</div><div class="code-block"><div class="code-lang">GET</div><pre>https://api.alz.name.ng/api/movies/trending</pre></div></div>
+
+<div class="ep-block" id="popular"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/movies/popular</code><a href="/playground?tab=movies" class="try-btn">Try it →</a></div><p class="ep-desc">Get the most popular movies currently on TMDB.</p></div>
+<div class="ep-section-label">Example Request</div><div class="code-block"><div class="code-lang">GET</div><pre>https://api.alz.name.ng/api/movies/popular</pre></div></div>
+
+<div class="page-nav"><a href="/docs/social" class="pnav-prev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Social Media</a><a href="/docs/music" class="pnav-next">Music <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+</main></div>
+<footer>AlzAPI by <a href="https://cloud.alz.name.ng">Alz-Tech</a> · <a href="/docs">Docs</a> · <a href="/playground">Playground</a></footer>
+</body></html>

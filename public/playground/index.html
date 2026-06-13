@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playground — AlzAPI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c63ff' stroke-width='2'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070f;--surface:#0d0d1a;--card:#111120;--card2:#141426;--border:#1c1c30;--purple:#6c63ff;--purple2:#8b7fff;--purple3:#a89dff;--green:#22d3a0;--red:#ff5f6d;--yellow:#ffc542;--orange:#ff9500;--teal:#34d399;--slate:#94a3b8;--text:#ddddf0;--muted:#6868a0;--mono:'JetBrains Mono',monospace;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
+a{color:inherit;text-decoration:none}
+code{font-family:var(--mono)}
+
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.9rem 2.5rem;background:rgba(7,7,15,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:.55rem;font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
+.logo svg{color:var(--purple);flex-shrink:0}
+.logo em{color:var(--purple3);font-style:normal}
+.nav-center{display:flex;align-items:center;gap:.25rem}
+.nav-link{color:var(--muted);font-size:.88rem;font-weight:500;padding:.4rem .85rem;border-radius:7px;transition:all .2s}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-link.active{color:var(--purple3);background:rgba(108,99,255,.1)}
+.badge-free{background:rgba(34,211,160,.15);color:var(--green);font-size:.72rem;font-weight:700;padding:.25rem .7rem;border-radius:99px;letter-spacing:.05em;border:1px solid rgba(34,211,160,.25)}
+
+/* Layout */
+.pg-layout{display:flex;flex:1;max-width:1300px;margin:0 auto;width:100%}
+
+/* Sidebar tabs */
+.pg-sidebar{width:220px;flex-shrink:0;border-right:1px solid var(--border);padding:1.5rem .85rem;position:sticky;top:61px;height:calc(100vh - 61px);overflow-y:auto;display:flex;flex-direction:column;gap:.2rem}
+.sb-label{font-size:.67rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.6rem .55rem .3rem;margin-top:.5rem}
+.sb-label:first-child{margin-top:0}
+.sb-tab{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;border-radius:7px;font-size:.84rem;color:var(--muted);cursor:pointer;transition:all .15s;font-weight:500;border:none;background:none;width:100%;text-align:left}
+.sb-tab:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.sb-tab.active{color:var(--purple3);background:rgba(108,99,255,.1)}
+.sb-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-ai{background:var(--purple3)}.dot-yt{background:var(--red)}.dot-soc{background:var(--orange)}.dot-mov{background:var(--yellow)}.dot-mus{background:var(--green)}.dot-cur{background:var(--teal)}.dot-srch{background:var(--slate)}.dot-ip{background:var(--slate)}
+
+/* Main panel */
+.pg-main{flex:1;padding:2rem 2.25rem;min-width:0;display:flex;flex-direction:column;gap:1.5rem}
+.pg-panel{display:none}
+.pg-panel.active{display:flex;flex-direction:column;gap:1.25rem}
+
+.panel-header{display:flex;align-items:center;gap:.75rem}
+.panel-cat{font-size:.72rem;font-weight:700;padding:.25rem .7rem;border-radius:5px;letter-spacing:.05em}
+.panel-title{font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
+.panel-desc{font-size:.87rem;color:var(--muted);line-height:1.65}
+
+/* Sub-endpoint selector */
+.ep-select-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.ep-btn{padding:.4rem .9rem;border-radius:6px;font-size:.8rem;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:all .15s}
+.ep-btn:hover{border-color:var(--purple);color:var(--purple3)}
+.ep-btn.active{border-color:var(--purple);background:rgba(108,99,255,.12);color:var(--purple3)}
+
+/* Fields */
+.fields-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;align-items:end}
+.field{display:flex;flex-direction:column;gap:.3rem}
+.field label{font-size:.77rem;font-weight:600;color:var(--muted);letter-spacing:.03em}
+.field input,.field select,.field textarea{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:.5rem .8rem;font-size:.88rem;outline:none;transition:border-color .2s;font-family:inherit;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple)}
+.field textarea{resize:vertical;min-height:60px}
+.field-wide{grid-column:1/-1}
+
+/* URL preview */
+.url-preview{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.6rem 1rem;font-family:var(--mono);font-size:.77rem;color:var(--muted);word-break:break-all;line-height:1.5}
+.url-preview .method{color:var(--green);font-weight:700;margin-right:.5rem}
+.url-preview .url{color:var(--purple3)}
+
+/* Run buttons */
+.run-row{display:flex;gap:.65rem;flex-wrap:wrap;align-items:center}
+.run-btn{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.3rem;border-radius:7px;font-weight:700;font-size:.87rem;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.run-primary{background:var(--purple);color:#fff}
+.run-primary:hover{background:var(--purple2);transform:translateY(-1px)}
+.run-primary:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.run-green{background:var(--green);color:#000}
+.run-green:hover{opacity:.85}
+.run-red{background:var(--red);color:#fff}
+.run-red:hover{opacity:.85}
+.run-ghost{background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--border)}
+.run-ghost:hover{border-color:var(--purple);color:var(--purple3)}
+
+/* Result area */
+.result-wrap{position:relative}
+.result-box{background:#060610;border:1px solid var(--border);border-radius:10px;font-family:var(--mono);font-size:.8rem;max-height:440px;overflow-y:auto;line-height:1.75;white-space:pre-wrap;word-break:break-word;color:var(--text);display:none;padding:1rem 1.2rem}
+.result-box.show{display:block}
+.result-box.loading{color:var(--muted)}
+.result-box.error{border-color:rgba(255,95,109,.35);color:var(--red)}
+.result-img{max-width:100%;border-radius:8px;margin-top:.85rem;display:none}
+.result-img.show{display:block}
+.copy-btn{position:absolute;top:.6rem;right:.6rem;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);font-size:.72rem;font-weight:600;padding:.25rem .6rem;border-radius:5px;cursor:pointer;transition:all .15s;font-family:inherit}
+.copy-btn:hover{color:var(--text);border-color:var(--purple)}
+
+/* Syntax */
+.j-k{color:var(--purple3)}.j-s{color:#a6e22e}.j-n{color:#ae81ff}.j-b{color:var(--red)}.j-null{color:var(--muted)}
+
+/* Colors */
+.c-ai{background:rgba(108,99,255,.12);color:var(--purple3)}.c-yt{background:rgba(255,95,109,.12);color:var(--red)}.c-movie{background:rgba(255,197,66,.1);color:var(--yellow)}.c-music{background:rgba(34,211,160,.1);color:var(--green)}.c-ip{background:rgba(148,163,184,.1);color:var(--slate)}.c-soc{background:rgba(255,149,0,.1);color:var(--orange)}.c-cur{background:rgba(52,211,153,.1);color:var(--teal)}.c-srch{background:rgba(148,163,184,.1);color:var(--slate)}
+
+footer{border-top:1px solid var(--border);text-align:center;padding:1.25rem;color:var(--muted);font-size:.82rem}
+footer a{color:var(--purple3)}
+
+@media(max-width:768px){
+  .pg-sidebar{display:none}
+  .pg-main{padding:1.5rem 1.1rem}
+  nav{padding:.85rem 1.1rem}
+  .nav-center{display:none}
+  .fields-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Alz<em>API</em></a>
+  <div class="nav-center">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/docs" class="nav-link">Docs</a>
+    <a href="/playground" class="nav-link active">Playground</a>
+    <a href="https://cloud.alz.name.ng" target="_blank" class="nav-link">AlzCloud</a>
+  </div>
+  <span class="badge-free">FREE</span>
+</nav>
+
+<div class="pg-layout">
+  <!-- Sidebar -->
+  <div class="pg-sidebar">
+    <div class="sb-label">AI</div>
+    <button class="sb-tab active" onclick="switchPanel('ai')"><span class="sb-dot dot-ai"></span>AI Chat</button>
+    <button class="sb-tab" onclick="switchPanel('aiimg')"><span class="sb-dot dot-ai"></span>AI Image</button>
+
+    <div class="sb-label">YouTube</div>
+    <button class="sb-tab" onclick="switchPanel('ytsearch')"><span class="sb-dot dot-yt"></span>YT Search</button>
+    <button class="sb-tab" onclick="switchPanel('ytdl')"><span class="sb-dot dot-yt"></span>YT Download</button>
+
+    <div class="sb-label">Social</div>
+    <button class="sb-tab" onclick="switchPanel('social')"><span class="sb-dot dot-soc"></span>Social DL</button>
+
+    <div class="sb-label">Entertainment</div>
+    <button class="sb-tab" onclick="switchPanel('movies')"><span class="sb-dot dot-mov"></span>Movies & TV</button>
+    <button class="sb-tab" onclick="switchPanel('music')"><span class="sb-dot dot-mus"></span>Music</button>
+
+    <div class="sb-label">Data</div>
+    <button class="sb-tab" onclick="switchPanel('currency')"><span class="sb-dot dot-cur"></span>Currency & Crypto</button>
+    <button class="sb-tab" onclick="switchPanel('wiki')"><span class="sb-dot dot-srch"></span>Search & Wiki</button>
+    <button class="sb-tab" onclick="switchPanel('ip')"><span class="sb-dot dot-ip"></span>IP Lookup</button>
+  </div>
+
+  <!-- Main -->
+  <div class="pg-main">
+
+    <!-- ── AI Chat ── -->
+    <div class="pg-panel active" id="panel-ai">
+      <div class="panel-header"><span class="panel-cat c-ai">🤖 AI</span><span class="panel-title">AI Chat</span></div>
+      <p class="panel-desc">Ask any question. Powered by GPT-4o, Mistral, Claude, Llama, and Gemini via Pollinations.</p>
+      <div class="fields-grid">
+        <div class="field field-wide"><label>Question</label><input id="ai-q" type="text" value="What is quantum computing?" placeholder="Ask anything..."></div>
+        <div class="field"><label>Model</label>
+          <select id="ai-model">
+            <option value="openai">openai (GPT-4o)</option>
+            <option value="mistral">mistral</option>
+            <option value="claude">claude</option>
+            <option value="llama">llama</option>
+            <option value="gemini">gemini</option>
+          </select>
+        </div>
+        <div class="field"><label>System Prompt (optional)</label><input id="ai-system" type="text" placeholder="You are a helpful assistant."></div>
+      </div>
+      <div class="url-preview" id="ai-preview"><span class="method">GET</span><span class="url" id="ai-preview-url"></span></div>
+      <div class="run-row"><button class="run-btn run-primary" onclick="runAI()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run</button><a href="/docs/ai" style="font-size:.82rem;color:var(--muted)">View docs →</a></div>
+      <div class="result-wrap"><div class="result-box" id="ai-result"></div><button class="copy-btn" id="ai-copy" onclick="copyResult('ai-result')" style="display:none">Copy</button></div>
+    </div>
+
+    <!-- ── AI Image ── -->
+    <div class="pg-panel" id="panel-aiimg">
+      <div class="panel-header"><span class="panel-cat c-ai">🤖 AI</span><span class="panel-title">AI Image Generation</span></div>
+      <p class="panel-desc">Generate images from a text prompt using Flux or SDXL models. Returns the image directly.</p>
+      <div class="fields-grid">
+        <div class="field field-wide"><label>Prompt</label><input id="img-prompt" type="text" value="a futuristic purple city at night, cyberpunk aesthetic" placeholder="Describe the image..."></div>
+        <div class="field"><label>Model</label>
+          <select id="img-model"><option value="flux">flux</option><option value="flux-realism">flux-realism</option><option value="turbo">turbo</option></select>
+        </div>
+        <div class="field"><label>Width</label><input id="img-w" type="number" value="1024"></div>
+        <div class="field"><label>Height</label><input id="img-h" type="number" value="1024"></div>
+      </div>
+      <div class="url-preview" id="img-preview"><span class="method">GET</span><span class="url" id="img-preview-url"></span></div>
+      <div class="run-row"><button class="run-btn run-primary" id="img-run-btn" onclick="runImage()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Generate</button><a href="/docs/ai" style="font-size:.82rem;color:var(--muted)">View docs →</a></div>
+      <div class="result-wrap">
+        <div class="result-box" id="img-status"></div>
+        <img class="result-img" id="img-result" alt="Generated image">
+      </div>
+    </div>
+
+    <!-- ── YT Search ── -->
+    <div class="pg-panel" id="panel-ytsearch">
+      <div class="panel-header"><span class="panel-cat c-yt">▶ YouTube</span><span class="panel-title">YouTube Search</span></div>
+      <p class="panel-desc">Search YouTube and get video list with titles, thumbnails, durations, view counts, and URLs.</p>
+      <div class="fields-grid">
+        <div class="field field-wide"><label>Search Query</label><input id="yt-q" type="text" value="lofi hip hop chill beats" placeholder="Search YouTube..."></div>
+        <div class="field"><label>Limit</label><input id="yt-limit" type="number" value="5" min="1" max="20"></div>
+      </div>
+      <div class="url-preview" id="yts-preview"><span class="method">GET</span><span class="url" id="yts-preview-url"></span></div>
+      <div class="run-row"><button class="run-btn run-primary" onclick="runYTSearch()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button><a href="/docs/youtube" style="font-size:.82rem;color:var(--muted)">View docs →</a></div>
+      <div class="result-wrap"><div class="result-box" id="yts-result"></div><button class="copy-btn" id="yts-copy" onclick="copyResult('yts-result')" style="display:none">Copy</button></div>
+    </div>
+
+    <!-- ── YT Download ── -->
+    <div class="pg-panel" id="panel-ytdl">
+      <div class="panel-header"><span class="panel-cat c-yt">▶ YouTube</span><span class="panel-title">YouTube Download / Stream</span></div>
+      <p class="panel-desc">Get video info, a direct media link, or download / stream as MP3 or MP4.</p>
+      <div class="fields-grid">
+        <div class="field field-wide"><label>YouTube URL</label><input id="yt-url" type="text" placeholder="https://youtu.be/dQw4w9WgXcQ"></div>
+        <div class="field"><label>Format</label><select id="yt-type"><option value="mp3">MP3 (audio)</option><option value="mp4">MP4 (video)</option></select></div>
+      </div>
+      <div class="url-preview" id="ytdl-preview"><span class="method">GET</span><span class="url" id="ytdl-preview-url">— paste a URL above</span></div>
+      <div class="run-row">
+        <button class="run-btn run-ghost" onclick="runYTInfo()">Get Info</button>
+        <button class="run-btn run-ghost" onclick="runYTLink()">Get Direct Link</button>
+        <button class="run-btn run-green" onclick="runYTDownload()">⬇ Download</button>
+        <button class="run-btn run-ghost" onclick="runYTStream()">▶ Stream</button>
+        <a href="/docs/youtube" style="font-size:.82rem;color:var(--muted)">View docs →</a>
+      </div>
+      <div class="result-wrap"><div class="result-box" id="ytdl-result"></div><button class="copy-btn" id="ytdl-copy" onclick="copyResult('ytdl-result')" style="display:none">Copy</button></div>
+    </div>
+
+    <!-- ── Social ── -->
+    <div class="pg-panel" id="panel-social">
+      <div class="panel-header"><span class="panel-cat c-soc">📲 Social</span><span class="panel-title">Social Media Downloader</span></div>
+      <p class="panel-desc">Download from TikTok (no watermark), Instagram, Twitter/X, and Facebook.</p>
+      <div class="fields-grid">
+        <div class="field field-wide"><label>Post URL (TikTok / Instagram / Twitter / Facebook)</label><input id="social-url" type="text" placeholder="https://www.tiktok.com/@user/video/..."></div>
+        <div class="field"><label>Type</label><select id="social-type"><option value="video">Video</option><option value="audio">Audio</option></select></div>
+      </div>
+      <div class="url-preview" id="social-preview"><span class="method">GET</span><span class="url" id="social-preview-url">— paste a URL above</span></div>
+      <div class="run-row">
+        <button class="run-btn run-ghost" onclick="runSocialInfo()">Get Info</button>
+        <button class="run-btn run-green" onclick="runSocialDownload()">⬇ Download</button>
+        <a href="/docs/social" style="font-size:.82rem;color:var(--muted)">View docs →</a>
+      </div>
+      <div class="result-wrap"><div class="result-box" id="social-result"></div><button class="copy-btn" id="social-copy" onclick="copyResult('social-result')" style="display:none">Copy</button></div>
+    </div>
+
+    <!-- ── Movies ── -->
+    <div class="pg-panel" id="panel-movies">
+      <div class="panel-header"><span class="panel-cat c-movie">🎬 Movies</span><span class="panel-title">Movies & TV</span></div>
+      <p class="panel-desc">Search movies and TV shows, or browse trending and popular lists via TMDB.</p>
+      <div class="ep-select-row">
+        <button class="ep-btn active" onclick="setMovieMode('search',this)">Search</button>
+        <button class="ep-btn" onclick="setMovieMode('trending',this)">Trending</button>
+        <button class="ep-btn" onclick="setMovieMode('popular',this)">Popular</button>
+      </div>
+      <div class="fields-grid" id="movie-search-fields">
+        <div class="field field-wide"><label>Movie or TV Show</label><input id="movie-q" type="text" value="The Dark Knight" placeholder="Title to search..."></div>
+      </div>
+      <div class="url-preview" id="mov-preview"><span class="method">GET</span><span class="url" id="mov-preview-url"></span></div>
+      <div class="run-row"><button class="run-btn run-primary" onclick="runMovies()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button><a href="/docs/movies" style="font-size:.82rem;color:var(--muted)">View docs →</a></div>
+      <div class="result-wrap"><div class="result-box" id="mov-result"></div><button class="copy-btn" id="mov-copy" onclick="copyResult('mov-result')" style="display:none">Copy</button></div>
+    </div>
+
+    <!-- ── Music ── -->
+    <div class="pg-panel" id="panel-music">
+      <div class="panel-header"><span class="panel-cat c-music">🎵 Music</span><span class="panel-title">Music Search</span></div>
+      <p class="panel-desc">Search songs and artists via Deezer. Returns tracks with album art and 30s preview links.</p>
+      <div class="fields-grid">
+        <div class="field field-wide"><label>Search Query</label><input id="music-q" type="text" value="Burna Boy" placeholder="Song, artist, or album..."></div>
+        <div class="field"><label>Limit</label><input id="music-limit" type="number" value="10" min="1" max="50"></div>
+      </div>
+      <div class="url-preview" id="mus-preview"><span class="method">GET</span><span class="url" id="mus-preview-url"></span></div>
+      <div class="run-row"><button class="run-btn run-primary" onclick="runMusic()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button><a href="/docs/music" style="font-size:.82rem;color:var(--muted)">View docs →</a></div>
+      <div class="result-wrap"><div class="result-box" id="mus-result"></div><button class="copy-btn" id="mus-copy" onclick="copyResult('mus-result')" style="display:none">Copy</button></div>
+    </div>
+
+    <!-- ── Currency ── -->
+    <div class="pg-panel" id="panel-currency">
+      <div class="panel-header"><span class="panel-cat c-cur">💱 Currency</span><span class="panel-title">Currency & Crypto</span></div>
+      <p class="panel-desc">Convert currencies, get live rates, historical data, and real-time crypto prices.</p>
+      <div class="ep-select-row">
+        <button class="ep-btn active" onclick="setCurMode('convert',this)">Convert</button>
+        <button class="ep-btn" onclick="setCurMode('rates',this)">All Rates</button>
+        <button class="ep-btn" onclick="setCurMode('history',this)">History</button>
+        <button class="ep-btn" onclick="setCurMode('crypto',this)">Crypto Prices</button>
+        <button class="ep-btn" onclick="setCurMode('cryptoconv',this)">Crypto Convert</button>
+      </div>
+      <div id="cur-convert-f">
+        <div class="fields-grid">
+          <div class="field"><label>From</label><input id="cur-from" type="text" value="USD"></div>
+          <div class="field"><label>To</label><input id="cur-to" type="text" value="NGN"></div>
+          <div class="field"><label>Amount</label><input id="cur-amount" type="number" value="100"></div>
+        </div>
+      </div>
+      <div id="cur-rates-f" style="display:none"><div class="fields-grid"><div class="field"><label>Base Currency</label><input id="cur-rbase" type="text" value="USD"></div></div></div>
+      <div id="cur-history-f" style="display:none">
+        <div class="fields-grid">
+          <div class="field"><label>From</label><input id="cur-hfrom" type="text" value="USD"></div>
+          <div class="field"><label>To</label><input id="cur-hto" type="text" value="NGN"></div>
+          <div class="field"><label>Days</label><input id="cur-hdays" type="number" value="30"></div>
+        </div>
+      </div>
+      <div id="cur-crypto-f" style="display:none">
+        <div class="fields-grid">
+          <div class="field field-wide"><label>Coins (comma-separated)</label><input id="cur-coins" type="text" value="bitcoin,ethereum,solana,dogecoin"></div>
+          <div class="field"><label>VS Currency</label><input id="cur-vs" type="text" value="usd"></div>
+        </div>
+      </div>
+      <div id="cur-cryptoconv-f" style="display:none">
+        <div class="fields-grid">
+          <div class="field"><label>Coin ID</label><input id="cur-ccfrom" type="text" value="bitcoin"></div>
+          <div class="field"><label>To Currency</label><input id="cur-ccto" type="text" value="ngn"></div>
+          <div class="field"><label>Amount</label><input id="cur-ccamt" type="number" value="0.5" step="any"></div>
+        </div>
+      </div>
+      <div class="url-preview" id="cur-preview"><span class="method">GET</span><span class="url" id="cur-preview-url"></span></div>
+      <div class="run-row"><button class="run-btn run-primary" id="cur-run-btn" onclick="runCurrency()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run</button><a href="/docs/currency" style="font-size:.82rem;color:var(--muted)">View docs →</a></div>
+      <div class="result-wrap"><div class="result-box" id="cur-result"></div><button class="copy-btn" id="cur-copy" onclick="copyResult('cur-result')" style="display:none">Copy</button></div>
+    </div>
+
+    <!-- ── Wiki / Search ── -->
+    <div class="pg-panel" id="panel-wiki">
+      <div class="panel-header"><span class="panel-cat c-srch">🔍 Search</span><span class="panel-title">Search & Wikipedia</span></div>
+      <p class="panel-desc">Look up Wikipedia articles, get DuckDuckGo instant answers, autocomplete suggestions, or discover a random article.</p>
+      <div class="ep-select-row">
+        <button class="ep-btn active" onclick="setWikiMode('wiki',this)">Wikipedia</button>
+        <button class="ep-btn" onclick="setWikiMode('web',this)">Web Answer</button>
+        <button class="ep-btn" onclick="setWikiMode('suggest',this)">Suggestions</button>
+        <button class="ep-btn" onclick="setWikiMode('random',this)">Random Article</button>
+      </div>
+      <div class="fields-grid" id="wiki-query-field">
+        <div class="field field-wide"><label>Query</label><input id="wiki-q" type="text" value="Elon Musk" placeholder="Search anything..."></div>
+      </div>
+      <div class="url-preview" id="wiki-preview"><span class="method">GET</span><span class="url" id="wiki-preview-url"></span></div>
+      <div class="run-row"><button class="run-btn run-primary" onclick="runSearch()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button><a href="/docs/search" style="font-size:.82rem;color:var(--muted)">View docs →</a></div>
+      <div class="result-wrap"><div class="result-box" id="wiki-result"></div><button class="copy-btn" id="wiki-copy" onclick="copyResult('wiki-result')" style="display:none">Copy</button></div>
+    </div>
+
+    <!-- ── IP ── -->
+    <div class="pg-panel" id="panel-ip">
+      <div class="panel-header"><span class="panel-cat c-ip">🌐 IP</span><span class="panel-title">IP Geolocation</span></div>
+      <p class="panel-desc">Look up any IP address or domain. Leave blank to look up your own IP.</p>
+      <div class="fields-grid">
+        <div class="field field-wide"><label>IP Address or Domain (leave blank for your own IP)</label><input id="ip-addr" type="text" placeholder="e.g. 8.8.8.8 or cloudflare.com"></div>
+      </div>
+      <div class="url-preview" id="ip-preview"><span class="method">GET</span><span class="url" id="ip-preview-url"></span></div>
+      <div class="run-row"><button class="run-btn run-primary" onclick="runIP()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Lookup</button><a href="/docs/ip" style="font-size:.82rem;color:var(--muted)">View docs →</a></div>
+      <div class="result-wrap"><div class="result-box" id="ip-result"></div><button class="copy-btn" id="ip-copy" onclick="copyResult('ip-result')" style="display:none">Copy</button></div>
+    </div>
+
+  </div><!-- /pg-main -->
+</div><!-- /pg-layout -->
+
+<footer>AlzAPI by <a href="https://cloud.alz.name.ng">Alz-Tech</a> · <a href="/docs">Docs</a> · <a href="/">Home</a></footer>
+
+<script>
+const BASE = window.location.origin;
+
+// ── Panel switching ──────────────────────────────────────
+function switchPanel(name) {
+  document.querySelectorAll('.pg-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('active');
+  event.currentTarget.classList.add('active');
+  initPreviews();
+}
+
+// ── Helpers ──────────────────────────────────────────────
+function highlight(json) {
+  if (typeof json !== 'string') json = JSON.stringify(json, null, 2);
+  return json.replace(/(\"(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*\"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, m => {
+    if (/^"/.test(m)) return /:$/.test(m) ? `<span class="j-k">${m}</span>` : `<span class="j-s">${m}</span>`;
+    if (/true|false/.test(m)) return `<span class="j-b">${m}</span>`;
+    if (/null/.test(m)) return `<span class="j-null">${m}</span>`;
+    return `<span class="j-n">${m}</span>`;
+  });
+}
+function setResult(id, content, type = '') {
+  const el = document.getElementById(id);
+  el.className = 'result-box show' + (type ? ' ' + type : '');
+  if (type === 'loading') { el.textContent = content; return; }
+  el.innerHTML = content;
+  const copyId = id.replace('-result', '-copy').replace('-status', '-copy');
+  const copyBtn = document.getElementById(copyId);
+  if (copyBtn) copyBtn.style.display = type === 'error' ? 'none' : 'block';
+}
+function setPreview(id, url) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = url;
+}
+async function apiFetch(url, resultId) {
+  setResult(resultId, 'Loading...', 'loading');
+  try {
+    const r = await fetch(url);
+    const d = await r.json();
+    setResult(resultId, highlight(d));
+  } catch(e) { setResult(resultId, e.message, 'error'); }
+}
+function copyResult(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent || el.innerText).then(() => {
+    const btn = document.getElementById(id.replace('-result','-copy').replace('-status','-copy'));
+    if (btn) { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 1500); }
+  });
+}
+
+// ── AI Chat ──────────────────────────────────────────────
+function runAI() {
+  const q = document.getElementById('ai-q').value.trim();
+  const model = document.getElementById('ai-model').value;
+  const sys = document.getElementById('ai-system').value.trim();
+  if (!q) return;
+  let url = `${BASE}/api/ai/chat?q=${encodeURIComponent(q)}&model=${model}`;
+  if (sys) url += `&system=${encodeURIComponent(sys)}`;
+  setPreview('ai-preview-url', url);
+  apiFetch(url, 'ai-result');
+}
+document.getElementById('ai-q').addEventListener('input', updateAIPreview);
+document.getElementById('ai-model').addEventListener('change', updateAIPreview);
+function updateAIPreview() {
+  const q = document.getElementById('ai-q').value;
+  const m = document.getElementById('ai-model').value;
+  setPreview('ai-preview-url', `${BASE}/api/ai/chat?q=${encodeURIComponent(q)}&model=${m}`);
+}
+
+// ── AI Image ─────────────────────────────────────────────
+function runImage() {
+  const prompt = document.getElementById('img-prompt').value.trim();
+  const model = document.getElementById('img-model').value;
+  const w = document.getElementById('img-w').value;
+  const h = document.getElementById('img-h').value;
+  if (!prompt) return;
+  const url = `${BASE}/api/ai/image?prompt=${encodeURIComponent(prompt)}&model=${model}&width=${w}&height=${h}`;
+  setPreview('img-preview-url', url);
+  const status = document.getElementById('img-status');
+  const img = document.getElementById('img-result');
+  status.className = 'result-box show loading'; status.textContent = 'Generating image — this may take 10–30 seconds...';
+  img.classList.remove('show');
+  const btn = document.getElementById('img-run-btn'); btn.disabled = true;
+  img.onload = () => { status.className = 'result-box'; img.classList.add('show'); btn.disabled = false; };
+  img.onerror = () => { status.className = 'result-box show error'; status.textContent = 'Generation failed. Try a different prompt or model.'; btn.disabled = false; img.classList.remove('show'); };
+  img.src = url;
+}
+document.getElementById('img-prompt').addEventListener('input', () => {
+  const p = document.getElementById('img-prompt').value;
+  setPreview('img-preview-url', `${BASE}/api/ai/image?prompt=${encodeURIComponent(p)}`);
+});
+
+// ── YT Search ────────────────────────────────────────────
+function runYTSearch() {
+  const q = document.getElementById('yt-q').value.trim();
+  const limit = document.getElementById('yt-limit').value;
+  if (!q) return;
+  const url = `${BASE}/api/yt/search?q=${encodeURIComponent(q)}&limit=${limit}`;
+  setPreview('yts-preview-url', url);
+  apiFetch(url, 'yts-result');
+}
+document.getElementById('yt-q').addEventListener('input', () => {
+  setPreview('yts-preview-url', `${BASE}/api/yt/search?q=${encodeURIComponent(document.getElementById('yt-q').value)}&limit=${document.getElementById('yt-limit').value}`);
+});
+
+// ── YT Download ──────────────────────────────────────────
+function getYtUrl() { return document.getElementById('yt-url').value.trim(); }
+function getYtType() { return document.getElementById('yt-type').value; }
+function runYTInfo() {
+  const url = getYtUrl(); if (!url) return alert('Paste a YouTube URL first.');
+  const ep = `${BASE}/api/yt/info?url=${encodeURIComponent(url)}`;
+  setPreview('ytdl-preview-url', ep); apiFetch(ep, 'ytdl-result');
+}
+function runYTLink() {
+  const url = getYtUrl(); if (!url) return alert('Paste a YouTube URL first.');
+  const ep = `${BASE}/api/yt/link?url=${encodeURIComponent(url)}&type=${getYtType()}`;
+  setPreview('ytdl-preview-url', ep); apiFetch(ep, 'ytdl-result');
+}
+function runYTDownload() {
+  const url = getYtUrl(); if (!url) return alert('Paste a YouTube URL first.');
+  const ep = `${BASE}/api/yt/download?url=${encodeURIComponent(url)}&type=${getYtType()}`;
+  setPreview('ytdl-preview-url', ep);
+  setResult('ytdl-result', `Opening download...\n${ep}`, 'loading');
+  window.open(ep, '_blank');
+}
+function runYTStream() {
+  const url = getYtUrl(); if (!url) return alert('Paste a YouTube URL first.');
+  const ep = `${BASE}/api/yt/stream?url=${encodeURIComponent(url)}&type=${getYtType()}`;
+  setPreview('ytdl-preview-url', ep);
+  setResult('ytdl-result', `Opening stream...\n${ep}`, 'loading');
+  window.open(ep, '_blank');
+}
+document.getElementById('yt-url').addEventListener('input', () => {
+  setPreview('ytdl-preview-url', `${BASE}/api/yt/info?url=${encodeURIComponent(document.getElementById('yt-url').value)}`);
+});
+
+// ── Social ────────────────────────────────────────────────
+function runSocialInfo() {
+  const url = document.getElementById('social-url').value.trim(); if (!url) return alert('Paste a URL first.');
+  const ep = `${BASE}/api/social/info?url=${encodeURIComponent(url)}`;
+  setPreview('social-preview-url', ep); apiFetch(ep, 'social-result');
+}
+function runSocialDownload() {
+  const url = document.getElementById('social-url').value.trim(); if (!url) return alert('Paste a URL first.');
+  const type = document.getElementById('social-type').value;
+  const ep = `${BASE}/api/social/download?url=${encodeURIComponent(url)}&type=${type}`;
+  setPreview('social-preview-url', ep);
+  setResult('social-result', `Opening download...\n${ep}`, 'loading');
+  window.open(ep, '_blank');
+}
+document.getElementById('social-url').addEventListener('input', () => {
+  setPreview('social-preview-url', `${BASE}/api/social/info?url=${encodeURIComponent(document.getElementById('social-url').value)}`);
+});
+
+// ── Movies ────────────────────────────────────────────────
+let movieMode = 'search';
+function setMovieMode(mode, btn) {
+  movieMode = mode;
+  document.querySelectorAll('#panel-movies .ep-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('movie-search-fields').style.display = mode === 'search' ? '' : 'none';
+  updateMoviePreview();
+}
+function updateMoviePreview() {
+  let url;
+  if (movieMode === 'search') url = `${BASE}/api/movies/search?q=${encodeURIComponent(document.getElementById('movie-q').value)}`;
+  else if (movieMode === 'trending') url = `${BASE}/api/movies/trending`;
+  else url = `${BASE}/api/movies/popular`;
+  setPreview('mov-preview-url', url);
+}
+function runMovies() { updateMoviePreview(); apiFetch(document.getElementById('mov-preview-url').textContent, 'mov-result'); }
+document.getElementById('movie-q').addEventListener('input', updateMoviePreview);
+
+// ── Music ─────────────────────────────────────────────────
+function runMusic() {
+  const q = document.getElementById('music-q').value.trim();
+  const limit = document.getElementById('music-limit').value;
+  if (!q) return;
+  const url = `${BASE}/api/music/search?q=${encodeURIComponent(q)}&limit=${limit}`;
+  setPreview('mus-preview-url', url); apiFetch(url, 'mus-result');
+}
+document.getElementById('music-q').addEventListener('input', () => {
+  setPreview('mus-preview-url', `${BASE}/api/music/search?q=${encodeURIComponent(document.getElementById('music-q').value)}&limit=${document.getElementById('music-limit').value}`);
+});
+
+// ── Currency ──────────────────────────────────────────────
+let curMode = 'convert';
+function setCurMode(mode, btn) {
+  curMode = mode;
+  document.querySelectorAll('#panel-currency .ep-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['convert','rates','history','crypto','cryptoconv'].forEach(m => {
+    document.getElementById('cur-' + m + '-f').style.display = m === mode ? '' : 'none';
+  });
+  updateCurPreview();
+}
+function updateCurPreview() {
+  let url;
+  if (curMode === 'convert') url = `${BASE}/api/currency/convert?from=${document.getElementById('cur-from').value}&to=${document.getElementById('cur-to').value}&amount=${document.getElementById('cur-amount').value}`;
+  else if (curMode === 'rates') url = `${BASE}/api/currency/rates?base=${document.getElementById('cur-rbase').value}`;
+  else if (curMode === 'history') url = `${BASE}/api/currency/history?from=${document.getElementById('cur-hfrom').value}&to=${document.getElementById('cur-hto').value}&days=${document.getElementById('cur-hdays').value}`;
+  else if (curMode === 'crypto') url = `${BASE}/api/currency/crypto?coins=${document.getElementById('cur-coins').value}&vs=${document.getElementById('cur-vs').value}`;
+  else url = `${BASE}/api/currency/crypto/convert?from=${document.getElementById('cur-ccfrom').value}&to=${document.getElementById('cur-ccto').value}&amount=${document.getElementById('cur-ccamt').value}`;
+  setPreview('cur-preview-url', url);
+}
+function runCurrency() { updateCurPreview(); apiFetch(document.getElementById('cur-preview-url').textContent, 'cur-result'); }
+['cur-from','cur-to','cur-amount','cur-rbase','cur-hfrom','cur-hto','cur-hdays','cur-coins','cur-vs','cur-ccfrom','cur-ccto','cur-ccamt'].forEach(id => {
+  const el = document.getElementById(id); if (el) el.addEventListener('input', updateCurPreview);
+});
+
+// ── Search / Wiki ─────────────────────────────────────────
+let wikiMode = 'wiki';
+function setWikiMode(mode, btn) {
+  wikiMode = mode;
+  document.querySelectorAll('#panel-wiki .ep-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('wiki-query-field').style.display = mode === 'random' ? 'none' : '';
+  updateWikiPreview();
+}
+function updateWikiPreview() {
+  let ep;
+  const q = document.getElementById('wiki-q').value;
+  if (wikiMode === 'wiki') ep = `${BASE}/api/search/wiki?q=${encodeURIComponent(q)}`;
+  else if (wikiMode === 'web') ep = `${BASE}/api/search/web?q=${encodeURIComponent(q)}`;
+  else if (wikiMode === 'suggest') ep = `${BASE}/api/search/suggest?q=${encodeURIComponent(q)}`;
+  else ep = `${BASE}/api/search/wiki/random`;
+  setPreview('wiki-preview-url', ep);
+}
+function runSearch() { updateWikiPreview(); apiFetch(document.getElementById('wiki-preview-url').textContent, 'wiki-result'); }
+document.getElementById('wiki-q').addEventListener('input', updateWikiPreview);
+
+// ── IP ────────────────────────────────────────────────────
+function runIP() {
+  const addr = document.getElementById('ip-addr').value.trim();
+  const url = addr ? `${BASE}/api/ip/${encodeURIComponent(addr)}` : `${BASE}/api/ip`;
+  setPreview('ip-preview-url', url); apiFetch(url, 'ip-result');
+}
+document.getElementById('ip-addr').addEventListener('input', () => {
+  const a = document.getElementById('ip-addr').value.trim();
+  setPreview('ip-preview-url', a ? `${BASE}/api/ip/${encodeURIComponent(a)}` : `${BASE}/api/ip`);
+});
+
+// ── Init all previews ─────────────────────────────────────
+function initPreviews() {
+  updateAIPreview();
+  setPreview('img-preview-url', `${BASE}/api/ai/image?prompt=${encodeURIComponent(document.getElementById('img-prompt').value)}`);
+  setPreview('yts-preview-url', `${BASE}/api/yt/search?q=lofi+hip+hop+chill+beats&limit=5`);
+  setPreview('ytdl-preview-url', `${BASE}/api/yt/info?url=...`);
+  setPreview('social-preview-url', `${BASE}/api/social/info?url=...`);
+  updateMoviePreview();
+  setPreview('mus-preview-url', `${BASE}/api/music/search?q=Burna+Boy&limit=10`);
+  updateCurPreview();
+  updateWikiPreview();
+  setPreview('ip-preview-url', `${BASE}/api/ip`);
+}
+
+// Check URL param for initial tab
+const params = new URLSearchParams(location.search);
+const tab = params.get('tab');
+if (tab) {
+  const btn = [...document.querySelectorAll('.sb-tab')].find(b => b.getAttribute('onclick')?.includes(`'${tab}'`));
+  if (btn) { document.querySelectorAll('.sb-tab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.querySelectorAll('.pg-panel').forEach(p=>p.classList.remove('active')); const p=document.getElementById('panel-'+tab); if(p) p.classList.add('active'); }
+}
+initPreviews();
+</script>
+
+</body>
+</html>

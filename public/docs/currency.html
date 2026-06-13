@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Currency & Crypto Endpoints — AlzAPI Docs</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c63ff' stroke-width='2'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="/docs/shared.css"></head>
+<body>
+<nav><a href="/" class="logo"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Alz<em>API</em></a><div class="nav-center"><a href="/" class="nav-link">Home</a><a href="/docs" class="nav-link active">Docs</a><a href="/playground" class="nav-link">Playground</a><a href="https://cloud.alz.name.ng" target="_blank" class="nav-link">AlzCloud</a></div><span class="badge-free">FREE</span></nav>
+<div class="layout"><aside><div class="aside-label">Overview</div><a href="/docs" class="aside-link"><span class="aside-icon">📖</span> Introduction</a><div class="aside-label">Categories</div><a href="/docs/ai" class="aside-link"><span class="aside-icon">🤖</span> AI</a><a href="/docs/youtube" class="aside-link"><span class="aside-icon">▶</span> YouTube</a><a href="/docs/social" class="aside-link"><span class="aside-icon">📲</span> Social Media</a><a href="/docs/movies" class="aside-link"><span class="aside-icon">🎬</span> Movies & TV</a><a href="/docs/music" class="aside-link"><span class="aside-icon">🎵</span> Music</a><a href="/docs/currency" class="aside-link active"><span class="aside-icon">💱</span> Currency & Crypto</a><a href="/docs/search" class="aside-link"><span class="aside-icon">🔍</span> Search & Wikipedia</a><a href="/docs/ip" class="aside-link"><span class="aside-icon">🌐</span> IP Geolocation</a><div class="aside-label">Tools</div><a href="/playground" class="aside-link"><span class="aside-icon">⚡</span> Playground</a><a href="/api" class="aside-link"><span class="aside-icon">{}</span> API Info JSON</a></aside>
+<main>
+<div class="page-header"><div class="breadcrumb"><a href="/docs">Docs</a><span>/</span>Currency & Crypto</div><div class="cat-badge c-cur" style="margin-bottom:.75rem">💱 Currency & Crypto</div><h1 class="page-title">Currency & Crypto Endpoints</h1><p class="page-desc">Convert fiat currencies, get live exchange rates, 365-day rate history, list all supported currencies, and look up real-time cryptocurrency prices.</p></div>
+
+<div class="ep-block" id="convert"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/currency/convert</code><a href="/playground?tab=currency" class="try-btn">Try it →</a></div><p class="ep-desc">Convert an amount from one currency to another using live exchange rates.</p></div>
+<div class="ep-section-label">Query Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>from</code></td><td>string</td><td><span class="req">required</span></td><td>Source currency code (e.g. <code>USD</code>)</td></tr>
+<tr><td><code>to</code></td><td>string</td><td><span class="req">required</span></td><td>Target currency code (e.g. <code>NGN</code>)</td></tr>
+<tr><td><code>amount</code></td><td>number</td><td><span class="opt">optional</span></td><td>Amount to convert (default: <code>1</code>)</td></tr>
+</tbody></table>
+<div class="ep-section-label">Example Request</div><div class="code-block"><div class="code-lang">GET</div><pre>https://api.alz.name.ng/api/currency/convert?from=USD&to=NGN&amount=100</pre></div>
+<div class="ep-section-label">Example Response</div><div class="code-block"><div class="code-lang">JSON</div><pre><span class="j-p">{</span>
+  <span class="j-k">"success"</span>: <span class="j-b">true</span>,
+  <span class="j-k">"from"</span>: <span class="j-s">"USD"</span>,
+  <span class="j-k">"to"</span>: <span class="j-s">"NGN"</span>,
+  <span class="j-k">"amount"</span>: <span class="j-n">100</span>,
+  <span class="j-k">"result"</span>: <span class="j-n">162500</span>,
+  <span class="j-k">"rate"</span>: <span class="j-n">1625</span>
+<span class="j-p">}</span></pre></div></div>
+
+<div class="ep-block" id="rates"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/currency/rates</code><a href="/playground?tab=currency" class="try-btn">Try it →</a></div><p class="ep-desc">Get all current exchange rates relative to a base currency.</p></div>
+<div class="ep-section-label">Query Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>base</code></td><td>string</td><td><span class="opt">optional</span></td><td>Base currency (default: <code>USD</code>)</td></tr>
+</tbody></table></div>
+
+<div class="ep-block" id="list"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/currency/list</code></div><p class="ep-desc">List all supported fiat currencies with their full names and codes.</p></div></div>
+
+<div class="ep-block" id="history"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/currency/history</code><a href="/playground?tab=currency" class="try-btn">Try it →</a></div><p class="ep-desc">Get historical exchange rate data for a currency pair over a number of days (up to 365).</p></div>
+<div class="ep-section-label">Query Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>from</code></td><td>string</td><td><span class="req">required</span></td><td>Source currency code</td></tr>
+<tr><td><code>to</code></td><td>string</td><td><span class="req">required</span></td><td>Target currency code</td></tr>
+<tr><td><code>days</code></td><td>integer</td><td><span class="opt">optional</span></td><td>Number of days of history (default: <code>30</code>, max: <code>365</code>)</td></tr>
+</tbody></table></div>
+
+<div class="ep-block" id="crypto"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/currency/crypto</code><a href="/playground?tab=currency" class="try-btn">Try it →</a></div><p class="ep-desc">Get real-time cryptocurrency prices via CoinGecko. Supports multiple coins and multiple fiat currencies.</p></div>
+<div class="ep-section-label">Query Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>coins</code></td><td>string</td><td><span class="req">required</span></td><td>Comma-separated coin IDs (e.g. <code>bitcoin,ethereum,solana</code>)</td></tr>
+<tr><td><code>vs</code></td><td>string</td><td><span class="opt">optional</span></td><td>Target currency (default: <code>usd</code>)</td></tr>
+</tbody></table>
+<div class="ep-section-label">Example Request</div><div class="code-block"><div class="code-lang">GET</div><pre>https://api.alz.name.ng/api/currency/crypto?coins=bitcoin,ethereum,solana&vs=usd</pre></div></div>
+
+<div class="ep-block" id="crypto-convert"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/currency/crypto/convert</code><a href="/playground?tab=currency" class="try-btn">Try it →</a></div><p class="ep-desc">Convert a crypto amount to fiat or another crypto.</p></div>
+<div class="ep-section-label">Query Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>from</code></td><td>string</td><td><span class="req">required</span></td><td>CoinGecko coin ID (e.g. <code>bitcoin</code>)</td></tr>
+<tr><td><code>to</code></td><td>string</td><td><span class="req">required</span></td><td>Target currency (e.g. <code>ngn</code>)</td></tr>
+<tr><td><code>amount</code></td><td>number</td><td><span class="opt">optional</span></td><td>Amount to convert (default: <code>1</code>)</td></tr>
+</tbody></table></div>
+
+<div class="page-nav"><a href="/docs/music" class="pnav-prev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Music</a><a href="/docs/search" class="pnav-next">Search & Wikipedia <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+</main></div>
+<footer>AlzAPI by <a href="https://cloud.alz.name.ng">Alz-Tech</a> · <a href="/docs">Docs</a> · <a href="/playground">Playground</a></footer>
+</body></html>

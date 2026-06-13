@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Music Endpoints — AlzAPI Docs</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c63ff' stroke-width='2'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="/docs/shared.css"></head>
+<body>
+<nav><a href="/" class="logo"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Alz<em>API</em></a><div class="nav-center"><a href="/" class="nav-link">Home</a><a href="/docs" class="nav-link active">Docs</a><a href="/playground" class="nav-link">Playground</a><a href="https://cloud.alz.name.ng" target="_blank" class="nav-link">AlzCloud</a></div><span class="badge-free">FREE</span></nav>
+<div class="layout"><aside><div class="aside-label">Overview</div><a href="/docs" class="aside-link"><span class="aside-icon">📖</span> Introduction</a><div class="aside-label">Categories</div><a href="/docs/ai" class="aside-link"><span class="aside-icon">🤖</span> AI</a><a href="/docs/youtube" class="aside-link"><span class="aside-icon">▶</span> YouTube</a><a href="/docs/social" class="aside-link"><span class="aside-icon">📲</span> Social Media</a><a href="/docs/movies" class="aside-link"><span class="aside-icon">🎬</span> Movies & TV</a><a href="/docs/music" class="aside-link active"><span class="aside-icon">🎵</span> Music</a><a href="/docs/currency" class="aside-link"><span class="aside-icon">💱</span> Currency & Crypto</a><a href="/docs/search" class="aside-link"><span class="aside-icon">🔍</span> Search & Wikipedia</a><a href="/docs/ip" class="aside-link"><span class="aside-icon">🌐</span> IP Geolocation</a><div class="aside-label">Tools</div><a href="/playground" class="aside-link"><span class="aside-icon">⚡</span> Playground</a><a href="/api" class="aside-link"><span class="aside-icon">{}</span> API Info JSON</a></aside>
+<main>
+<div class="page-header"><div class="breadcrumb"><a href="/docs">Docs</a><span>/</span>Music</div><div class="cat-badge c-music" style="margin-bottom:.75rem">🎵 Music</div><h1 class="page-title">Music Endpoints</h1><p class="page-desc">Search songs and artists via Deezer, get album art, track info, 30-second stream previews, and full artist discographies.</p></div>
+
+<div class="ep-block" id="search"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/music/search</code><a href="/playground?tab=music" class="try-btn">Try it →</a></div><p class="ep-desc">Search for songs and artists. Returns track list with titles, artists, album art, and preview links.</p></div>
+<div class="ep-section-label">Query Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>q</code></td><td>string</td><td><span class="req">required</span></td><td>Song name, artist, or album</td></tr>
+<tr><td><code>limit</code></td><td>integer</td><td><span class="opt">optional</span></td><td>Number of results (default: <code>10</code>, max: <code>50</code>)</td></tr>
+</tbody></table>
+<div class="ep-section-label">Example Request</div><div class="code-block"><div class="code-lang">GET</div><pre>https://api.alz.name.ng/api/music/search?q=Burna+Boy&limit=10</pre></div></div>
+
+<div class="ep-block" id="artist"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/music/artist</code><a href="/playground?tab=music" class="try-btn">Try it →</a></div><p class="ep-desc">Search and get an artist's profile including bio, genre, top tracks, and discography.</p></div>
+<div class="ep-section-label">Query Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>q</code></td><td>string</td><td><span class="req">required</span></td><td>Artist name</td></tr>
+</tbody></table></div>
+
+<div class="ep-block" id="track"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/music/track/:id</code></div><p class="ep-desc">Get full details for a specific track by its Deezer track ID.</p></div>
+<div class="ep-section-label">Path Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>:id</code></td><td>integer</td><td><span class="req">required</span></td><td>Deezer track ID (from search results)</td></tr>
+</tbody></table></div>
+
+<div class="ep-block" id="artist-tracks"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/music/artist/:id/tracks</code></div><p class="ep-desc">Get top tracks from an artist by their Deezer artist ID.</p></div>
+<div class="ep-section-label">Path Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>:id</code></td><td>integer</td><td><span class="req">required</span></td><td>Deezer artist ID</td></tr>
+</tbody></table></div>
+
+<div class="ep-block" id="preview"><div class="ep-header"><div class="ep-title-row"><span class="method-get">GET</span><code class="ep-path">/api/music/preview</code><a href="/playground?tab=music" class="try-btn">Try it →</a></div><p class="ep-desc">Stream a 30-second audio preview of a track directly in the browser.</p></div>
+<div class="ep-section-label">Query Parameters</div><table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>id</code></td><td>integer</td><td><span class="req">required</span></td><td>Deezer track ID</td></tr>
+</tbody></table>
+<div class="info-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Returns an audio/mpeg stream. Use as <code>&lt;audio src="..."&gt;</code> or pipe it directly.</div></div>
+
+<div class="page-nav"><a href="/docs/movies" class="pnav-prev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Movies & TV</a><a href="/docs/currency" class="pnav-next">Currency & Crypto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+</main></div>
+<footer>AlzAPI by <a href="https://cloud.alz.name.ng">Alz-Tech</a> · <a href="/docs">Docs</a> · <a href="/playground">Playground</a></footer>
+</body></html>

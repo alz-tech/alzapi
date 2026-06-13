@@ -114,14 +114,25 @@ app.get('/api', (req, res) => {
   });
 });
 
-// ── Landing page ───────────────────────────────────────────────────────────
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
+// ── Page routes ────────────────────────────────────────────────────────────
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
+app.get('/docs', (req, res) => res.sendFile(path.join(__dirname, '../public/docs/index.html')));
+app.get('/docs/ai', (req, res) => res.sendFile(path.join(__dirname, '../public/docs/ai.html')));
+app.get('/docs/youtube', (req, res) => res.sendFile(path.join(__dirname, '../public/docs/youtube.html')));
+app.get('/docs/social', (req, res) => res.sendFile(path.join(__dirname, '../public/docs/social.html')));
+app.get('/docs/movies', (req, res) => res.sendFile(path.join(__dirname, '../public/docs/movies.html')));
+app.get('/docs/music', (req, res) => res.sendFile(path.join(__dirname, '../public/docs/music.html')));
+app.get('/docs/currency', (req, res) => res.sendFile(path.join(__dirname, '../public/docs/currency.html')));
+app.get('/docs/search', (req, res) => res.sendFile(path.join(__dirname, '../public/docs/search.html')));
+app.get('/docs/ip', (req, res) => res.sendFile(path.join(__dirname, '../public/docs/ip.html')));
+app.get('/playground', (req, res) => res.sendFile(path.join(__dirname, '../public/playground/index.html')));
 
 // ── 404 ────────────────────────────────────────────────────────────────────
 app.use((req, res) => {
-  res.status(404).json({ success: false, error: 'Endpoint not found. See /api for available routes.' });
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ success: false, error: 'Endpoint not found. See /api for available routes.' });
+  }
+  res.status(404).sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 // ── Error handler ──────────────────────────────────────────────────────────
