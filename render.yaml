@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: alzapi
+    env: node
+    buildCommand: npm install && pip install yt-dlp --break-system-packages || true
+    startCommand: node src/app.js
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: APP_URL
+        value: https://api.alz.name.ng
+      - key: TMDB_API_KEY
+        sync: false   # Set this in Render dashboard
+    healthCheckPath: /api

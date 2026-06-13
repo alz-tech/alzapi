@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlzAPI — Free General Purpose API</title>
+<meta name="description" content="AlzAPI is a completely free, no-key API by Alz-Tech. AI chat & image generation, YouTube search & download, movie info, music search, and IP lookup.">
+<meta property="og:title" content="AlzAPI — Free General Purpose API">
+<meta property="og:description" content="AI, YouTube, Movies, Music & IP — all free, no API key needed. By Alz-Tech.">
+<meta property="og:url" content="https://api.alz.name.ng">
+<meta property="og:site_name" content="AlzAPI">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c63ff' stroke-width='2'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg:      #080810;
+    --surface: #0f0f1a;
+    --card:    #13131f;
+    --border:  #1e1e30;
+    --purple:  #6c63ff;
+    --purple2: #8b7fff;
+    --green:   #22d3a0;
+    --red:     #ff5f6d;
+    --yellow:  #ffc542;
+    --text:    #e0e0ee;
+    --muted:   #7070a0;
+    --mono:    'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .85rem 2rem;
+    background: rgba(8,8,16,.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 700; font-size: 1.1rem; color: var(--text); }
+  .logo svg { color: var(--purple); }
+  .logo span em { color: var(--purple2); font-style: normal; }
+  .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: .9rem; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+  .badge { background: var(--purple); color: #fff; font-size: .72rem; font-weight: 700; padding: .2rem .6rem; border-radius: 99px; letter-spacing: .04em; }
+
+  /* ── Hero ── */
+  .hero {
+    max-width: 860px; margin: 0 auto;
+    padding: 7rem 2rem 4rem;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(108,99,255,.12); border: 1px solid rgba(108,99,255,.3);
+    color: var(--purple2); font-size: .8rem; font-weight: 600; letter-spacing: .06em;
+    padding: .3rem .9rem; border-radius: 99px; margin-bottom: 2rem;
+  }
+  .hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; }
+  h1 { font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 1.25rem; }
+  h1 em { font-style: normal; color: var(--purple2); }
+  .hero p { font-size: 1.15rem; color: var(--muted); max-width: 560px; margin: 0 auto 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.4rem; border-radius: 8px; font-weight: 600; font-size: .95rem; text-decoration: none; cursor: pointer; border: none; transition: all .2s; }
+  .btn-primary { background: var(--purple); color: #fff; }
+  .btn-primary:hover { background: var(--purple2); transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--purple); color: var(--purple2); }
+
+  /* ── Terminal preview ── */
+  .terminal-wrap { max-width: 720px; margin: 3.5rem auto 0; text-align: left; }
+  .terminal {
+    background: #0a0a12; border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; font-family: var(--mono); font-size: .85rem;
+  }
+  .terminal-bar {
+    display: flex; align-items: center; gap: .5rem;
+    padding: .6rem 1rem; background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+  .terminal-url { font-size: .78rem; color: var(--muted); margin-left: .5rem; }
+  .terminal-body { padding: 1.25rem 1.5rem; line-height: 1.9; }
+  .t-comment { color: #4a4a70; }
+  .t-method { color: var(--green); }
+  .t-url { color: var(--purple2); }
+  .t-key { color: var(--yellow); }
+  .t-val { color: #e6db74; }
+  .t-str { color: #a6e22e; }
+  .t-num { color: #ae81ff; }
+  .t-bool { color: var(--red); }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+    padding: 2.5rem 2rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .stat { text-align: center; }
+  .stat-val { font-size: 1.8rem; font-weight: 800; color: var(--text); letter-spacing: -.02em; }
+  .stat-val em { color: var(--purple2); font-style: normal; }
+  .stat-label { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+
+  /* ── Section ── */
+  .section { max-width: 960px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-label { font-size: .75rem; font-weight: 700; letter-spacing: .12em; color: var(--purple); text-transform: uppercase; margin-bottom: .75rem; }
+  h2 { font-size: 1.9rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .5rem; }
+  .section-desc { color: var(--muted); margin-bottom: 2.5rem; }
+
+  /* ── Endpoint cards ── */
+  .endpoints { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .endpoint-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.25rem; cursor: pointer;
+    transition: border-color .2s, transform .15s;
+  }
+  .endpoint-card:hover { border-color: var(--purple); transform: translateY(-2px); }
+  .ep-cat {
+    font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    padding: .2rem .5rem; border-radius: 4px; display: inline-block; margin-bottom: .75rem;
+  }
+  .cat-ai    { background: rgba(108,99,255,.15); color: var(--purple2); }
+  .cat-yt    { background: rgba(255,95,109,.15); color: var(--red); }
+  .cat-movie { background: rgba(255,197,66,.12); color: var(--yellow); }
+  .cat-music { background: rgba(34,211,160,.12); color: var(--green); }
+  .cat-ip    { background: rgba(139,127,255,.1); color: #a0a0ff; }
+  .ep-title { font-weight: 700; font-size: 1rem; margin-bottom: .3rem; }
+  .ep-desc { font-size: .85rem; color: var(--muted); margin-bottom: .85rem; }
+  .ep-path { font-family: var(--mono); font-size: .78rem; color: var(--purple2); background: rgba(108,99,255,.08); padding: .3rem .6rem; border-radius: 5px; word-break: break-all; }
+
+  /* ── Playground ── */
+  .playground {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; margin-top: 2rem;
+  }
+  .pg-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); overflow-x: auto; }
+  .pg-tab {
+    padding: .75rem 1.25rem; font-size: .85rem; font-weight: 600; cursor: pointer;
+    border: none; background: none; color: var(--muted); white-space: nowrap;
+    border-bottom: 2px solid transparent; transition: all .2s;
+  }
+  .pg-tab.active { color: var(--purple2); border-bottom-color: var(--purple); }
+  .pg-body { padding: 1.5rem; }
+  .pg-row { display: flex; gap: .75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .pg-row label { font-size: .8rem; color: var(--muted); display: block; margin-bottom: .3rem; }
+  .pg-row input, .pg-row select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); border-radius: 7px; padding: .55rem .85rem;
+    font-size: .9rem; outline: none; transition: border-color .2s;
+    font-family: inherit;
+  }
+  .pg-row input:focus, .pg-row select:focus { border-color: var(--purple); }
+  .pg-field { flex: 1; min-width: 180px; }
+  .run-btn {
+    background: var(--purple); color: #fff; border: none; border-radius: 7px;
+    padding: .55rem 1.4rem; font-weight: 700; font-size: .9rem; cursor: pointer;
+    transition: background .2s; white-space: nowrap; align-self: flex-end;
+  }
+  .run-btn:hover { background: var(--purple2); }
+  .run-btn:disabled { opacity: .5; cursor: not-allowed; }
+  .pg-url-preview { font-family: var(--mono); font-size: .78rem; color: var(--muted); margin-bottom: 1rem; padding: .5rem .85rem; background: rgba(255,255,255,.03); border-radius: 6px; word-break: break-all; }
+  .pg-url-preview strong { color: var(--purple2); }
+  .result-box {
+    background: #06060e; border: 1px solid var(--border); border-radius: 8px;
+    padding: 1rem 1.25rem; font-family: var(--mono); font-size: .82rem;
+    max-height: 380px; overflow-y: auto; line-height: 1.7;
+    white-space: pre-wrap; word-break: break-word; color: var(--text);
+    display: none;
+  }
+  .result-box.show { display: block; }
+  .result-box.loading { color: var(--muted); }
+  .result-box.error { border-color: rgba(255,95,109,.4); color: var(--red); }
+  .result-img { max-width: 100%; border-radius: 8px; margin-top: 1rem; display: none; }
+  .result-img.show { display: block; }
+
+  /* ── How it works ── */
+  .how-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+  .how-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+  .how-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(108,99,255,.12); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: var(--purple2); }
+  .how-card h3 { font-size: 1rem; margin-bottom: .4rem; }
+  .how-card p { font-size: .85rem; color: var(--muted); }
+
+  /* ── Footer ── */
+  footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 2rem; color: var(--muted); font-size: .85rem; }
+  footer a { color: var(--purple2); text-decoration: none; }
+
+  /* ── Syntax color in JSON ── */
+  .json-key   { color: var(--purple2); }
+  .json-str   { color: #a6e22e; }
+  .json-num   { color: #ae81ff; }
+  .json-bool  { color: var(--red); }
+  .json-null  { color: var(--muted); }
+
+  @media (max-width: 600px) {
+    nav { padding: .85rem 1rem; }
+    .hero { padding: 4rem 1rem 3rem; }
+    .stats-bar { gap: 1.5rem; }
+    .section { padding: 3rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <a href="/" class="logo">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    <span>Alz<em>API</em></span>
+  </a>
+  <div class="nav-links">
+    <a href="#endpoints">Endpoints</a>
+    <a href="#playground">Playground</a>
+    <a href="https://cloud.alz.name.ng" target="_blank">AlzCloud</a>
+    <span class="badge">FREE</span>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <span></span> LIVE — No API key required
+  </div>
+  <h1>One API.<br><em>Everything you need.</em></h1>
+  <p>AI generation, YouTube, movies, music, and IP lookup — completely free, no sign-up, no key. Just call and go.</p>
+  <div class="hero-actions">
+    <a href="#playground" class="btn btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Try it live
+    </a>
+    <a href="#endpoints" class="btn btn-outline">Browse endpoints</a>
+  </div>
+
+  <div class="terminal-wrap">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+        <span class="terminal-url">api.alz.name.ng</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-comment"># Ask the AI anything</span></div>
+        <div><span class="t-method">GET</span> <span class="t-url">https://api.alz.name.ng/api/ai/chat?q=What+is+quantum+computing</span></div>
+        <br>
+        <div><span class="t-comment"># Response</span></div>
+        <div>{</div>
+        <div>&nbsp;&nbsp;<span class="t-key">"success"</span>: <span class="t-bool">true</span>,</div>
+        <div>&nbsp;&nbsp;<span class="t-key">"model"</span>: <span class="t-str">"openai"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="t-key">"response"</span>: <span class="t-str">"Quantum computing uses quantum bits (qubits)..."</span></div>
+        <div>}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Stats ── -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-val"><em>8</em> categories</div><div class="stat-label">AI, YouTube, Social, Movies, Music, Currency, Search, IP</div></div>
+  <div class="stat"><div class="stat-val"><em>25+</em> endpoints</div><div class="stat-label">And growing</div></div>
+  <div class="stat"><div class="stat-val"><em>30</em> req/min</div><div class="stat-label">Free rate limit per IP</div></div>
+  <div class="stat"><div class="stat-val"><em>$0</em></div><div class="stat-label">Forever free, no card needed</div></div>
+</div>
+
+<!-- ── Endpoints ── -->
+<div class="section" id="endpoints">
+  <div class="section-label">Endpoints</div>
+  <h2>Everything in one place</h2>
+  <p class="section-desc">Click any card to jump to the playground and try it instantly.</p>
+
+  <div class="endpoints">
+    <div class="endpoint-card" onclick="openTab('ai')">
+      <span class="ep-cat cat-ai">AI</span>
+      <div class="ep-title">AI Chat</div>
+      <div class="ep-desc">Ask any question. Powered by multiple AI models — GPT-4o, Mistral, Claude, Llama.</div>
+      <div class="ep-path">/api/ai/chat?q=your+question</div>
+    </div>
+    <div class="endpoint-card" onclick="openTab('aiimg')">
+      <span class="ep-cat cat-ai">AI</span>
+      <div class="ep-title">AI Image Generation</div>
+      <div class="ep-desc">Generate images from text. Returns the image directly or a URL. Uses Flux & SDXL models.</div>
+      <div class="ep-path">/api/ai/image?prompt=a+purple+galaxy</div>
+    </div>
+    <div class="endpoint-card" onclick="openTab('ytsearch')">
+      <span class="ep-cat cat-yt">YouTube</span>
+      <div class="ep-title">YouTube Search</div>
+      <div class="ep-desc">Search YouTube and get video info, thumbnails, duration, and view counts.</div>
+      <div class="ep-path">/api/yt/search?q=lofi+chill</div>
+    </div>
+    <div class="endpoint-card" onclick="openTab('ytdl')">
+      <span class="ep-cat cat-yt">YouTube</span>
+      <div class="ep-title">YouTube Download / Stream</div>
+      <div class="ep-desc">Stream or download any YouTube video as MP3 or MP4. Also returns direct temp links.</div>
+      <div class="ep-path">/api/yt/download?url=...&type=mp3</div>
+    </div>
+    <div class="endpoint-card" onclick="openTab('movies')">
+      <span class="ep-cat cat-movie">Movies</span>
+      <div class="ep-title">Movie & TV Search</div>
+      <div class="ep-desc">Search movies and TV shows, get full details, cast, trailers and trending lists.</div>
+      <div class="ep-path">/api/movies/search?q=avengers</div>
+    </div>
+    <div class="endpoint-card" onclick="openTab('music')">
+      <span class="ep-cat cat-music">Music</span>
+      <div class="ep-title">Music Search & Preview</div>
+      <div class="ep-desc">Search songs and artists. Get album art, track info, and stream 30s previews.</div>
+      <div class="ep-path">/api/music/search?q=Burna+Boy</div>
+    </div>
+    <div class="endpoint-card" onclick="openTab('ip')">
+      <span class="ep-cat cat-ip">IP</span>
+      <div class="ep-title">IP Info & Geolocation</div>
+      <div class="ep-desc">Look up any IP or domain. Returns country, city, ISP, timezone, proxy/VPN detection.</div>
+      <div class="ep-path">/api/ip/:address</div>
+    </div>
+    <div class="endpoint-card" onclick="openTab('social')">
+      <span class="ep-cat" style="background:rgba(255,149,0,.12);color:#ff9500">Social</span>
+      <div class="ep-title">Social Media Downloader</div>
+      <div class="ep-desc">Download videos from TikTok (no watermark), Instagram, Twitter/X, and Facebook.</div>
+      <div class="ep-path">/api/social/download?url=...&type=video</div>
+    </div>
+    <div class="endpoint-card" onclick="openTab('currency')">
+      <span class="ep-cat" style="background:rgba(52,211,153,.12);color:#34d399">Currency</span>
+      <div class="ep-title">Currency & Crypto</div>
+      <div class="ep-desc">Convert currencies, get live rates, 365-day history, and real-time crypto prices.</div>
+      <div class="ep-path">/api/currency/convert?from=USD&to=NGN&amount=100</div>
+    </div>
+    <div class="endpoint-card" onclick="openTab('wiki')">
+      <span class="ep-cat" style="background:rgba(148,163,184,.1);color:#94a3b8">Search</span>
+      <div class="ep-title">Wikipedia & Web Search</div>
+      <div class="ep-desc">Search Wikipedia with full extracts, thumbnails, and related articles. Web instant answers via DuckDuckGo.</div>
+      <div class="ep-path">/api/search/wiki?q=Elon+Musk</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Playground ── -->
+<div class="section" id="playground">
+  <div class="section-label">Playground</div>
+  <h2>Try it right now</h2>
+  <p class="section-desc">No account, no key. Just fill in the fields and hit Run.</p>
+
+  <div class="playground">
+    <div class="pg-tabs">
+      <button class="pg-tab active" onclick="openTab('ai')"       id="tab-ai">AI Chat</button>
+      <button class="pg-tab"        onclick="openTab('aiimg')"    id="tab-aiimg">AI Image</button>
+      <button class="pg-tab"        onclick="openTab('ytsearch')" id="tab-ytsearch">YT Search</button>
+      <button class="pg-tab"        onclick="openTab('ytdl')"     id="tab-ytdl">YT Download</button>
+      <button class="pg-tab"        onclick="openTab('social')"   id="tab-social">Social DL</button>
+      <button class="pg-tab"        onclick="openTab('movies')"   id="tab-movies">Movies</button>
+      <button class="pg-tab"        onclick="openTab('music')"    id="tab-music">Music</button>
+      <button class="pg-tab"        onclick="openTab('currency')" id="tab-currency">Currency</button>
+      <button class="pg-tab"        onclick="openTab('wiki')"     id="tab-wiki">Wikipedia</button>
+      <button class="pg-tab"        onclick="openTab('ip')"       id="tab-ip">IP Lookup</button>
+    </div>
+
+    <div class="pg-body">
+      <!-- AI Chat -->
+      <div id="panel-ai">
+        <div class="pg-row">
+          <div class="pg-field" style="flex:2">
+            <label>Question</label>
+            <input id="ai-q" type="text" value="What is quantum computing?" placeholder="Ask anything...">
+          </div>
+          <div class="pg-field" style="flex:1">
+            <label>Model</label>
+            <select id="ai-model">
+              <option value="openai">openai (GPT-4o)</option>
+              <option value="mistral">mistral</option>
+              <option value="claude">claude</option>
+              <option value="llama">llama</option>
+              <option value="gemini">gemini</option>
+            </select>
+          </div>
+          <button class="run-btn" onclick="runAI()">Run</button>
+        </div>
+        <div class="pg-url-preview" id="ai-url-preview"></div>
+        <div class="result-box" id="ai-result"></div>
+      </div>
+
+      <!-- AI Image -->
+      <div id="panel-aiimg" style="display:none">
+        <div class="pg-row">
+          <div class="pg-field" style="flex:3">
+            <label>Prompt</label>
+            <input id="img-prompt" type="text" value="a futuristic purple city at night, cyberpunk" placeholder="Describe the image...">
+          </div>
+          <div class="pg-field" style="flex:1">
+            <label>Model</label>
+            <select id="img-model">
+              <option value="flux">flux</option>
+              <option value="flux-realism">flux-realism</option>
+              <option value="turbo">turbo</option>
+            </select>
+          </div>
+          <button class="run-btn" onclick="runImage()">Generate</button>
+        </div>
+        <div class="pg-url-preview" id="img-url-preview"></div>
+        <img class="result-img" id="img-result" alt="Generated image">
+        <div class="result-box" id="img-error"></div>
+      </div>
+
+      <!-- YT Search -->
+      <div id="panel-ytsearch" style="display:none">
+        <div class="pg-row">
+          <div class="pg-field" style="flex:3">
+            <label>Search query</label>
+            <input id="yt-q" type="text" value="lofi hip hop chill beats" placeholder="Search YouTube...">
+          </div>
+          <div class="pg-field" style="flex:1">
+            <label>Limit</label>
+            <input id="yt-limit" type="number" value="5" min="1" max="20">
+          </div>
+          <button class="run-btn" onclick="runYTSearch()">Search</button>
+        </div>
+        <div class="pg-url-preview" id="yts-url-preview"></div>
+        <div class="result-box" id="yts-result"></div>
+      </div>
+
+      <!-- YT Download -->
+      <div id="panel-ytdl" style="display:none">
+        <div class="pg-row">
+          <div class="pg-field" style="flex:3">
+            <label>YouTube URL</label>
+            <input id="yt-url" type="text" placeholder="https://youtu.be/dQw4w9WgXcQ">
+          </div>
+          <div class="pg-field" style="flex:1">
+            <label>Type</label>
+            <select id="yt-type">
+              <option value="mp3">MP3 (audio)</option>
+              <option value="mp4">MP4 (video)</option>
+            </select>
+          </div>
+        </div>
+        <div class="pg-row" style="gap:.75rem;flex-wrap:wrap">
+          <button class="run-btn" onclick="runYTInfo()">Get Info</button>
+          <button class="run-btn" style="background:var(--green);color:#000" onclick="runYTLink()">Get Direct Link</button>
+          <button class="run-btn" style="background:var(--red)" onclick="runYTDownload()">Download</button>
+          <button class="run-btn" style="background:#2a2a40;border:1px solid var(--border)" onclick="runYTStream()">Stream</button>
+        </div>
+        <div class="pg-url-preview" id="ytdl-url-preview"></div>
+        <div class="result-box" id="ytdl-result"></div>
+      </div>
+
+      <!-- Movies -->
+      <div id="panel-movies" style="display:none">
+        <div class="pg-row">
+          <div class="pg-field" style="flex:3">
+            <label>Search movies or TV</label>
+            <input id="movie-q" type="text" value="The Dark Knight" placeholder="Movie or show name...">
+          </div>
+          <div class="pg-field" style="flex:1">
+            <label>Mode</label>
+            <select id="movie-mode">
+              <option value="search">Search</option>
+              <option value="trending">Trending</option>
+              <option value="popular">Popular</option>
+            </select>
+          </div>
+          <button class="run-btn" onclick="runMovies()">Search</button>
+        </div>
+        <div class="pg-url-preview" id="mov-url-preview"></div>
+        <div class="result-box" id="mov-result"></div>
+      </div>
+
+      <!-- Music -->
+      <div id="panel-music" style="display:none">
+        <div class="pg-row">
+          <div class="pg-field" style="flex:3">
+            <label>Search songs or artists</label>
+            <input id="music-q" type="text" value="Burna Boy" placeholder="Song, artist, or album...">
+          </div>
+          <div class="pg-field" style="flex:1">
+            <label>Limit</label>
+            <input id="music-limit" type="number" value="10" min="1" max="50">
+          </div>
+          <button class="run-btn" onclick="runMusic()">Search</button>
+        </div>
+        <div class="pg-url-preview" id="mus-url-preview"></div>
+        <div class="result-box" id="mus-result"></div>
+      </div>
+
+      <!-- Social Media Downloader -->
+      <div id="panel-social" style="display:none">
+        <div class="pg-row">
+          <div class="pg-field" style="flex:3">
+            <label>TikTok / Instagram / Twitter / Facebook URL</label>
+            <input id="social-url" type="text" placeholder="https://www.tiktok.com/@user/video/...">
+          </div>
+          <div class="pg-field" style="flex:1">
+            <label>Type</label>
+            <select id="social-type">
+              <option value="video">Video</option>
+              <option value="audio">Audio</option>
+            </select>
+          </div>
+        </div>
+        <div class="pg-row" style="flex-wrap:wrap;gap:.75rem">
+          <button class="run-btn" onclick="runSocialInfo()">Get Info</button>
+          <button class="run-btn" style="background:var(--green);color:#000" onclick="runSocialDownload()">Download</button>
+        </div>
+        <div class="pg-url-preview" id="social-url-preview"></div>
+        <div class="result-box" id="social-result"></div>
+      </div>
+
+      <!-- Currency & Crypto -->
+      <div id="panel-currency" style="display:none">
+        <div class="pg-row">
+          <div class="pg-field">
+            <label>Mode</label>
+            <select id="cur-mode" onchange="updateCurrencyUI()">
+              <option value="convert">Convert currency</option>
+              <option value="crypto">Crypto prices</option>
+              <option value="crypto-convert">Crypto convert</option>
+              <option value="rates">All rates</option>
+              <option value="history">Rate history</option>
+            </select>
+          </div>
+        </div>
+        <!-- Convert -->
+        <div id="cur-convert-fields">
+          <div class="pg-row">
+            <div class="pg-field"><label>From</label><input id="cur-from" type="text" value="USD" placeholder="USD"></div>
+            <div class="pg-field"><label>To</label><input id="cur-to" type="text" value="NGN" placeholder="NGN"></div>
+            <div class="pg-field"><label>Amount</label><input id="cur-amount" type="number" value="100"></div>
+            <button class="run-btn" onclick="runCurrency()">Convert</button>
+          </div>
+        </div>
+        <!-- Crypto -->
+        <div id="cur-crypto-fields" style="display:none">
+          <div class="pg-row">
+            <div class="pg-field" style="flex:3"><label>Coins (comma separated)</label><input id="cur-coins" type="text" value="bitcoin,ethereum,solana,dogecoin"></div>
+            <div class="pg-field"><label>VS currency</label><input id="cur-vs" type="text" value="usd"></div>
+            <button class="run-btn" onclick="runCrypto()">Get Prices</button>
+          </div>
+        </div>
+        <!-- Crypto convert -->
+        <div id="cur-crypto-conv-fields" style="display:none">
+          <div class="pg-row">
+            <div class="pg-field"><label>Coin</label><input id="cur-ccfrom" type="text" value="bitcoin" placeholder="bitcoin"></div>
+            <div class="pg-field"><label>To currency</label><input id="cur-ccto" type="text" value="ngn" placeholder="ngn"></div>
+            <div class="pg-field"><label>Amount</label><input id="cur-ccamt" type="number" value="0.5" step="any"></div>
+            <button class="run-btn" onclick="runCryptoConvert()">Convert</button>
+          </div>
+        </div>
+        <!-- History -->
+        <div id="cur-history-fields" style="display:none">
+          <div class="pg-row">
+            <div class="pg-field"><label>From</label><input id="cur-hfrom" type="text" value="USD"></div>
+            <div class="pg-field"><label>To</label><input id="cur-hto" type="text" value="NGN"></div>
+            <div class="pg-field"><label>Days</label><input id="cur-hdays" type="number" value="30"></div>
+            <button class="run-btn" onclick="runHistory()">Get History</button>
+          </div>
+        </div>
+        <!-- Rates only mode -->
+        <div id="cur-rates-fields" style="display:none">
+          <div class="pg-row">
+            <div class="pg-field"><label>Base currency</label><input id="cur-rbase" type="text" value="USD"></div>
+            <button class="run-btn" onclick="runRates()">Get Rates</button>
+          </div>
+        </div>
+        <div class="pg-url-preview" id="cur-url-preview"></div>
+        <div class="result-box" id="cur-result"></div>
+      </div>
+
+      <!-- Wikipedia & Web Search -->
+      <div id="panel-wiki" style="display:none">
+        <div class="pg-row">
+          <div class="pg-field" style="flex:1">
+            <label>Mode</label>
+            <select id="wiki-mode">
+              <option value="wiki">Wikipedia article</option>
+              <option value="web">Web instant answer</option>
+              <option value="suggest">Search suggestions</option>
+              <option value="random">Random article</option>
+            </select>
+          </div>
+          <div class="pg-field" style="flex:3">
+            <label>Query</label>
+            <input id="wiki-q" type="text" value="Elon Musk" placeholder="Search anything...">
+          </div>
+          <button class="run-btn" onclick="runSearch()">Search</button>
+        </div>
+        <div class="pg-url-preview" id="wiki-url-preview"></div>
+        <div class="result-box" id="wiki-result"></div>
+      </div>
+
+      <!-- IP -->
+      <div id="panel-ip" style="display:none">
+        <div class="pg-row">
+          <div class="pg-field" style="flex:3">
+            <label>IP address or domain (leave blank for your own IP)</label>
+            <input id="ip-addr" type="text" placeholder="e.g. 8.8.8.8 or google.com">
+          </div>
+          <button class="run-btn" onclick="runIP()">Lookup</button>
+        </div>
+        <div class="pg-url-preview" id="ip-url-preview"></div>
+        <div class="result-box" id="ip-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── How it works ── -->
+<div class="section">
+  <div class="section-label">Simple by design</div>
+  <h2>How to use AlzAPI</h2>
+  <p class="section-desc">Just HTTP GET requests. Works from any language, any platform.</p>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3>No API key</h3>
+      <p>Just hit the URL. No signup, no dashboard, no token management.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <h3>Standard JSON</h3>
+      <p>Every endpoint returns <code style="color:var(--purple2)">{success, data}</code> — consistent, easy to parse.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <h3>30 req/min</h3>
+      <p>Fair rate limit per IP. Enough for any personal project or app without worrying.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>Any platform</h3>
+      <p>Works from JavaScript, Python, PHP, Android, Telegram bots — anywhere with HTTP.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>AlzAPI by <a href="https://cloud.alz.name.ng">Alz-Tech</a> &mdash; Free forever. No BS.</p>
+  <p style="margin-top:.5rem;font-size:.78rem">Base URL: <code style="color:var(--purple2)">https://api.alz.name.ng</code> &nbsp;|&nbsp; <a href="/api">API Info JSON</a></p>
+</footer>
+
+<script>
+const BASE = window.location.origin;
+
+// ── Tab switching ────────────────────────────────────────────────────────
+const panels = ['ai','aiimg','ytsearch','ytdl','social','movies','music','currency','wiki','ip'];
+function openTab(name) {
+  panels.forEach(p => {
+    document.getElementById('panel-' + p).style.display = p === name ? 'block' : 'none';
+    const t = document.getElementById('tab-' + p);
+    if (t) t.classList.toggle('active', p === name);
+  });
+  document.getElementById('playground').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────
+function showResult(id, content, isError = false, isLoading = false) {
+  const el = document.getElementById(id);
+  el.className = 'result-box show' + (isError ? ' error' : '') + (isLoading ? ' loading' : '');
+  el.textContent = content;
+}
+function syntaxHighlight(json) {
+  if (typeof json !== 'string') json = JSON.stringify(json, null, 2);
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, m => {
+    if (/^"/.test(m)) return /:$/.test(m) ? `<span class="json-key">${m}</span>` : `<span class="json-str">${m}</span>`;
+    if (/true|false/.test(m)) return `<span class="json-bool">${m}</span>`;
+    if (/null/.test(m)) return `<span class="json-null">${m}</span>`;
+    return `<span class="json-num">${m}</span>`;
+  });
+}
+function showResultHTML(id, html, isError = false) {
+  const el = document.getElementById(id);
+  el.className = 'result-box show' + (isError ? ' error' : '');
+  el.innerHTML = html;
+}
+function setPreview(id, url) {
+  document.getElementById(id).innerHTML = `<strong>GET</strong> ${url}`;
+}
+
+// ── AI Chat ──────────────────────────────────────────────────────────────
+function runAI() {
+  const q = document.getElementById('ai-q').value.trim();
+  const model = document.getElementById('ai-model').value;
+  if (!q) return;
+  const url = `${BASE}/api/ai/chat?q=${encodeURIComponent(q)}&model=${model}`;
+  setPreview('ai-url-preview', url);
+  showResult('ai-result', 'Thinking...', false, true);
+  fetch(url).then(r => r.json()).then(d => {
+    showResultHTML('ai-result', syntaxHighlight(d));
+  }).catch(e => showResult('ai-result', e.message, true));
+}
+
+// ── AI Image ─────────────────────────────────────────────────────────────
+function runImage() {
+  const prompt = document.getElementById('img-prompt').value.trim();
+  const model = document.getElementById('img-model').value;
+  if (!prompt) return;
+  const url = `${BASE}/api/ai/image?prompt=${encodeURIComponent(prompt)}&model=${model}`;
+  setPreview('img-url-preview', url);
+  document.getElementById('img-result').classList.remove('show');
+  document.getElementById('img-error').className = 'result-box show loading';
+  document.getElementById('img-error').textContent = 'Generating image...';
+
+  const img = document.getElementById('img-result');
+  img.onload = () => {
+    document.getElementById('img-error').className = 'result-box';
+    img.classList.add('show');
+  };
+  img.onerror = () => {
+    document.getElementById('img-error').className = 'result-box show error';
+    document.getElementById('img-error').textContent = 'Image generation failed. Try a different prompt.';
+    img.classList.remove('show');
+  };
+  img.src = url;
+}
+
+// ── YT Search ────────────────────────────────────────────────────────────
+function runYTSearch() {
+  const q = document.getElementById('yt-q').value.trim();
+  const limit = document.getElementById('yt-limit').value;
+  if (!q) return;
+  const url = `${BASE}/api/yt/search?q=${encodeURIComponent(q)}&limit=${limit}`;
+  setPreview('yts-url-preview', url);
+  showResult('yts-result', 'Searching...', false, true);
+  fetch(url).then(r => r.json()).then(d => {
+    showResultHTML('yts-result', syntaxHighlight(d));
+  }).catch(e => showResult('yts-result', e.message, true));
+}
+
+// ── YT Info/Download/Stream ───────────────────────────────────────────────
+function ytUrl(type) {
+  return document.getElementById('yt-url').value.trim();
+}
+function runYTInfo() {
+  const url = ytUrl();
+  if (!url) return alert('Paste a YouTube URL first.');
+  const ep = `${BASE}/api/yt/info?url=${encodeURIComponent(url)}`;
+  setPreview('ytdl-url-preview', ep);
+  showResult('ytdl-result', 'Fetching info...', false, true);
+  fetch(ep).then(r => r.json()).then(d => {
+    showResultHTML('ytdl-result', syntaxHighlight(d));
+  }).catch(e => showResult('ytdl-result', e.message, true));
+}
+function runYTLink() {
+  const url = ytUrl();
+  const type = document.getElementById('yt-type').value;
+  if (!url) return alert('Paste a YouTube URL first.');
+  const ep = `${BASE}/api/yt/link?url=${encodeURIComponent(url)}&type=${type}`;
+  setPreview('ytdl-url-preview', ep);
+  showResult('ytdl-result', 'Getting direct link...', false, true);
+  fetch(ep).then(r => r.json()).then(d => {
+    showResultHTML('ytdl-result', syntaxHighlight(d));
+  }).catch(e => showResult('ytdl-result', e.message, true));
+}
+function runYTDownload() {
+  const url = ytUrl();
+  const type = document.getElementById('yt-type').value;
+  if (!url) return alert('Paste a YouTube URL first.');
+  const ep = `${BASE}/api/yt/download?url=${encodeURIComponent(url)}&type=${type}`;
+  setPreview('ytdl-url-preview', ep);
+  showResult('ytdl-result', `Opening download for ${type}...\nThe file will download directly in your browser.`, false, true);
+  window.open(ep, '_blank');
+}
+function runYTStream() {
+  const url = ytUrl();
+  const type = document.getElementById('yt-type').value;
+  if (!url) return alert('Paste a YouTube URL first.');
+  const ep = `${BASE}/api/yt/stream?url=${encodeURIComponent(url)}&type=${type}`;
+  setPreview('ytdl-url-preview', ep);
+  showResult('ytdl-result', `Opening stream...\n${ep}`, false, true);
+  window.open(ep, '_blank');
+}
+
+// ── Movies ───────────────────────────────────────────────────────────────
+function runMovies() {
+  const q = document.getElementById('movie-q').value.trim();
+  const mode = document.getElementById('movie-mode').value;
+  let url;
+  if (mode === 'search') url = `${BASE}/api/movies/search?q=${encodeURIComponent(q)}`;
+  else if (mode === 'trending') url = `${BASE}/api/movies/trending`;
+  else url = `${BASE}/api/movies/popular`;
+  setPreview('mov-url-preview', url);
+  showResult('mov-result', 'Fetching...', false, true);
+  fetch(url).then(r => r.json()).then(d => {
+    showResultHTML('mov-result', syntaxHighlight(d));
+  }).catch(e => showResult('mov-result', e.message, true));
+}
+
+// ── Music ─────────────────────────────────────────────────────────────────
+function runMusic() {
+  const q = document.getElementById('music-q').value.trim();
+  const limit = document.getElementById('music-limit').value;
+  if (!q) return;
+  const url = `${BASE}/api/music/search?q=${encodeURIComponent(q)}&limit=${limit}`;
+  setPreview('mus-url-preview', url);
+  showResult('mus-result', 'Searching...', false, true);
+  fetch(url).then(r => r.json()).then(d => {
+    showResultHTML('mus-result', syntaxHighlight(d));
+  }).catch(e => showResult('mus-result', e.message, true));
+}
+
+// ── IP ────────────────────────────────────────────────────────────────────
+function runIP() {
+  const addr = document.getElementById('ip-addr').value.trim();
+  const url = addr ? `${BASE}/api/ip/${encodeURIComponent(addr)}` : `${BASE}/api/ip`;
+  setPreview('ip-url-preview', url);
+  showResult('ip-result', 'Looking up...', false, true);
+  fetch(url).then(r => r.json()).then(d => {
+    showResultHTML('ip-result', syntaxHighlight(d));
+  }).catch(e => showResult('ip-result', e.message, true));
+}
+
+// ── Social Media ──────────────────────────────────────────────────────────
+function runSocialInfo() {
+  const url = document.getElementById('social-url').value.trim();
+  if (!url) return alert('Paste a social media URL first.');
+  const ep = `${BASE}/api/social/info?url=${encodeURIComponent(url)}`;
+  setPreview('social-url-preview', ep);
+  showResult('social-result', 'Fetching...', false, true);
+  fetch(ep).then(r => r.json()).then(d => showResultHTML('social-result', syntaxHighlight(d)))
+    .catch(e => showResult('social-result', e.message, true));
+}
+function runSocialDownload() {
+  const url = document.getElementById('social-url').value.trim();
+  const type = document.getElementById('social-type').value;
+  if (!url) return alert('Paste a social media URL first.');
+  const ep = `${BASE}/api/social/download?url=${encodeURIComponent(url)}&type=${type}`;
+  setPreview('social-url-preview', ep);
+  showResult('social-result', `Opening download...\n${ep}`, false, true);
+  window.open(ep, '_blank');
+}
+
+// ── Currency ──────────────────────────────────────────────────────────────
+function updateCurrencyUI() {
+  const mode = document.getElementById('cur-mode').value;
+  document.getElementById('cur-convert-fields').style.display     = mode === 'convert' ? 'block' : 'none';
+  document.getElementById('cur-crypto-fields').style.display      = mode === 'crypto' ? 'block' : 'none';
+  document.getElementById('cur-crypto-conv-fields').style.display = mode === 'crypto-convert' ? 'block' : 'none';
+  document.getElementById('cur-history-fields').style.display     = mode === 'history' ? 'block' : 'none';
+  document.getElementById('cur-rates-fields').style.display       = mode === 'rates' ? 'block' : 'none';
+}
+function runCurrency() {
+  const from = document.getElementById('cur-from').value.trim() || 'USD';
+  const to   = document.getElementById('cur-to').value.trim() || 'NGN';
+  const amt  = document.getElementById('cur-amount').value || 1;
+  const ep = `${BASE}/api/currency/convert?from=${from}&to=${to}&amount=${amt}`;
+  setPreview('cur-url-preview', ep);
+  showResult('cur-result', 'Converting...', false, true);
+  fetch(ep).then(r => r.json()).then(d => showResultHTML('cur-result', syntaxHighlight(d)))
+    .catch(e => showResult('cur-result', e.message, true));
+}
+function runCrypto() {
+  const coins = document.getElementById('cur-coins').value.trim();
+  const vs    = document.getElementById('cur-vs').value.trim() || 'usd';
+  const ep = `${BASE}/api/currency/crypto?coins=${encodeURIComponent(coins)}&vs=${vs}`;
+  setPreview('cur-url-preview', ep);
+  showResult('cur-result', 'Fetching prices...', false, true);
+  fetch(ep).then(r => r.json()).then(d => showResultHTML('cur-result', syntaxHighlight(d)))
+    .catch(e => showResult('cur-result', e.message, true));
+}
+function runCryptoConvert() {
+  const from = document.getElementById('cur-ccfrom').value.trim() || 'bitcoin';
+  const to   = document.getElementById('cur-ccto').value.trim() || 'ngn';
+  const amt  = document.getElementById('cur-ccamt').value || 1;
+  const ep = `${BASE}/api/currency/crypto/convert?from=${from}&to=${to}&amount=${amt}`;
+  setPreview('cur-url-preview', ep);
+  showResult('cur-result', 'Converting...', false, true);
+  fetch(ep).then(r => r.json()).then(d => showResultHTML('cur-result', syntaxHighlight(d)))
+    .catch(e => showResult('cur-result', e.message, true));
+}
+function runHistory() {
+  const from  = document.getElementById('cur-hfrom').value.trim() || 'USD';
+  const to    = document.getElementById('cur-hto').value.trim() || 'NGN';
+  const days  = document.getElementById('cur-hdays').value || 30;
+  const ep = `${BASE}/api/currency/history?from=${from}&to=${to}&days=${days}`;
+  setPreview('cur-url-preview', ep);
+  showResult('cur-result', 'Fetching history...', false, true);
+  fetch(ep).then(r => r.json()).then(d => showResultHTML('cur-result', syntaxHighlight(d)))
+    .catch(e => showResult('cur-result', e.message, true));
+}
+function runRates() {
+  const base = document.getElementById('cur-rbase').value.trim() || 'USD';
+  const ep = `${BASE}/api/currency/rates?base=${base}`;
+  setPreview('cur-url-preview', ep);
+  showResult('cur-result', 'Fetching rates...', false, true);
+  fetch(ep).then(r => r.json()).then(d => showResultHTML('cur-result', syntaxHighlight(d)))
+    .catch(e => showResult('cur-result', e.message, true));
+}
+
+// ── Wikipedia & Search ────────────────────────────────────────────────────
+function runSearch() {
+  const mode = document.getElementById('wiki-mode').value;
+  const q    = document.getElementById('wiki-q').value.trim();
+  let ep;
+  if (mode === 'wiki')    ep = `${BASE}/api/search/wiki?q=${encodeURIComponent(q)}`;
+  else if (mode === 'web') ep = `${BASE}/api/search/web?q=${encodeURIComponent(q)}`;
+  else if (mode === 'suggest') ep = `${BASE}/api/search/suggest?q=${encodeURIComponent(q)}`;
+  else ep = `${BASE}/api/search/wiki/random`;
+  setPreview('wiki-url-preview', ep);
+  showResult('wiki-result', 'Searching...', false, true);
+  fetch(ep).then(r => r.json()).then(d => showResultHTML('wiki-result', syntaxHighlight(d)))
+    .catch(e => showResult('wiki-result', e.message, true));
+}
+
+// ── Auto-update previews as user types ────────────────────────────────────
+document.getElementById('ai-q').addEventListener('input', () => {
+  const q = document.getElementById('ai-q').value;
+  const m = document.getElementById('ai-model').value;
+  setPreview('ai-url-preview', `${BASE}/api/ai/chat?q=${encodeURIComponent(q)}&model=${m}`);
+});
+document.getElementById('img-prompt').addEventListener('input', () => {
+  const p = document.getElementById('img-prompt').value;
+  setPreview('img-url-preview', `${BASE}/api/ai/image?prompt=${encodeURIComponent(p)}`);
+});
+
+// Init previews
+setPreview('ai-url-preview',     `${BASE}/api/ai/chat?q=What+is+quantum+computing&model=openai`);
+setPreview('img-url-preview',    `${BASE}/api/ai/image?prompt=a+futuristic+purple+city+at+night`);
+setPreview('yts-url-preview',    `${BASE}/api/yt/search?q=lofi+hip+hop+chill+beats&limit=5`);
+setPreview('ytdl-url-preview',   `${BASE}/api/yt/download?url=...&type=mp3`);
+setPreview('social-url-preview', `${BASE}/api/social/info?url=https://www.tiktok.com/@user/video/...`);
+setPreview('mov-url-preview',    `${BASE}/api/movies/search?q=The+Dark+Knight`);
+setPreview('mus-url-preview',    `${BASE}/api/music/search?q=Burna+Boy&limit=10`);
+setPreview('cur-url-preview',    `${BASE}/api/currency/convert?from=USD&to=NGN&amount=100`);
+setPreview('wiki-url-preview',   `${BASE}/api/search/wiki?q=Elon+Musk`);
+setPreview('ip-url-preview',     `${BASE}/api/ip`);
+</script>
+
+</body>
+</html>
