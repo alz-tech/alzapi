@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AlzAPI — Free General Purpose API</title>
-<meta name="description" content="AlzAPI is a completely free, no-key API by Alz-Tech. AI chat & image generation, YouTube, movies, music, social downloads, currency, and more.">
-<meta property="og:title" content="AlzAPI — Free General Purpose API">
+<title>AlzApi — Free General Purpose API</title>
+<meta name="description" content="AlzApi is a completely free, no-key API by Alz-Tech. AI chat & image generation, YouTube, movies, music, social downloads, currency, and more.">
+<meta property="og:title" content="AlzApi — Free General Purpose API">
 <meta property="og:description" content="AI, YouTube, Movies, Music & IP — all free, no API key needed. By Alz-Tech.">
 <meta property="og:url" content="https://api.alz.name.ng">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c63ff' stroke-width='2'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E">
@@ -13,168 +13,256 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:      #07070f;
-    --surface: #0d0d1a;
-    --card:    #111120;
-    --card2:   #141426;
-    --border:  #1c1c30;
-    --purple:  #6c63ff;
-    --purple2: #8b7fff;
-    --purple3: #a89dff;
-    --green:   #22d3a0;
-    --red:     #ff5f6d;
-    --yellow:  #ffc542;
-    --orange:  #ff9500;
-    --teal:    #34d399;
-    --slate:   #94a3b8;
-    --text:    #ddddf0;
-    --muted:   #6868a0;
-    --mono:    'JetBrains Mono', monospace;
+    --bg:#07070f;--surface:#0d0d1a;--card:#111120;--card2:#141426;
+    --border:#1c1c30;--purple:#6c63ff;--purple2:#8b7fff;--purple3:#a89dff;
+    --green:#22d3a0;--red:#ff5f6d;--yellow:#ffc542;--orange:#ff9500;
+    --teal:#34d399;--slate:#94a3b8;--text:#ddddf0;--muted:#6868a0;
+    --mono:'JetBrains Mono',monospace;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+  a{text-decoration:none;color:inherit}
 
   /* ── Nav ── */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: .9rem 2.5rem;
-    background: rgba(7,7,15,.9);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-  }
-  .logo { display: flex; align-items: center; gap: .55rem; text-decoration: none; font-weight: 800; font-size: 1.05rem; color: var(--text); letter-spacing: -.01em; }
-  .logo svg { color: var(--purple); flex-shrink: 0; }
-  .logo em { color: var(--purple3); font-style: normal; }
-  .nav-center { display: flex; align-items: center; gap: .25rem; }
-  .nav-link { color: var(--muted); text-decoration: none; font-size: .88rem; font-weight: 500; padding: .4rem .85rem; border-radius: 7px; transition: all .2s; }
-  .nav-link:hover { color: var(--text); background: rgba(255,255,255,.05); }
-  .nav-link.active { color: var(--purple3); background: rgba(108,99,255,.1); }
-  .nav-right { display: flex; align-items: center; gap: .75rem; }
-  .badge-free { background: rgba(34,211,160,.15); color: var(--green); font-size: .72rem; font-weight: 700; padding: .25rem .7rem; border-radius: 99px; letter-spacing: .05em; border: 1px solid rgba(34,211,160,.25); }
-  .btn-nav { display: inline-flex; align-items: center; gap: .4rem; background: var(--purple); color: #fff; text-decoration: none; font-size: .85rem; font-weight: 700; padding: .45rem 1.1rem; border-radius: 7px; transition: all .2s; }
-  .btn-nav:hover { background: var(--purple2); transform: translateY(-1px); }
+  nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:.9rem 2.5rem;background:rgba(7,7,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+  .logo{display:flex;align-items:center;gap:.55rem;font-weight:800;font-size:1.1rem;letter-spacing:-.02em}
+  .logo svg{color:var(--purple);flex-shrink:0}
+  .logo-text{color:var(--text)}
+  .logo-text em{color:var(--purple3);font-style:normal}
+  .nav-center{display:flex;align-items:center;gap:.2rem}
+  .nav-link{color:var(--muted);font-size:.88rem;font-weight:500;padding:.4rem .85rem;border-radius:7px;transition:all .2s}
+  .nav-link:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .nav-link.active{color:var(--purple3);background:rgba(108,99,255,.1)}
+  .nav-right{display:flex;align-items:center;gap:.75rem}
+  .badge-free{background:rgba(34,211,160,.15);color:var(--green);font-size:.72rem;font-weight:700;padding:.25rem .7rem;border-radius:99px;letter-spacing:.05em;border:1px solid rgba(34,211,160,.25)}
+  .btn-try{display:inline-flex;align-items:center;gap:.4rem;background:var(--purple);color:#fff;font-size:.85rem;font-weight:700;padding:.45rem 1.1rem;border-radius:7px;transition:all .2s}
+  .btn-try:hover{background:var(--purple2);transform:translateY(-1px)}
+  .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:.4rem;border-radius:6px;transition:background .2s;background:none;border:none}
+  .hamburger:hover{background:rgba(255,255,255,.06)}
+  .hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+  .hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+  /* ── Hamburger Drawer ── */
+  .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
+  .drawer-overlay.open{opacity:1;pointer-events:all}
+  .drawer{position:fixed;top:0;right:0;width:300px;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:400;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto}
+  .drawer.open{transform:translateX(0)}
+  .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+  .drawer-title{font-weight:800;font-size:1rem;color:var(--text)}
+  .drawer-close{background:none;border:none;color:var(--muted);cursor:pointer;padding:.3rem;border-radius:5px;display:flex;align-items:center;transition:color .2s}
+  .drawer-close:hover{color:var(--text)}
+  .drawer-body{padding:1rem .75rem;flex:1}
+  .drawer-section-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.5rem .75rem .35rem;margin-top:.75rem}
+  .drawer-section-label:first-child{margin-top:0}
+  .drawer-link{display:flex;align-items:center;gap:.65rem;padding:.55rem .75rem;border-radius:8px;font-size:.88rem;color:var(--muted);font-weight:500;transition:all .15s;cursor:pointer}
+  .drawer-link:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .drawer-link.active{color:var(--purple3);background:rgba(108,99,255,.1)}
+  .drawer-link .di{font-size:1rem;width:20px;text-align:center}
+  /* Category expand */
+  .drawer-cat{display:flex;align-items:center;justify-content:space-between;padding:.55rem .75rem;border-radius:8px;font-size:.88rem;color:var(--muted);font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
+  .drawer-cat:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .drawer-cat.expanded{color:var(--purple3);background:rgba(108,99,255,.08)}
+  .drawer-cat .dc-left{display:flex;align-items:center;gap:.65rem}
+  .drawer-cat .dc-arrow{transition:transform .25s;font-size:.7rem;opacity:.5}
+  .drawer-cat.expanded .dc-arrow{transform:rotate(180deg);opacity:1}
+  .cat-endpoints{display:none;padding-left:2.4rem;padding-bottom:.25rem}
+  .cat-endpoints.open{display:block}
+  .cat-ep-link{display:flex;align-items:center;gap:.5rem;padding:.38rem .5rem;border-radius:6px;font-size:.8rem;font-family:var(--mono);color:var(--muted);transition:all .15s}
+  .cat-ep-link:hover{color:var(--purple3);background:rgba(108,99,255,.07)}
+  .cat-ep-method{font-size:.65rem;font-weight:700;padding:.1rem .35rem;border-radius:3px;background:rgba(34,211,160,.12);color:var(--green);letter-spacing:.05em}
+
+  /* ── Toast / Custom Alert ── */
+  .toast-container{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
+  .toast{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:.7rem 1.4rem;border-radius:10px;font-size:.87rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:toastIn .25s ease;pointer-events:auto;max-width:340px;text-align:center;line-height:1.5}
+  .toast.toast-error{border-color:rgba(255,95,109,.35);color:var(--red)}
+  .toast.toast-warn{border-color:rgba(255,197,66,.3);color:var(--yellow)}
+  .toast.toast-out{animation:toastOut .25s ease forwards}
+  @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes toastOut{to{opacity:0;transform:translateY(8px)}}
 
   /* ── Hero ── */
-  .hero {
-    max-width: 900px; margin: 0 auto;
-    padding: 8rem 2rem 5rem;
-    text-align: center;
-    position: relative;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 400px;
-    background: radial-gradient(ellipse at 50% 0%, rgba(108,99,255,.18) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: .5rem;
-    background: rgba(108,99,255,.1); border: 1px solid rgba(108,99,255,.25);
-    color: var(--purple3); font-size: .78rem; font-weight: 600; letter-spacing: .08em;
-    padding: .3rem 1rem; border-radius: 99px; margin-bottom: 2.25rem;
-    text-transform: uppercase;
-  }
-  .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-  h1 { font-size: clamp(2.6rem, 6.5vw, 4.2rem); font-weight: 800; line-height: 1.08; letter-spacing: -.03em; margin-bottom: 1.5rem; }
-  h1 .accent { background: linear-gradient(135deg, var(--purple2), var(--purple3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero-sub { font-size: 1.15rem; color: var(--muted); max-width: 520px; margin: 0 auto 2.75rem; line-height: 1.7; }
-  .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .75rem 1.6rem; border-radius: 9px; font-weight: 700; font-size: .95rem; text-decoration: none; cursor: pointer; border: none; transition: all .2s; }
-  .btn-primary { background: var(--purple); color: #fff; box-shadow: 0 4px 20px rgba(108,99,255,.35); }
-  .btn-primary:hover { background: var(--purple2); transform: translateY(-2px); box-shadow: 0 6px 28px rgba(108,99,255,.45); }
-  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
-  .btn-ghost:hover { border-color: var(--purple); color: var(--purple3); background: rgba(108,99,255,.06); }
+  .hero{max-width:880px;margin:0 auto;padding:9rem 2rem 6rem;text-align:center;position:relative;flex:1}
+  .hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:450px;background:radial-gradient(ellipse at 50% 0%,rgba(108,99,255,.16) 0%,transparent 70%);pointer-events:none}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.22);color:var(--purple3);font-size:.78rem;font-weight:600;letter-spacing:.08em;padding:.3rem 1rem;border-radius:99px;margin-bottom:2.5rem;text-transform:uppercase}
+  .pulse{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  h1{font-size:clamp(2.6rem,6.5vw,4.4rem);font-weight:800;line-height:1.07;letter-spacing:-.03em;margin-bottom:1.5rem}
+  h1 .accent{background:linear-gradient(135deg,var(--purple2),var(--purple3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-sub{font-size:1.15rem;color:var(--muted);max-width:520px;margin:0 auto 3rem;line-height:1.7}
+  .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:4.5rem}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.6rem;border-radius:9px;font-weight:700;font-size:.95rem;cursor:pointer;border:none;transition:all .2s}
+  .btn-primary{background:var(--purple);color:#fff;box-shadow:0 4px 20px rgba(108,99,255,.3)}
+  .btn-primary:hover{background:var(--purple2);transform:translateY(-2px);box-shadow:0 6px 28px rgba(108,99,255,.42)}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .btn-ghost:hover{border-color:var(--purple);color:var(--purple3);background:rgba(108,99,255,.06)}
 
   /* ── Terminal ── */
-  .terminal-wrap { max-width: 740px; margin: 4rem auto 0; text-align: left; }
-  .terminal { background: #060610; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; font-family: var(--mono); font-size: .83rem; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
-  .t-bar { display: flex; align-items: center; gap: .5rem; padding: .65rem 1.1rem; background: var(--surface); border-bottom: 1px solid var(--border); }
-  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .terminal-wrap{max-width:740px;margin:0 auto;text-align:left}
+  .terminal{background:#060610;border:1px solid var(--border);border-radius:14px;overflow:hidden;font-family:var(--mono);font-size:.83rem;box-shadow:0 24px 60px rgba(0,0,0,.55)}
+  .t-bar{display:flex;align-items:center;gap:.5rem;padding:.65rem 1.1rem;background:var(--surface);border-bottom:1px solid var(--border)}
+  .dot{width:11px;height:11px;border-radius:50%}
   .dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
-  .t-addr { font-size: .75rem; color: var(--muted); margin-left: .6rem; }
-  .t-body { padding: 1.4rem 1.6rem; line-height: 2; }
+  .t-addr{font-size:.75rem;color:var(--muted);margin-left:.6rem}
+  .t-body{padding:1.4rem 1.6rem;line-height:2}
   .t-c{color:#333360}.t-m{color:var(--green)}.t-u{color:var(--purple2)}.t-k{color:var(--yellow)}.t-s{color:#a6e22e}.t-n{color:#ae81ff}.t-b{color:var(--red)}
 
-  /* ── Stats ── */
-  .stats { display: flex; justify-content: center; gap: 0; flex-wrap: wrap; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .stat { text-align: center; padding: 2.25rem 3rem; flex: 1; min-width: 140px; position: relative; }
-  .stat + .stat::before { content:''; position:absolute; left:0; top:25%; height:50%; width:1px; background:var(--border); }
-  .stat-val { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; color: var(--text); }
-  .stat-val em { color: var(--purple3); font-style: normal; }
-  .stat-sub { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
-
-  /* ── Categories grid ── */
-  .section { max-width: 1040px; margin: 0 auto; padding: 5.5rem 2rem; }
-  .section-eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .14em; color: var(--purple); text-transform: uppercase; margin-bottom: .6rem; }
-  .section-title { font-size: 2rem; font-weight: 800; letter-spacing: -.025em; margin-bottom: .5rem; }
-  .section-desc { color: var(--muted); margin-bottom: 3rem; font-size: .95rem; }
-
-  .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-  .cat-card { background: var(--card); padding: 1.75rem; display: flex; flex-direction: column; gap: .85rem; transition: background .2s; text-decoration: none; color: inherit; }
-  .cat-card:hover { background: var(--card2); }
-  .cat-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
-  .cat-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem; }
-  .cat-count { font-size: .72rem; font-weight: 700; padding: .2rem .6rem; border-radius: 5px; letter-spacing: .04em; }
-  .cat-name { font-weight: 700; font-size: 1.05rem; }
-  .cat-desc { font-size: .85rem; color: var(--muted); line-height: 1.6; }
-  .cat-endpoints { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .25rem; }
-  .ep-pill { font-family: var(--mono); font-size: .72rem; background: rgba(255,255,255,.04); border: 1px solid var(--border); padding: .2rem .55rem; border-radius: 5px; color: var(--muted); }
-  .cat-arrow { color: var(--muted); font-size: .85rem; margin-top: auto; padding-top: .5rem; display: flex; align-items: center; gap: .4rem; font-size: .82rem; font-weight: 600; transition: color .2s; }
-  .cat-card:hover .cat-arrow { color: var(--purple3); }
-
-  /* color variants */
-  .c-ai    { background: rgba(108,99,255,.12); color: var(--purple3); }
-  .c-yt    { background: rgba(255,95,109,.12); color: var(--red); }
-  .c-movie { background: rgba(255,197,66,.1);  color: var(--yellow); }
-  .c-music { background: rgba(34,211,160,.1);  color: var(--green); }
-  .c-ip    { background: rgba(148,163,184,.1); color: var(--slate); }
-  .c-soc   { background: rgba(255,149,0,.1);   color: var(--orange); }
-  .c-cur   { background: rgba(52,211,153,.1);  color: var(--teal); }
-  .c-srch  { background: rgba(148,163,184,.1); color: var(--slate); }
-  .badge-ai   { background: rgba(108,99,255,.15); color: var(--purple3); }
-  .badge-yt   { background: rgba(255,95,109,.12); color: var(--red); }
-  .badge-movie{ background: rgba(255,197,66,.1);  color: var(--yellow); }
-  .badge-music{ background: rgba(34,211,160,.1);  color: var(--green); }
-  .badge-ip   { background: rgba(148,163,184,.1); color: var(--slate); }
-  .badge-soc  { background: rgba(255,149,0,.1);   color: var(--orange); }
-  .badge-cur  { background: rgba(52,211,153,.1);  color: var(--teal); }
-  .badge-srch { background: rgba(148,163,184,.1); color: var(--slate); }
-
-  /* ── Quick start ── */
-  .qs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
-  .qs-card { background: var(--card); border: 1px solid var(--border); border-radius: 11px; padding: 1.5rem; }
-  .qs-num { width: 32px; height: 32px; border-radius: 8px; background: rgba(108,99,255,.12); color: var(--purple3); font-weight: 800; font-size: .9rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
-  .qs-card h3 { font-size: .97rem; font-weight: 700; margin-bottom: .4rem; }
-  .qs-card p { font-size: .84rem; color: var(--muted); line-height: 1.6; }
+  /* ── How it works ── */
+  .how-section{background:var(--surface);border-top:1px solid var(--border);padding:5rem 2rem}
+  .how-inner{max-width:960px;margin:0 auto}
+  .section-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;color:var(--purple);text-transform:uppercase;margin-bottom:.6rem}
+  .section-title{font-size:1.9rem;font-weight:800;letter-spacing:-.025em;margin-bottom:.5rem}
+  .section-desc{color:var(--muted);margin-bottom:2.5rem;font-size:.95rem}
+  .how-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem}
+  .how-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:1.5rem}
+  .how-num{width:32px;height:32px;border-radius:8px;background:rgba(108,99,255,.12);color:var(--purple3);font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+  .how-card h3{font-size:.97rem;font-weight:700;margin-bottom:.4rem}
+  .how-card p{font-size:.84rem;color:var(--muted);line-height:1.6}
 
   /* ── Footer ── */
-  footer { border-top: 1px solid var(--border); padding: 3rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
-  .footer-left p { font-size: .85rem; color: var(--muted); }
-  .footer-left p a { color: var(--purple3); text-decoration: none; }
-  .footer-links { display: flex; gap: 1.75rem; }
-  .footer-links a { color: var(--muted); text-decoration: none; font-size: .85rem; transition: color .2s; }
-  .footer-links a:hover { color: var(--text); }
+  footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+  .footer-left{font-size:.84rem;color:var(--muted)}
+  .footer-left a{color:var(--purple3)}
+  .footer-links{display:flex;gap:1.75rem}
+  .footer-links a{color:var(--muted);font-size:.84rem;transition:color .2s}
+  .footer-links a:hover{color:var(--text)}
 
-  @media (max-width: 640px) {
-    nav { padding: .85rem 1.1rem; }
-    .nav-center { display: none; }
-    .hero { padding: 5rem 1.25rem 3.5rem; }
-    .stat { padding: 1.75rem 1.5rem; }
-    .section { padding: 3.5rem 1.25rem; }
-    footer { padding: 2rem 1.25rem; flex-direction: column; align-items: flex-start; }
+  @media(max-width:768px){
+    nav{padding:.85rem 1.25rem}
+    .nav-center{display:none}
+    .hamburger{display:flex}
+    .hero{padding:5.5rem 1.25rem 4rem}
+    .how-section{padding:3.5rem 1.25rem}
+    footer{padding:1.75rem 1.25rem;flex-direction:column;align-items:flex-start}
   }
 </style>
 </head>
 <body>
 
+<!-- ── Custom Alert Toast ── -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ── Drawer Overlay ── -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- ── Drawer ── -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <span class="drawer-title">AlzApi</span>
+    <button class="drawer-close" onclick="closeDrawer()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-section-label">Navigation</div>
+    <a href="/" class="drawer-link active" onclick="closeDrawer()"><span class="di">🏠</span> Home</a>
+    <a href="/docs" class="drawer-link" onclick="closeDrawer()"><span class="di">📖</span> Documentation</a>
+    <a href="/playground" class="drawer-link" onclick="closeDrawer()"><span class="di">⚡</span> Playground</a>
+    <a href="https://cloud.alz.name.ng" target="_blank" class="drawer-link" onclick="closeDrawer()"><span class="di">☁️</span> AlzCloud</a>
+
+    <div class="drawer-section-label">API Categories</div>
+
+    <div class="drawer-cat" onclick="toggleCat('cat-ai')">
+      <div class="dc-left"><span class="di">🤖</span> Artificial Intelligence</div>
+      <span class="dc-arrow">▼</span>
+    </div>
+    <div class="cat-endpoints" id="cat-ai">
+      <a href="/docs/ai#chat" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ai/chat</a>
+      <a href="/docs/ai#image" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ai/image</a>
+      <a href="/docs/ai#models" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ai/models</a>
+    </div>
+
+    <div class="drawer-cat" onclick="toggleCat('cat-yt')">
+      <div class="dc-left"><span class="di">▶</span> YouTube</div>
+      <span class="dc-arrow">▼</span>
+    </div>
+    <div class="cat-endpoints" id="cat-yt">
+      <a href="/docs/youtube#search" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/search</a>
+      <a href="/docs/youtube#info" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/info</a>
+      <a href="/docs/youtube#link" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/link</a>
+      <a href="/docs/youtube#stream" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/stream</a>
+      <a href="/docs/youtube#download" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/download</a>
+    </div>
+
+    <div class="drawer-cat" onclick="toggleCat('cat-soc')">
+      <div class="dc-left"><span class="di">📲</span> Social Media</div>
+      <span class="dc-arrow">▼</span>
+    </div>
+    <div class="cat-endpoints" id="cat-soc">
+      <a href="/docs/social#platforms" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/social/platforms</a>
+      <a href="/docs/social#info" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/social/info</a>
+      <a href="/docs/social#download" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/social/download</a>
+    </div>
+
+    <div class="drawer-cat" onclick="toggleCat('cat-mov')">
+      <div class="dc-left"><span class="di">🎬</span> Movies & TV</div>
+      <span class="dc-arrow">▼</span>
+    </div>
+    <div class="cat-endpoints" id="cat-mov">
+      <a href="/docs/movies#search" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/movies/search</a>
+      <a href="/docs/movies#trending" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/movies/trending</a>
+      <a href="/docs/movies#popular" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/movies/popular</a>
+      <a href="/docs/movies#id" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/movies/:id</a>
+    </div>
+
+    <div class="drawer-cat" onclick="toggleCat('cat-mus')">
+      <div class="dc-left"><span class="di">🎵</span> Music</div>
+      <span class="dc-arrow">▼</span>
+    </div>
+    <div class="cat-endpoints" id="cat-mus">
+      <a href="/docs/music#search" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/search</a>
+      <a href="/docs/music#artist" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/artist</a>
+      <a href="/docs/music#track" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/track/:id</a>
+      <a href="/docs/music#artist-tracks" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/artist/:id/tracks</a>
+      <a href="/docs/music#preview" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/preview</a>
+    </div>
+
+    <div class="drawer-cat" onclick="toggleCat('cat-cur')">
+      <div class="dc-left"><span class="di">💱</span> Currency & Crypto</div>
+      <span class="dc-arrow">▼</span>
+    </div>
+    <div class="cat-endpoints" id="cat-cur">
+      <a href="/docs/currency#convert" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/convert</a>
+      <a href="/docs/currency#rates" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/rates</a>
+      <a href="/docs/currency#list" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/list</a>
+      <a href="/docs/currency#history" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/history</a>
+      <a href="/docs/currency#crypto" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/crypto</a>
+      <a href="/docs/currency#crypto-convert" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/crypto/convert</a>
+    </div>
+
+    <div class="drawer-cat" onclick="toggleCat('cat-srch')">
+      <div class="dc-left"><span class="di">🔍</span> Search & Wikipedia</div>
+      <span class="dc-arrow">▼</span>
+    </div>
+    <div class="cat-endpoints" id="cat-srch">
+      <a href="/docs/search#wiki" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/wiki</a>
+      <a href="/docs/search#wiki-search" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/wiki/search</a>
+      <a href="/docs/search#wiki-random" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/wiki/random</a>
+      <a href="/docs/search#web" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/web</a>
+      <a href="/docs/search#suggest" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/suggest</a>
+    </div>
+
+    <div class="drawer-cat" onclick="toggleCat('cat-ip')">
+      <div class="dc-left"><span class="di">🌐</span> IP Geolocation</div>
+      <span class="dc-arrow">▼</span>
+    </div>
+    <div class="cat-endpoints" id="cat-ip">
+      <a href="/docs/ip#self" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ip</a>
+      <a href="/docs/ip#address" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ip/:address</a>
+    </div>
+
+    <div class="drawer-section-label" style="margin-top:1.25rem"></div>
+    <a href="/api" class="drawer-link" onclick="closeDrawer()"><span class="di">{}</span> API Info JSON</a>
+  </div>
+</div>
+
+<!-- ── Nav ── -->
 <nav>
   <a href="/" class="logo">
     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-    Alz<em>API</em>
+    <span class="logo-text">Alz<em>Api</em></span>
   </a>
   <div class="nav-center">
     <a href="/" class="nav-link active">Home</a>
@@ -184,14 +272,17 @@
   </div>
   <div class="nav-right">
     <span class="badge-free">FREE</span>
-    <a href="/playground" class="btn-nav">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    <a href="/playground" class="btn-try">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       Try it
     </a>
+    <button class="hamburger" id="hamburger-btn" onclick="openDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
-<!-- Hero -->
+<!-- ── Hero ── -->
 <div class="hero">
   <div class="eyebrow">
     <span class="pulse"></span>
@@ -201,7 +292,7 @@
   <p class="hero-sub">AI generation, YouTube, movies, social downloads, currency, and more — completely free, no sign-up, no key. Just call and go.</p>
   <div class="hero-actions">
     <a href="/playground" class="btn btn-primary">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       Try the Playground
     </a>
     <a href="/docs" class="btn btn-ghost">Browse Docs</a>
@@ -228,187 +319,25 @@
   </div>
 </div>
 
-<!-- Stats -->
-<div class="stats">
-  <div class="stat"><div class="stat-val"><em>8</em></div><div class="stat-sub">API categories</div></div>
-  <div class="stat"><div class="stat-val"><em>25+</em></div><div class="stat-sub">Endpoints</div></div>
-  <div class="stat"><div class="stat-val"><em>30</em><span style="font-size:1.1rem;color:var(--muted)">/min</span></div><div class="stat-sub">Free rate limit</div></div>
-  <div class="stat"><div class="stat-val"><em>$0</em></div><div class="stat-sub">Forever free</div></div>
-</div>
-
-<!-- API Categories -->
-<div class="section">
-  <div class="section-eyebrow">API Reference</div>
-  <h2 class="section-title">Choose a category</h2>
-  <p class="section-desc">Click any category to view full endpoint docs and examples.</p>
-
-  <div class="cat-grid">
-
-    <a href="/docs/ai" class="cat-card">
-      <div class="cat-header">
-        <div class="cat-icon c-ai">🤖</div>
-        <span class="cat-count badge-ai">2 endpoints</span>
-      </div>
-      <div class="cat-name">Artificial Intelligence</div>
-      <div class="cat-desc">Text generation and image synthesis powered by GPT-4o, Mistral, Claude, Llama, Gemini, Flux, and SDXL.</div>
-      <div class="cat-endpoints">
-        <span class="ep-pill">/api/ai/chat</span>
-        <span class="ep-pill">/api/ai/image</span>
-        <span class="ep-pill">/api/ai/models</span>
-      </div>
-      <div class="cat-arrow">View docs <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-    </a>
-
-    <a href="/docs/youtube" class="cat-card">
-      <div class="cat-header">
-        <div class="cat-icon c-yt">▶</div>
-        <span class="cat-count badge-yt">5 endpoints</span>
-      </div>
-      <div class="cat-name">YouTube</div>
-      <div class="cat-desc">Search, get video info, stream or download as MP3/MP4, and get direct media links from any YouTube URL.</div>
-      <div class="cat-endpoints">
-        <span class="ep-pill">/api/yt/search</span>
-        <span class="ep-pill">/api/yt/info</span>
-        <span class="ep-pill">/api/yt/download</span>
-        <span class="ep-pill">/api/yt/stream</span>
-      </div>
-      <div class="cat-arrow">View docs <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-    </a>
-
-    <a href="/docs/social" class="cat-card">
-      <div class="cat-header">
-        <div class="cat-icon c-soc">📲</div>
-        <span class="cat-count badge-soc">3 endpoints</span>
-      </div>
-      <div class="cat-name">Social Media</div>
-      <div class="cat-desc">Download videos and audio from TikTok (no watermark), Instagram, Twitter/X, and Facebook.</div>
-      <div class="cat-endpoints">
-        <span class="ep-pill">/api/social/info</span>
-        <span class="ep-pill">/api/social/download</span>
-        <span class="ep-pill">/api/social/platforms</span>
-      </div>
-      <div class="cat-arrow">View docs <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-    </a>
-
-    <a href="/docs/movies" class="cat-card">
-      <div class="cat-header">
-        <div class="cat-icon c-movie">🎬</div>
-        <span class="cat-count badge-movie">4 endpoints</span>
-      </div>
-      <div class="cat-name">Movies & TV</div>
-      <div class="cat-desc">Search movies and TV shows, get cast, trailers, ratings, trending and popular lists via TMDB.</div>
-      <div class="cat-endpoints">
-        <span class="ep-pill">/api/movies/search</span>
-        <span class="ep-pill">/api/movies/trending</span>
-        <span class="ep-pill">/api/movies/popular</span>
-        <span class="ep-pill">/api/movies/:id</span>
-      </div>
-      <div class="cat-arrow">View docs <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-    </a>
-
-    <a href="/docs/music" class="cat-card">
-      <div class="cat-header">
-        <div class="cat-icon c-music">🎵</div>
-        <span class="cat-count badge-music">5 endpoints</span>
-      </div>
-      <div class="cat-name">Music</div>
-      <div class="cat-desc">Search songs and artists, get album art, track info, 30-second previews, and artist discographies.</div>
-      <div class="cat-endpoints">
-        <span class="ep-pill">/api/music/search</span>
-        <span class="ep-pill">/api/music/artist</span>
-        <span class="ep-pill">/api/music/track/:id</span>
-        <span class="ep-pill">/api/music/preview</span>
-      </div>
-      <div class="cat-arrow">View docs <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-    </a>
-
-    <a href="/docs/currency" class="cat-card">
-      <div class="cat-header">
-        <div class="cat-icon c-cur">💱</div>
-        <span class="cat-count badge-cur">6 endpoints</span>
-      </div>
-      <div class="cat-name">Currency & Crypto</div>
-      <div class="cat-desc">Convert currencies, get live exchange rates, 365-day history charts, and real-time cryptocurrency prices.</div>
-      <div class="cat-endpoints">
-        <span class="ep-pill">/api/currency/convert</span>
-        <span class="ep-pill">/api/currency/rates</span>
-        <span class="ep-pill">/api/currency/crypto</span>
-        <span class="ep-pill">/api/currency/history</span>
-      </div>
-      <div class="cat-arrow">View docs <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-    </a>
-
-    <a href="/docs/search" class="cat-card">
-      <div class="cat-header">
-        <div class="cat-icon c-srch">🔍</div>
-        <span class="cat-count badge-srch">5 endpoints</span>
-      </div>
-      <div class="cat-name">Search & Wikipedia</div>
-      <div class="cat-desc">Full Wikipedia articles with thumbnails, DuckDuckGo instant answers, search suggestions, and random articles.</div>
-      <div class="cat-endpoints">
-        <span class="ep-pill">/api/search/wiki</span>
-        <span class="ep-pill">/api/search/web</span>
-        <span class="ep-pill">/api/search/suggest</span>
-        <span class="ep-pill">/api/search/wiki/random</span>
-      </div>
-      <div class="cat-arrow">View docs <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-    </a>
-
-    <a href="/docs/ip" class="cat-card">
-      <div class="cat-header">
-        <div class="cat-icon c-ip">🌐</div>
-        <span class="cat-count badge-ip">2 endpoints</span>
-      </div>
-      <div class="cat-name">IP Geolocation</div>
-      <div class="cat-desc">Look up any IP address or domain. Returns country, city, ISP, timezone, proxy/VPN detection, and ASN.</div>
-      <div class="cat-endpoints">
-        <span class="ep-pill">/api/ip</span>
-        <span class="ep-pill">/api/ip/:address</span>
-      </div>
-      <div class="cat-arrow">View docs <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-    </a>
-
-  </div>
-</div>
-
-<!-- Quick start -->
-<div style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-<div class="section" style="padding-top:4rem;padding-bottom:4rem">
-  <div class="section-eyebrow">Quick Start</div>
-  <h2 class="section-title">Zero setup. Just call.</h2>
-  <p class="section-desc">Works from any language, any platform, in seconds.</p>
-  <div class="qs-grid">
-    <div class="qs-card">
-      <div class="qs-num">1</div>
-      <h3>No API key</h3>
-      <p>Hit the URL directly. No signup, no dashboard, no token management — ever.</p>
-    </div>
-    <div class="qs-card">
-      <div class="qs-num">2</div>
-      <h3>Standard JSON</h3>
-      <p>Every endpoint returns <code style="color:var(--purple3);font-family:var(--mono);font-size:.8em">{success, data}</code> — consistent, easy to parse anywhere.</p>
-    </div>
-    <div class="qs-card">
-      <div class="qs-num">3</div>
-      <h3>30 req/min free</h3>
-      <p>Fair rate limit per IP. More than enough for personal projects, bots, and apps.</p>
-    </div>
-    <div class="qs-card">
-      <div class="qs-num">4</div>
-      <h3>Any platform</h3>
-      <p>JavaScript, Python, PHP, Java, Telegram bots, WhatsApp bots — anywhere with HTTP.</p>
+<!-- ── How it works ── -->
+<div class="how-section">
+  <div class="how-inner">
+    <div class="section-eyebrow">Quick Start</div>
+    <h2 class="section-title">Zero setup. Just call.</h2>
+    <p class="section-desc">Works from any language, any platform, in seconds.</p>
+    <div class="how-grid">
+      <div class="how-card"><div class="how-num">1</div><h3>No API key</h3><p>Hit the URL directly. No signup, no dashboard, no token management — ever.</p></div>
+      <div class="how-card"><div class="how-num">2</div><h3>Standard JSON</h3><p>Every endpoint returns <code style="color:var(--purple3);font-family:var(--mono);font-size:.8em">{success, data}</code> — consistent, easy to parse anywhere.</p></div>
+      <div class="how-card"><div class="how-num">3</div><h3>30 req/min free</h3><p>Fair rate limit per IP. More than enough for personal projects, bots, and apps.</p></div>
+      <div class="how-card"><div class="how-num">4</div><h3>Any platform</h3><p>JavaScript, Python, PHP, Java, Telegram bots, WhatsApp bots — anywhere with HTTP.</p></div>
     </div>
   </div>
-</div>
 </div>
 
 <footer>
   <div class="footer-left">
-    <a href="/" class="logo" style="margin-bottom:.5rem;display:inline-flex">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      &nbsp;Alz<em>API</em>
-    </a>
-    <p style="margin-top:.4rem">By <a href="https://cloud.alz.name.ng">Alz-Tech</a> · Free forever · Base URL: <code style="font-family:var(--mono);font-size:.82em;color:var(--purple3)">https://api.alz.name.ng</code></p>
+    AlzApi by <a href="https://cloud.alz.name.ng">Alz-Tech</a> · Free forever ·
+    Base: <code style="font-family:var(--mono);font-size:.8em;color:var(--purple3)">https://api.alz.name.ng</code>
   </div>
   <div class="footer-links">
     <a href="/">Home</a>
@@ -419,5 +348,49 @@
   </div>
 </footer>
 
+<script>
+// ── Drawer ───────────────────────────────────────────────
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('hamburger-btn').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('hamburger-btn').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function toggleCat(id) {
+  const panel = document.getElementById(id);
+  const btn = panel.previousElementSibling;
+  const isOpen = panel.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.cat-endpoints').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.drawer-cat').forEach(b => b.classList.remove('expanded'));
+  if (!isOpen) {
+    panel.classList.add('open');
+    btn.classList.add('expanded');
+  }
+}
+// Close drawer on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+// ── Toast (replaces alert()) ──────────────────────────────
+function showToast(msg, type = '') {
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' toast-' + type : '');
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('toast-out');
+    el.addEventListener('animationend', () => el.remove());
+  }, 3000);
+}
+// Override window.alert
+window.alert = (msg) => showToast(msg, 'warn');
+</script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Playground — AlzAPI</title>
+<title>Playground — AlzApi</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c63ff' stroke-width='2'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -100,26 +100,102 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 footer{border-top:1px solid var(--border);text-align:center;padding:1.25rem;color:var(--muted);font-size:.82rem}
 footer a{color:var(--purple3)}
 
+/* Toast */
+.toast-container{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
+.toast{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:.7rem 1.4rem;border-radius:10px;font-size:.87rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:toastIn .25s ease;pointer-events:auto;max-width:340px;text-align:center;line-height:1.5}
+.toast.toast-error{border-color:rgba(255,95,109,.35);color:var(--red)}
+.toast.toast-warn{border-color:rgba(255,197,66,.3);color:var(--yellow)}
+.toast.toast-out{animation:toastOut .25s ease forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateY(8px)}}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:.4rem;border-radius:6px;transition:background .2s;background:none;border:none}
+.hamburger:hover{background:rgba(255,255,255,.06)}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+
+/* Drawer */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer-overlay.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;right:0;width:300px;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:400;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto}
+.drawer.open{transform:translateX(0)}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.drawer-title{font-weight:800;font-size:1rem;color:var(--text)}
+.drawer-close{background:none;border:none;color:var(--muted);cursor:pointer;padding:.3rem;border-radius:5px;display:flex;align-items:center;transition:color .2s}
+.drawer-close:hover{color:var(--text)}
+.drawer-body{padding:1rem .75rem;flex:1}
+.drawer-section-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.5rem .75rem .35rem;margin-top:.75rem}
+.drawer-link{display:flex;align-items:center;gap:.65rem;padding:.55rem .75rem;border-radius:8px;font-size:.88rem;color:var(--muted);font-weight:500;transition:all .15s}
+.drawer-link:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.drawer-link .di{font-size:1rem;width:20px;text-align:center}
+.drawer-cat{display:flex;align-items:center;justify-content:space-between;padding:.55rem .75rem;border-radius:8px;font-size:.88rem;color:var(--muted);font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
+.drawer-cat:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.drawer-cat.expanded{color:var(--purple3);background:rgba(108,99,255,.08)}
+.drawer-cat .dc-left{display:flex;align-items:center;gap:.65rem}
+.drawer-cat .dc-arrow{transition:transform .25s;font-size:.7rem;opacity:.5}
+.drawer-cat.expanded .dc-arrow{transform:rotate(180deg);opacity:1}
+.cat-endpoints{display:none;padding-left:2.4rem;padding-bottom:.25rem}
+.cat-endpoints.open{display:block}
+.cat-ep-link{display:flex;align-items:center;gap:.5rem;padding:.38rem .5rem;border-radius:6px;font-size:.8rem;font-family:var(--mono);color:var(--muted);transition:all .15s}
+.cat-ep-link:hover{color:var(--purple3);background:rgba(108,99,255,.07)}
+.cat-ep-method{font-size:.65rem;font-weight:700;padding:.1rem .35rem;border-radius:3px;background:rgba(34,211,160,.12);color:var(--green);letter-spacing:.05em}
+
 @media(max-width:768px){
   .pg-sidebar{display:none}
   .pg-main{padding:1.5rem 1.1rem}
   nav{padding:.85rem 1.1rem}
   .nav-center{display:none}
   .fields-grid{grid-template-columns:1fr}
+  .hamburger{display:flex}
 }
 </style>
 </head>
 <body>
 
+<div class="toast-container" id="toast-container"></div>
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header"><span class="drawer-title">AlzApi</span><button class="drawer-close" onclick="closeDrawer()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="drawer-body">
+    <div class="drawer-section-label">Navigation</div>
+    <a href="/" class="drawer-link"><span class="di">🏠</span> Home</a>
+    <a href="/docs" class="drawer-link"><span class="di">📖</span> Documentation</a>
+    <a href="/playground" class="drawer-link"><span class="di">⚡</span> Playground</a>
+    <a href="https://cloud.alz.name.ng" target="_blank" class="drawer-link"><span class="di">☁️</span> AlzCloud</a>
+    <div class="drawer-section-label">API Categories</div>
+    <div class="drawer-cat" onclick="toggleCat('cat-ai')"><div class="dc-left"><span class="di">🤖</span> Artificial Intelligence</div><span class="dc-arrow">▼</span></div>
+    <div class="cat-endpoints" id="cat-ai"><a href="/docs/ai#chat" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/ai/chat</a><a href="/docs/ai#image" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/ai/image</a><a href="/docs/ai#models" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/ai/models</a></div>
+    <div class="drawer-cat" onclick="toggleCat('cat-yt')"><div class="dc-left"><span class="di">▶</span> YouTube</div><span class="dc-arrow">▼</span></div>
+    <div class="cat-endpoints" id="cat-yt"><a href="/docs/youtube#search" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/yt/search</a><a href="/docs/youtube#info" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/yt/info</a><a href="/docs/youtube#link" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/yt/link</a><a href="/docs/youtube#stream" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/yt/stream</a><a href="/docs/youtube#download" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/yt/download</a></div>
+    <div class="drawer-cat" onclick="toggleCat('cat-soc')"><div class="dc-left"><span class="di">📲</span> Social Media</div><span class="dc-arrow">▼</span></div>
+    <div class="cat-endpoints" id="cat-soc"><a href="/docs/social#platforms" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/social/platforms</a><a href="/docs/social#info" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/social/info</a><a href="/docs/social#download" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/social/download</a></div>
+    <div class="drawer-cat" onclick="toggleCat('cat-mov')"><div class="dc-left"><span class="di">🎬</span> Movies & TV</div><span class="dc-arrow">▼</span></div>
+    <div class="cat-endpoints" id="cat-mov"><a href="/docs/movies#search" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/movies/search</a><a href="/docs/movies#trending" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/movies/trending</a><a href="/docs/movies#popular" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/movies/popular</a><a href="/docs/movies#id" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/movies/:id</a></div>
+    <div class="drawer-cat" onclick="toggleCat('cat-mus')"><div class="dc-left"><span class="di">🎵</span> Music</div><span class="dc-arrow">▼</span></div>
+    <div class="cat-endpoints" id="cat-mus"><a href="/docs/music#search" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/music/search</a><a href="/docs/music#artist" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/music/artist</a><a href="/docs/music#track" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/music/track/:id</a><a href="/docs/music#preview" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/music/preview</a></div>
+    <div class="drawer-cat" onclick="toggleCat('cat-cur')"><div class="dc-left"><span class="di">💱</span> Currency & Crypto</div><span class="dc-arrow">▼</span></div>
+    <div class="cat-endpoints" id="cat-cur"><a href="/docs/currency#convert" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/currency/convert</a><a href="/docs/currency#rates" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/currency/rates</a><a href="/docs/currency#crypto" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/currency/crypto</a><a href="/docs/currency#history" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/currency/history</a></div>
+    <div class="drawer-cat" onclick="toggleCat('cat-srch')"><div class="dc-left"><span class="di">🔍</span> Search & Wikipedia</div><span class="dc-arrow">▼</span></div>
+    <div class="cat-endpoints" id="cat-srch"><a href="/docs/search#wiki" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/search/wiki</a><a href="/docs/search#web" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/search/web</a><a href="/docs/search#suggest" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/search/suggest</a><a href="/docs/search#wiki-random" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/search/wiki/random</a></div>
+    <div class="drawer-cat" onclick="toggleCat('cat-ip')"><div class="dc-left"><span class="di">🌐</span> IP Geolocation</div><span class="dc-arrow">▼</span></div>
+    <div class="cat-endpoints" id="cat-ip"><a href="/docs/ip#self" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/ip</a><a href="/docs/ip#address" class="cat-ep-link"><span class="cat-ep-method">GET</span>/api/ip/:address</a></div>
+    <div class="drawer-section-label" style="margin-top:1rem"></div>
+    <a href="/api" class="drawer-link"><span class="di">{}</span> API Info JSON</a>
+  </div>
+</div>
+
 <nav>
-  <a href="/" class="logo"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Alz<em>API</em></a>
+  <a href="/" class="logo"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Alz<em>Api</em></a>
   <div class="nav-center">
     <a href="/" class="nav-link">Home</a>
     <a href="/docs" class="nav-link">Docs</a>
     <a href="/playground" class="nav-link active">Playground</a>
     <a href="https://cloud.alz.name.ng" target="_blank" class="nav-link">AlzCloud</a>
   </div>
-  <span class="badge-free">FREE</span>
+  <div style="display:flex;align-items:center;gap:.75rem">
+    <span class="badge-free">FREE</span>
+    <button class="hamburger" id="hamburger-btn" onclick="openDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
 </nav>
 
 <div class="pg-layout">
@@ -347,7 +423,7 @@ footer a{color:var(--purple3)}
   </div><!-- /pg-main -->
 </div><!-- /pg-layout -->
 
-<footer>AlzAPI by <a href="https://cloud.alz.name.ng">Alz-Tech</a> · <a href="/docs">Docs</a> · <a href="/">Home</a></footer>
+<footer>AlzApi by <a href="https://cloud.alz.name.ng">Alz-Tech</a> · <a href="/docs">Docs</a> · <a href="/">Home</a></footer>
 
 <script>
 const BASE = window.location.origin;
@@ -460,24 +536,24 @@ document.getElementById('yt-q').addEventListener('input', () => {
 function getYtUrl() { return document.getElementById('yt-url').value.trim(); }
 function getYtType() { return document.getElementById('yt-type').value; }
 function runYTInfo() {
-  const url = getYtUrl(); if (!url) return alert('Paste a YouTube URL first.');
+  const url = getYtUrl(); if (!url) return showToast('Paste a YouTube URL first', 'warn');
   const ep = `${BASE}/api/yt/info?url=${encodeURIComponent(url)}`;
   setPreview('ytdl-preview-url', ep); apiFetch(ep, 'ytdl-result');
 }
 function runYTLink() {
-  const url = getYtUrl(); if (!url) return alert('Paste a YouTube URL first.');
+  const url = getYtUrl(); if (!url) return showToast('Paste a YouTube URL first', 'warn');
   const ep = `${BASE}/api/yt/link?url=${encodeURIComponent(url)}&type=${getYtType()}`;
   setPreview('ytdl-preview-url', ep); apiFetch(ep, 'ytdl-result');
 }
 function runYTDownload() {
-  const url = getYtUrl(); if (!url) return alert('Paste a YouTube URL first.');
+  const url = getYtUrl(); if (!url) return showToast('Paste a YouTube URL first', 'warn');
   const ep = `${BASE}/api/yt/download?url=${encodeURIComponent(url)}&type=${getYtType()}`;
   setPreview('ytdl-preview-url', ep);
   setResult('ytdl-result', `Opening download...\n${ep}`, 'loading');
   window.open(ep, '_blank');
 }
 function runYTStream() {
-  const url = getYtUrl(); if (!url) return alert('Paste a YouTube URL first.');
+  const url = getYtUrl(); if (!url) return showToast('Paste a YouTube URL first', 'warn');
   const ep = `${BASE}/api/yt/stream?url=${encodeURIComponent(url)}&type=${getYtType()}`;
   setPreview('ytdl-preview-url', ep);
   setResult('ytdl-result', `Opening stream...\n${ep}`, 'loading');
@@ -489,12 +565,12 @@ document.getElementById('yt-url').addEventListener('input', () => {
 
 // ── Social ────────────────────────────────────────────────
 function runSocialInfo() {
-  const url = document.getElementById('social-url').value.trim(); if (!url) return alert('Paste a URL first.');
+  const url = document.getElementById('social-url').value.trim(); if (!url) return showToast('Paste a social media URL first', 'warn');
   const ep = `${BASE}/api/social/info?url=${encodeURIComponent(url)}`;
   setPreview('social-preview-url', ep); apiFetch(ep, 'social-result');
 }
 function runSocialDownload() {
-  const url = document.getElementById('social-url').value.trim(); if (!url) return alert('Paste a URL first.');
+  const url = document.getElementById('social-url').value.trim(); if (!url) return showToast('Paste a social media URL first', 'warn');
   const type = document.getElementById('social-type').value;
   const ep = `${BASE}/api/social/download?url=${encodeURIComponent(url)}&type=${type}`;
   setPreview('social-preview-url', ep);
@@ -607,7 +683,44 @@ function initPreviews() {
   setPreview('ip-preview-url', `${BASE}/api/ip`);
 }
 
-// Check URL param for initial tab
+// ── Toast ─────────────────────────────────────────────────
+function showToast(msg, type = '') {
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' toast-' + type : '');
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('toast-out');
+    el.addEventListener('animationend', () => el.remove());
+  }, 3000);
+}
+window.alert = (msg) => showToast(msg, 'warn');
+
+// ── Drawer ────────────────────────────────────────────────
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('hamburger-btn').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('hamburger-btn').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function toggleCat(id) {
+  const panel = document.getElementById(id);
+  const btn = panel.previousElementSibling;
+  const isOpen = panel.classList.contains('open');
+  document.querySelectorAll('.cat-endpoints').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.drawer-cat').forEach(b => b.classList.remove('expanded'));
+  if (!isOpen) { panel.classList.add('open'); btn.classList.add('expanded'); }
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+// ── Check URL param for initial tab ──────────────────────
 const params = new URLSearchParams(location.search);
 const tab = params.get('tab');
 if (tab) {

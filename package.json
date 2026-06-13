@@ -1,11 +1,12 @@
 {
   "name": "alzapi",
   "version": "1.0.0",
-  "description": "AlzAPI — Free General Purpose API by Alz-Tech",
+  "description": "AlzApi — Free General Purpose API by Alz-Tech",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "postinstall": "node scripts/install-ytdlp.js"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -13,7 +14,8 @@
     "node-fetch": "^2.7.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "yt-dlp-wrap": "^2.3.12"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

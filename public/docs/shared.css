@@ -80,12 +80,53 @@ main{flex:1;padding:2.75rem 3rem;min-width:0;max-width:900px}
 footer{border-top:1px solid var(--border);text-align:center;padding:1.5rem;color:var(--muted);font-size:.82rem}
 footer a{color:var(--purple3)}
 
+/* ── Toast ── */
+.toast-container{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
+.toast{background:var(--card2,#141426);border:1px solid var(--border);color:var(--text);padding:.7rem 1.4rem;border-radius:10px;font-size:.87rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:toastIn .25s ease;pointer-events:auto;max-width:340px;text-align:center;line-height:1.5}
+.toast.toast-warn{border-color:rgba(255,197,66,.3);color:var(--yellow)}
+.toast.toast-out{animation:toastOut .25s ease forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateY(8px)}}
+
+/* ── Hamburger + Drawer ── */
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:.4rem;border-radius:6px;background:none;border:none;transition:background .2s}
+.hamburger:hover{background:rgba(255,255,255,.06)}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer-overlay.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;right:0;width:300px;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:400;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto}
+.drawer.open{transform:translateX(0)}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.drawer-title{font-weight:800;font-size:1rem}
+.drawer-close{background:none;border:none;color:var(--muted);cursor:pointer;padding:.3rem;border-radius:5px;display:flex;align-items:center;transition:color .2s}
+.drawer-close:hover{color:var(--text)}
+.drawer-body{padding:1rem .75rem;flex:1}
+.drawer-section-label2{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.5rem .75rem .35rem;margin-top:.75rem}
+.drawer-section-label2:first-child{margin-top:0}
+.drawer-link2{display:flex;align-items:center;gap:.65rem;padding:.55rem .75rem;border-radius:8px;font-size:.88rem;color:var(--muted);font-weight:500;transition:all .15s}
+.drawer-link2:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.drawer-cat{display:flex;align-items:center;justify-content:space-between;padding:.55rem .75rem;border-radius:8px;font-size:.88rem;color:var(--muted);font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
+.drawer-cat:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.drawer-cat.expanded{color:var(--purple3);background:rgba(108,99,255,.08)}
+.drawer-cat .dc-left{display:flex;align-items:center;gap:.65rem}
+.drawer-cat .dc-arrow{transition:transform .25s;font-size:.7rem;opacity:.5}
+.drawer-cat.expanded .dc-arrow{transform:rotate(180deg);opacity:1}
+.cat-endpoints2{display:none;padding-left:2.4rem;padding-bottom:.25rem}
+.cat-endpoints2.open{display:block}
+.cat-ep-link2{display:flex;align-items:center;gap:.5rem;padding:.38rem .5rem;border-radius:6px;font-size:.8rem;font-family:var(--mono);color:var(--muted);transition:all .15rem}
+.cat-ep-link2:hover{color:var(--purple3);background:rgba(108,99,255,.07)}
+.cat-ep-m{font-size:.65rem;font-weight:700;padding:.1rem .35rem;border-radius:3px;background:rgba(34,211,160,.12);color:var(--green);letter-spacing:.05em}
+
 @media(max-width:768px){
   aside{display:none}
   .layout{display:block}
   main{padding:1.75rem 1.25rem}
   nav{padding:.85rem 1.1rem}
   .nav-center{display:none}
+  .hamburger{display:flex}
   .params-table{font-size:.78rem}
   .code-block{margin:0 0 1rem}
   .ep-section-label{padding:.85rem 1rem .4rem}
