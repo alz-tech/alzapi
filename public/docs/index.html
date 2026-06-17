@@ -3,108 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Docs — AlzApi</title>
+<title>Documentation — AlzApi</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c63ff' stroke-width='2'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/docs/shared.css">
 <style>
-  :root{--bg:#07070f;--surface:#0d0d1a;--card:#111120;--card2:#141426;--border:#1c1c30;--purple:#6c63ff;--purple2:#8b7fff;--purple3:#a89dff;--green:#22d3a0;--red:#ff5f6d;--yellow:#ffc542;--orange:#ff9500;--teal:#34d399;--slate:#94a3b8;--text:#ddddf0;--muted:#6868a0;--mono:'JetBrains Mono',monospace;}
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
-  a{color:inherit;text-decoration:none}
-  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.9rem 2.5rem;background:rgba(7,7,15,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-  .logo{display:flex;align-items:center;gap:.55rem;font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
-  .logo svg{color:var(--purple);flex-shrink:0}
-  .logo em{color:var(--purple3);font-style:normal}
-  .nav-center{display:flex;align-items:center;gap:.25rem}
-  .nav-link{color:var(--muted);font-size:.88rem;font-weight:500;padding:.4rem .85rem;border-radius:7px;transition:all .2s}
-  .nav-link:hover{color:var(--text);background:rgba(255,255,255,.05)}
-  .nav-link.active{color:var(--purple3);background:rgba(108,99,255,.1)}
-  .badge-free{background:rgba(34,211,160,.15);color:var(--green);font-size:.72rem;font-weight:700;padding:.25rem .7rem;border-radius:99px;letter-spacing:.05em;border:1px solid rgba(34,211,160,.25)}
+/* ── Docs index overrides ── */
+.doc-search-bar{position:relative;margin-bottom:2rem}
+.doc-search-bar input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.7rem 1rem .7rem 2.75rem;font-size:.9rem;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.doc-search-bar input:focus{border-color:var(--purple)}
+.doc-search-bar input::placeholder{color:var(--muted)}
+.doc-search-bar svg{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
 
-  /* Layout */
-  .layout{display:flex;flex:1;max-width:1200px;margin:0 auto;width:100%;gap:0}
-  aside{width:260px;flex-shrink:0;border-right:1px solid var(--border);padding:2rem 1.25rem;position:sticky;top:61px;height:calc(100vh - 61px);overflow-y:auto}
-  .aside-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;margin-top:1.5rem;padding-left:.5rem}
-  .aside-label:first-child{margin-top:0}
-  .aside-link{display:flex;align-items:center;gap:.6rem;padding:.45rem .7rem;border-radius:7px;font-size:.85rem;color:var(--muted);transition:all .15s;font-weight:500}
-  .aside-link:hover{color:var(--text);background:rgba(255,255,255,.04)}
-  .aside-link.active{color:var(--purple3);background:rgba(108,99,255,.1)}
-  .aside-icon{font-size:.95rem;width:18px;text-align:center}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.cat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;transition:border-color .2s,background .2s;cursor:pointer}
+.cat-card:hover{border-color:var(--purple);background:var(--card2)}
+.cat-card-top{display:flex;align-items:center;justify-content:space-between}
+.cat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.cat-ep-count{font-size:.72rem;font-weight:700;padding:.2rem .65rem;border-radius:99px;letter-spacing:.04em}
+.cat-name{font-weight:700;font-size:1rem;margin-bottom:.2rem}
+.cat-desc{font-size:.83rem;color:var(--muted);line-height:1.6}
+.cat-paths{display:flex;flex-wrap:wrap;gap:.35rem}
+.cat-path{font-family:var(--mono);font-size:.69rem;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:.18rem .5rem;border-radius:4px;color:var(--muted)}
+.cat-arrow{display:flex;align-items:center;gap:.35rem;font-size:.82rem;font-weight:600;color:var(--muted);margin-top:.1rem;transition:color .2s}
+.cat-card:hover .cat-arrow{color:var(--purple3)}
 
-  main{flex:1;padding:3rem 3rem;min-width:0}
-  .page-header{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
-  .page-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;color:var(--purple);text-transform:uppercase;margin-bottom:.5rem}
-  .page-title{font-size:2.2rem;font-weight:800;letter-spacing:-.025em;margin-bottom:.6rem}
-  .page-desc{color:var(--muted);font-size:.95rem;max-width:600px;line-height:1.7}
+/* Base URL bar */
+.base-url-bar{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.4rem;display:flex;align-items:center;gap:1.2rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.burl-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);white-space:nowrap}
+.burl-val{font-family:var(--mono);font-size:.88rem;color:var(--purple3);background:rgba(108,99,255,.08);padding:.28rem .7rem;border-radius:6px;cursor:pointer;user-select:all;transition:background .2s}
+.burl-val:hover{background:rgba(108,99,255,.15)}
+.burl-meta{font-size:.8rem;color:var(--muted);margin-left:auto}
 
-  /* Category cards in docs index */
-  .doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
-  .doc-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:1.5rem;display:flex;flex-direction:column;gap:.75rem;transition:border-color .2s,background .2s}
-  .doc-card:hover{border-color:var(--purple);background:var(--card2)}
-  .dc-top{display:flex;align-items:center;justify-content:space-between}
-  .dc-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-  .dc-badge{font-size:.7rem;font-weight:700;padding:.18rem .55rem;border-radius:5px;letter-spacing:.04em}
-  .dc-name{font-weight:700;font-size:1rem}
-  .dc-desc{font-size:.83rem;color:var(--muted);line-height:1.6}
-  .dc-paths{display:flex;flex-wrap:wrap;gap:.35rem}
-  .dc-path{font-family:var(--mono);font-size:.7rem;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:.18rem .5rem;border-radius:4px;color:var(--muted)}
-  .dc-cta{display:flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:600;color:var(--muted);margin-top:.25rem;transition:color .2s}
-  .doc-card:hover .dc-cta{color:var(--purple3)}
+/* Stats row */
+.stats-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.stat-pill{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.65rem 1.1rem;flex:1;min-width:120px}
+.stat-num{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;color:var(--text)}
+.stat-label{font-size:.75rem;color:var(--muted);margin-top:.1rem}
 
-  /* Base URL box */
-  .base-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;flex-wrap:wrap}
-  .base-label{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .base-url{font-family:var(--mono);font-size:.9rem;color:var(--purple3);background:rgba(108,99,255,.08);padding:.3rem .7rem;border-radius:6px}
-  .base-note{font-size:.82rem;color:var(--muted);margin-left:auto}
-
-  /* Colors */
-  .c-ai{background:rgba(108,99,255,.12);color:var(--purple3)}.c-yt{background:rgba(255,95,109,.12);color:var(--red)}.c-movie{background:rgba(255,197,66,.1);color:var(--yellow)}.c-music{background:rgba(34,211,160,.1);color:var(--green)}.c-ip{background:rgba(148,163,184,.1);color:var(--slate)}.c-soc{background:rgba(255,149,0,.1);color:var(--orange)}.c-cur{background:rgba(52,211,153,.1);color:var(--teal)}.c-srch{background:rgba(148,163,184,.1);color:var(--slate)}
-
-  footer{border-top:1px solid var(--border);text-align:center;padding:1.5rem;color:var(--muted);font-size:.82rem}
-  footer a{color:var(--purple3)}
-  @media(max-width:768px){aside{display:none}.layout{display:block}main{padding:2rem 1.25rem}}
+/* Color vars */
+.c-ai{background:rgba(108,99,255,.12);color:var(--purple3)}
+.c-yt{background:rgba(255,95,109,.12);color:var(--red)}
+.c-movie{background:rgba(255,197,66,.1);color:var(--yellow)}
+.c-music{background:rgba(34,211,160,.1);color:var(--green)}
+.c-ip{background:rgba(148,163,184,.1);color:var(--slate)}
+.c-soc{background:rgba(255,149,0,.1);color:var(--orange)}
+.c-cur{background:rgba(52,211,153,.1);color:var(--teal)}
+.c-srch{background:rgba(148,163,184,.1);color:var(--slate)}
 </style>
 </head>
 <body>
+
 <div class="toast-container" id="toast-container"></div>
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-header"><span class="drawer-title">AlzApi</span><button class="drawer-close" onclick="closeDrawer()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
   <div class="drawer-body">
     <div class="drawer-section-label2">Navigation</div>
-    <a href="/" class="drawer-link2"><span style="width:20px;display:inline-block;text-align:center">🏠</span> Home</a>
-    <a href="/docs" class="drawer-link2"><span style="width:20px;display:inline-block;text-align:center">📖</span> Documentation</a>
-    <a href="/playground" class="drawer-link2"><span style="width:20px;display:inline-block;text-align:center">⚡</span> Playground</a>
-    <a href="https://cloud.alz.name.ng" target="_blank" class="drawer-link2"><span style="width:20px;display:inline-block;text-align:center">☁️</span> AlzCloud</a>
-    <div class="drawer-section-label2">API Categories</div>
-    <div class="drawer-cat" onclick="toggleCat2('cat-ai')"><div class="dc-left"><span style="width:20px;display:inline-block;text-align:center">🤖</span> Artificial Intelligence</div><span class="dc-arrow">▼</span></div>
-    <div class="cat-endpoints2" id="cat-ai"><a href="/docs/ai#chat" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/ai/chat</a><a href="/docs/ai#image" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/ai/image</a><a href="/docs/ai#models" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/ai/models</a></div>
-    <div class="drawer-cat" onclick="toggleCat2('cat-yt')"><div class="dc-left"><span style="width:20px;display:inline-block;text-align:center">▶</span> YouTube</div><span class="dc-arrow">▼</span></div>
-    <div class="cat-endpoints2" id="cat-yt"><a href="/docs/youtube#search" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/yt/search</a><a href="/docs/youtube#info" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/yt/info</a><a href="/docs/youtube#link" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/yt/link</a><a href="/docs/youtube#stream" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/yt/stream</a><a href="/docs/youtube#download" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/yt/download</a></div>
-    <div class="drawer-cat" onclick="toggleCat2('cat-soc')"><div class="dc-left"><span style="width:20px;display:inline-block;text-align:center">📲</span> Social Media</div><span class="dc-arrow">▼</span></div>
-    <div class="cat-endpoints2" id="cat-soc"><a href="/docs/social#platforms" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/social/platforms</a><a href="/docs/social#info" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/social/info</a><a href="/docs/social#download" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/social/download</a></div>
-    <div class="drawer-cat" onclick="toggleCat2('cat-mov')"><div class="dc-left"><span style="width:20px;display:inline-block;text-align:center">🎬</span> Movies &amp; TV</div><span class="dc-arrow">▼</span></div>
-    <div class="cat-endpoints2" id="cat-mov"><a href="/docs/movies#search" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/movies/search</a><a href="/docs/movies#trending" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/movies/trending</a><a href="/docs/movies#popular" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/movies/popular</a><a href="/docs/movies#id" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/movies/:id</a></div>
-    <div class="drawer-cat" onclick="toggleCat2('cat-mus')"><div class="dc-left"><span style="width:20px;display:inline-block;text-align:center">🎵</span> Music</div><span class="dc-arrow">▼</span></div>
-    <div class="cat-endpoints2" id="cat-mus"><a href="/docs/music#search" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/music/search</a><a href="/docs/music#artist" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/music/artist</a><a href="/docs/music#track" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/music/track/:id</a><a href="/docs/music#preview" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/music/preview</a></div>
-    <div class="drawer-cat" onclick="toggleCat2('cat-cur')"><div class="dc-left"><span style="width:20px;display:inline-block;text-align:center">💱</span> Currency &amp; Crypto</div><span class="dc-arrow">▼</span></div>
-    <div class="cat-endpoints2" id="cat-cur"><a href="/docs/currency#convert" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/currency/convert</a><a href="/docs/currency#rates" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/currency/rates</a><a href="/docs/currency#crypto" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/currency/crypto</a><a href="/docs/currency#history" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/currency/history</a></div>
-    <div class="drawer-cat" onclick="toggleCat2('cat-srch')"><div class="dc-left"><span style="width:20px;display:inline-block;text-align:center">🔍</span> Search &amp; Wikipedia</div><span class="dc-arrow">▼</span></div>
-    <div class="cat-endpoints2" id="cat-srch"><a href="/docs/search#wiki" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/search/wiki</a><a href="/docs/search#web" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/search/web</a><a href="/docs/search#suggest" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/search/suggest</a><a href="/docs/search#wiki-random" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/search/wiki/random</a></div>
-    <div class="drawer-cat" onclick="toggleCat2('cat-ip')"><div class="dc-left"><span style="width:20px;display:inline-block;text-align:center">🌐</span> IP Geolocation</div><span class="dc-arrow">▼</span></div>
-    <div class="cat-endpoints2" id="cat-ip"><a href="/docs/ip#self" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/ip</a><a href="/docs/ip#address" class="cat-ep-link2"><span class="cat-ep-m">GET</span>/api/ip/:address</a></div>
-    <div class="drawer-section-label2" style="margin-top:1rem"></div>
-    <a href="/api" class="drawer-link2"><span style="width:20px;display:inline-block;text-align:center">{}</span> API Info JSON</a>
+    <a href="/" class="drawer-link2">🏠 &nbsp;Home</a>
+    <a href="/docs" class="drawer-link2">📖 &nbsp;Documentation</a>
+    <a href="/playground" class="drawer-link2">⚡ &nbsp;Playground</a>
+    <a href="https://cloud.alz.name.ng" target="_blank" class="drawer-link2">☁️ &nbsp;AlzCloud</a>
+    <div class="drawer-section-label2">Categories</div>
+    <a href="/docs/ai" class="drawer-link2">🤖 &nbsp;AI</a>
+    <a href="/docs/youtube" class="drawer-link2">▶ &nbsp;YouTube</a>
+    <a href="/docs/social" class="drawer-link2">📲 &nbsp;Social Media</a>
+    <a href="/docs/movies" class="drawer-link2">🎬 &nbsp;Movies & TV</a>
+    <a href="/docs/music" class="drawer-link2">🎵 &nbsp;Music</a>
+    <a href="/docs/currency" class="drawer-link2">💱 &nbsp;Currency & Crypto</a>
+    <a href="/docs/search" class="drawer-link2">🔍 &nbsp;Search & Wikipedia</a>
+    <a href="/docs/ip" class="drawer-link2">🌐 &nbsp;IP Geolocation</a>
   </div>
 </div>
 
 <nav>
-  <a href="/" class="logo">
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-    Alz<em>Api</em>
-  </a>
+  <a href="/" class="logo"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Alz<em>Api</em></a>
   <div class="nav-center">
     <a href="/" class="nav-link">Home</a>
     <a href="/docs" class="nav-link active">Docs</a>
@@ -113,6 +87,7 @@
   </div>
   <div style="display:flex;align-items:center;gap:.75rem">
     <span class="badge-free">FREE</span>
+    <button class="hamburger" id="hbtn" onclick="openDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
@@ -140,94 +115,216 @@
     <div class="page-header">
       <div class="page-eyebrow">Documentation</div>
       <h1 class="page-title">AlzApi Reference</h1>
-      <p class="page-desc">All endpoints are free, require no API key, and return standard JSON. Pick a category below to see full endpoint documentation, parameters, and examples.</p>
+      <p class="page-desc">All endpoints are free, require no API key, and return standard JSON. Pick a category to see parameters, examples, and responses.</p>
     </div>
 
-    <div class="base-box">
-      <div>
-        <div class="base-label">Base URL</div>
-        <div class="base-url">https://api.alz.name.ng</div>
-      </div>
-      <div class="base-note">All endpoints use GET requests · 30 req/min per IP · No auth required</div>
+    <!-- Search -->
+    <div class="doc-search-bar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search-input" placeholder="Search endpoints… e.g. /api/ai/chat" oninput="filterCats(this.value)">
     </div>
 
-    <div class="doc-grid">
+    <!-- Base URL -->
+    <div class="base-url-bar">
+      <div class="burl-label">Base URL</div>
+      <div class="burl-val" onclick="copyBase()" title="Click to copy">https://api.alz.name.ng</div>
+      <div class="burl-meta">GET only · 30 req/min per IP · No auth</div>
+    </div>
 
-      <a href="/docs/ai" class="doc-card">
-        <div class="dc-top"><div class="dc-icon c-ai">🤖</div><span class="dc-badge c-ai">AI</span></div>
-        <div class="dc-name">Artificial Intelligence</div>
-        <div class="dc-desc">Text generation via GPT-4o, Mistral, Claude, Llama, Gemini. Image synthesis with Flux & SDXL.</div>
-        <div class="dc-paths"><span class="dc-path">/api/ai/chat</span><span class="dc-path">/api/ai/image</span><span class="dc-path">/api/ai/models</span></div>
-        <div class="dc-cta">View endpoints <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-pill"><div class="stat-num">8</div><div class="stat-label">Categories</div></div>
+      <div class="stat-pill"><div class="stat-num">26+</div><div class="stat-label">Endpoints</div></div>
+      <div class="stat-pill"><div class="stat-num">0</div><div class="stat-label">Keys needed</div></div>
+      <div class="stat-pill"><div class="stat-num">Free</div><div class="stat-label">Forever</div></div>
+    </div>
+
+    <!-- Category grid -->
+    <div class="cats-grid" id="cats-grid">
+
+      <a href="/docs/ai" class="cat-card" data-search="ai chat image models artificial intelligence gpt llama gemini mistral claude flux sdxl /api/ai">
+        <div class="cat-card-top">
+          <div class="cat-icon c-ai">🤖</div>
+          <span class="cat-ep-count c-ai">3 endpoints</span>
+        </div>
+        <div>
+          <div class="cat-name">Artificial Intelligence</div>
+          <div class="cat-desc">Text generation via GPT-4o, Mistral, Claude, Llama, Gemini. Image synthesis with Flux & SDXL.</div>
+        </div>
+        <div class="cat-paths">
+          <span class="cat-path">/api/ai/chat</span>
+          <span class="cat-path">/api/ai/image</span>
+          <span class="cat-path">/api/ai/models</span>
+        </div>
+        <div class="cat-arrow">View endpoints <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
 
-      <a href="/docs/youtube" class="doc-card">
-        <div class="dc-top"><div class="dc-icon c-yt">▶</div><span class="dc-badge c-yt">YouTube</span></div>
-        <div class="dc-name">YouTube</div>
-        <div class="dc-desc">Search, get video info, stream or download as MP3/MP4, get direct media links.</div>
-        <div class="dc-paths"><span class="dc-path">/api/yt/search</span><span class="dc-path">/api/yt/info</span><span class="dc-path">/api/yt/download</span></div>
-        <div class="dc-cta">View endpoints <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <a href="/docs/youtube" class="cat-card" data-search="youtube video search info download stream link mp3 mp4 /api/yt">
+        <div class="cat-card-top">
+          <div class="cat-icon c-yt">▶</div>
+          <span class="cat-ep-count c-yt">5 endpoints</span>
+        </div>
+        <div>
+          <div class="cat-name">YouTube</div>
+          <div class="cat-desc">Search videos, get video info, stream or download as MP3/MP4, and get direct media links.</div>
+        </div>
+        <div class="cat-paths">
+          <span class="cat-path">/api/yt/search</span>
+          <span class="cat-path">/api/yt/info</span>
+          <span class="cat-path">/api/yt/download</span>
+          <span class="cat-path">/api/yt/stream</span>
+        </div>
+        <div class="cat-arrow">View endpoints <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
 
-      <a href="/docs/social" class="doc-card">
-        <div class="dc-top"><div class="dc-icon c-soc">📲</div><span class="dc-badge c-soc">Social</span></div>
-        <div class="dc-name">Social Media</div>
-        <div class="dc-desc">Download from TikTok (no watermark), Instagram, Twitter/X, and Facebook.</div>
-        <div class="dc-paths"><span class="dc-path">/api/social/info</span><span class="dc-path">/api/social/download</span><span class="dc-path">/api/social/platforms</span></div>
-        <div class="dc-cta">View endpoints <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <a href="/docs/social" class="cat-card" data-search="social tiktok instagram twitter facebook download watermark /api/social">
+        <div class="cat-card-top">
+          <div class="cat-icon c-soc">📲</div>
+          <span class="cat-ep-count c-soc">3 endpoints</span>
+        </div>
+        <div>
+          <div class="cat-name">Social Media</div>
+          <div class="cat-desc">Download videos from TikTok (no watermark), Instagram, Twitter/X, and Facebook.</div>
+        </div>
+        <div class="cat-paths">
+          <span class="cat-path">/api/social/platforms</span>
+          <span class="cat-path">/api/social/info</span>
+          <span class="cat-path">/api/social/download</span>
+        </div>
+        <div class="cat-arrow">View endpoints <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
 
-      <a href="/docs/movies" class="doc-card">
-        <div class="dc-top"><div class="dc-icon c-movie">🎬</div><span class="dc-badge c-movie">Movies</span></div>
-        <div class="dc-name">Movies & TV</div>
-        <div class="dc-desc">Search movies and shows, get cast, trailers, ratings, trending and popular lists.</div>
-        <div class="dc-paths"><span class="dc-path">/api/movies/search</span><span class="dc-path">/api/movies/trending</span><span class="dc-path">/api/movies/:id</span></div>
-        <div class="dc-cta">View endpoints <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <a href="/docs/movies" class="cat-card" data-search="movies tv search trending popular cast trailers ratings /api/movies">
+        <div class="cat-card-top">
+          <div class="cat-icon c-movie">🎬</div>
+          <span class="cat-ep-count c-movie">4 endpoints</span>
+        </div>
+        <div>
+          <div class="cat-name">Movies & TV</div>
+          <div class="cat-desc">Search movies and shows, get cast & trailers, ratings, trending and popular lists.</div>
+        </div>
+        <div class="cat-paths">
+          <span class="cat-path">/api/movies/search</span>
+          <span class="cat-path">/api/movies/trending</span>
+          <span class="cat-path">/api/movies/popular</span>
+          <span class="cat-path">/api/movies/:id</span>
+        </div>
+        <div class="cat-arrow">View endpoints <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
 
-      <a href="/docs/music" class="doc-card">
-        <div class="dc-top"><div class="dc-icon c-music">🎵</div><span class="dc-badge c-music">Music</span></div>
-        <div class="dc-name">Music</div>
-        <div class="dc-desc">Search songs and artists, album art, track info, 30s previews, and discographies.</div>
-        <div class="dc-paths"><span class="dc-path">/api/music/search</span><span class="dc-path">/api/music/artist</span><span class="dc-path">/api/music/preview</span></div>
-        <div class="dc-cta">View endpoints <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <a href="/docs/music" class="cat-card" data-search="music songs artist album art track preview discography /api/music">
+        <div class="cat-card-top">
+          <div class="cat-icon c-music">🎵</div>
+          <span class="cat-ep-count c-music">5 endpoints</span>
+        </div>
+        <div>
+          <div class="cat-name">Music</div>
+          <div class="cat-desc">Search songs and artists, album art, track info, 30-second previews, and discographies.</div>
+        </div>
+        <div class="cat-paths">
+          <span class="cat-path">/api/music/search</span>
+          <span class="cat-path">/api/music/artist</span>
+          <span class="cat-path">/api/music/preview</span>
+        </div>
+        <div class="cat-arrow">View endpoints <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
 
-      <a href="/docs/currency" class="doc-card">
-        <div class="dc-top"><div class="dc-icon c-cur">💱</div><span class="dc-badge c-cur">Currency</span></div>
-        <div class="dc-name">Currency & Crypto</div>
-        <div class="dc-desc">Convert currencies, live exchange rates, 365-day history, and crypto prices.</div>
-        <div class="dc-paths"><span class="dc-path">/api/currency/convert</span><span class="dc-path">/api/currency/crypto</span><span class="dc-path">/api/currency/history</span></div>
-        <div class="dc-cta">View endpoints <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <a href="/docs/currency" class="cat-card" data-search="currency crypto convert exchange rates history bitcoin /api/currency">
+        <div class="cat-card-top">
+          <div class="cat-icon c-cur">💱</div>
+          <span class="cat-ep-count c-cur">6 endpoints</span>
+        </div>
+        <div>
+          <div class="cat-name">Currency & Crypto</div>
+          <div class="cat-desc">Convert currencies, live exchange rates, 365-day history, and crypto prices.</div>
+        </div>
+        <div class="cat-paths">
+          <span class="cat-path">/api/currency/convert</span>
+          <span class="cat-path">/api/currency/rates</span>
+          <span class="cat-path">/api/currency/crypto</span>
+        </div>
+        <div class="cat-arrow">View endpoints <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
 
-      <a href="/docs/search" class="doc-card">
-        <div class="dc-top"><div class="dc-icon c-srch">🔍</div><span class="dc-badge c-srch">Search</span></div>
-        <div class="dc-name">Search & Wikipedia</div>
-        <div class="dc-desc">Wikipedia articles, DuckDuckGo instant answers, suggestions, and random articles.</div>
-        <div class="dc-paths"><span class="dc-path">/api/search/wiki</span><span class="dc-path">/api/search/web</span><span class="dc-path">/api/search/suggest</span></div>
-        <div class="dc-cta">View endpoints <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <a href="/docs/search" class="cat-card" data-search="search wikipedia wiki web suggest /api/search">
+        <div class="cat-card-top">
+          <div class="cat-icon c-srch">🔍</div>
+          <span class="cat-ep-count c-srch">5 endpoints</span>
+        </div>
+        <div>
+          <div class="cat-name">Search & Wikipedia</div>
+          <div class="cat-desc">Wikipedia summaries, article search, web search, autocomplete suggestions, and random articles.</div>
+        </div>
+        <div class="cat-paths">
+          <span class="cat-path">/api/search/wiki</span>
+          <span class="cat-path">/api/search/web</span>
+          <span class="cat-path">/api/search/suggest</span>
+        </div>
+        <div class="cat-arrow">View endpoints <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
 
-      <a href="/docs/ip" class="doc-card">
-        <div class="dc-top"><div class="dc-icon c-ip">🌐</div><span class="dc-badge c-ip">IP</span></div>
-        <div class="dc-name">IP Geolocation</div>
-        <div class="dc-desc">Look up IPs and domains — country, city, ISP, timezone, proxy/VPN detection, ASN.</div>
-        <div class="dc-paths"><span class="dc-path">/api/ip</span><span class="dc-path">/api/ip/:address</span></div>
-        <div class="dc-cta">View endpoints <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <a href="/docs/ip" class="cat-card" data-search="ip geolocation address lookup country city /api/ip">
+        <div class="cat-card-top">
+          <div class="cat-icon c-ip">🌐</div>
+          <span class="cat-ep-count c-ip">2 endpoints</span>
+        </div>
+        <div>
+          <div class="cat-name">IP Geolocation</div>
+          <div class="cat-desc">Lookup any IP address for country, city, ISP, timezone, and coordinates.</div>
+        </div>
+        <div class="cat-paths">
+          <span class="cat-path">/api/ip</span>
+          <span class="cat-path">/api/ip/:address</span>
+        </div>
+        <div class="cat-arrow">View endpoints <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
 
     </div>
+
+    <!-- Empty state -->
+    <div id="no-results" style="display:none;text-align:center;padding:3rem 1rem;color:var(--muted)">
+      <div style="font-size:2rem;margin-bottom:.75rem">🔍</div>
+      <div style="font-weight:600;margin-bottom:.35rem">No endpoints found</div>
+      <div style="font-size:.87rem">Try a different keyword, like <code style="font-family:var(--mono);color:var(--purple3);font-size:.82rem">youtube</code> or <code style="font-family:var(--mono);color:var(--purple3);font-size:.82rem">/api/ai</code></div>
+    </div>
+
   </main>
 </div>
 
-<footer>AlzApi by <a href="https://cloud.alz.name.ng">Alz-Tech</a> · <a href="/">Home</a> · <a href="/playground">Playground</a></footer>
+<footer>
+  <a href="https://cloud.alz.name.ng">Alz-Tech</a> · AlzApi Documentation
+</footer>
+
 <script>
-function openDrawer(){document.getElementById("drawer").classList.add("open");document.getElementById("drawer-overlay").classList.add("open");var h=document.getElementById("hbtn");if(h)h.classList.add("open");document.body.style.overflow="hidden"}
-function closeDrawer(){document.getElementById("drawer").classList.remove("open");document.getElementById("drawer-overlay").classList.remove("open");var h=document.getElementById("hbtn");if(h)h.classList.remove("open");document.body.style.overflow=""}
-function toggleCat2(id){var p=document.getElementById(id);var b=p.previousElementSibling;var o=p.classList.contains("open");document.querySelectorAll(".cat-endpoints2").forEach(function(x){x.classList.remove("open")});document.querySelectorAll(".drawer-cat").forEach(function(x){x.classList.remove("expanded")});if(!o){p.classList.add("open");b.classList.add("expanded")}}
-function showToast(msg,type){type=type||"";var c=document.getElementById("toast-container");var el=document.createElement("div");el.className="toast"+(type?" toast-"+type:"");el.textContent=msg;c.appendChild(el);setTimeout(function(){el.classList.add("toast-out");el.addEventListener("animationend",function(){el.remove()})},3000)}
-document.addEventListener("keydown",function(e){if(e.key==="Escape")closeDrawer()});
+function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('drawer-overlay').classList.add('open');document.getElementById('hbtn').classList.add('open');document.body.style.overflow='hidden'}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawer-overlay').classList.remove('open');document.getElementById('hbtn').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()})
+
+function filterCats(q){
+  const cards=document.querySelectorAll('.cat-card');
+  const term=q.toLowerCase().trim();
+  let visible=0;
+  cards.forEach(c=>{
+    const hay=(c.dataset.search||'').toLowerCase();
+    const show=!term||hay.includes(term);
+    c.style.display=show?'':'none';
+    if(show)visible++;
+  });
+  document.getElementById('no-results').style.display=visible===0?'block':'none';
+}
+
+function copyBase(){
+  navigator.clipboard.writeText('https://api.alz.name.ng').then(()=>{
+    const el=document.createElement('div');
+    el.style.cssText='position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#1c1c30;color:#a89dff;padding:.6rem 1.2rem;border-radius:8px;font-size:.83rem;font-weight:600;z-index:9999;animation:toastIn .25s ease';
+    el.textContent='✓ Copied to clipboard';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2000);
+  });
+}
+
+// search bar keyboard shortcut
+document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();document.getElementById('search-input').focus()}});
 </script>
 </body>
 </html>

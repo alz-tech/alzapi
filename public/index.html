@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AlzApi — Free General Purpose API</title>
-<meta name="description" content="AlzApi is a completely free, no-key API by Alz-Tech. AI chat & image generation, YouTube, movies, music, social downloads, currency, and more.">
+<meta name="description" content="AlzApi is a completely free, no-key API by Alz-Tech. AI, YouTube, movies, music, social downloads, currency, and more.">
 <meta property="og:title" content="AlzApi — Free General Purpose API">
 <meta property="og:description" content="AI, YouTube, Movies, Music & IP — all free, no API key needed. By Alz-Tech.">
 <meta property="og:url" content="https://api.alz.name.ng">
@@ -24,13 +24,12 @@
   body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
   a{text-decoration:none;color:inherit}
 
-  /* ── Nav ── */
+  /* Nav */
   nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:.9rem 2.5rem;background:rgba(7,7,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
   .logo{display:flex;align-items:center;gap:.55rem;font-weight:800;font-size:1.1rem;letter-spacing:-.02em}
   .logo svg{color:var(--purple);flex-shrink:0}
-  .logo-text{color:var(--text)}
   .logo-text em{color:var(--purple3);font-style:normal}
-  .nav-center{display:flex;align-items:center;gap:.2rem}
+  .nav-links{display:flex;align-items:center;gap:.2rem}
   .nav-link{color:var(--muted);font-size:.88rem;font-weight:500;padding:.4rem .85rem;border-radius:7px;transition:all .2s}
   .nav-link:hover{color:var(--text);background:rgba(255,255,255,.05)}
   .nav-link.active{color:var(--purple3);background:rgba(108,99,255,.1)}
@@ -38,116 +37,104 @@
   .badge-free{background:rgba(34,211,160,.15);color:var(--green);font-size:.72rem;font-weight:700;padding:.25rem .7rem;border-radius:99px;letter-spacing:.05em;border:1px solid rgba(34,211,160,.25)}
   .btn-try{display:inline-flex;align-items:center;gap:.4rem;background:var(--purple);color:#fff;font-size:.85rem;font-weight:700;padding:.45rem 1.1rem;border-radius:7px;transition:all .2s}
   .btn-try:hover{background:var(--purple2);transform:translateY(-1px)}
-  .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:.4rem;border-radius:6px;transition:background .2s;background:none;border:none}
+  .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:.4rem;border-radius:6px;background:none;border:none;transition:background .2s}
   .hamburger:hover{background:rgba(255,255,255,.06)}
   .hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
   .hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
   .hamburger.open span:nth-child(2){opacity:0}
   .hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
-  /* ── Hamburger Drawer ── */
+  /* Drawer */
   .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
   .drawer-overlay.open{opacity:1;pointer-events:all}
-  .drawer{position:fixed;top:0;right:0;width:300px;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:400;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto}
+  .drawer{position:fixed;top:0;right:0;width:290px;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:400;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto}
   .drawer.open{transform:translateX(0)}
   .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
-  .drawer-title{font-weight:800;font-size:1rem;color:var(--text)}
+  .drawer-title{font-weight:800;font-size:1rem}
   .drawer-close{background:none;border:none;color:var(--muted);cursor:pointer;padding:.3rem;border-radius:5px;display:flex;align-items:center;transition:color .2s}
   .drawer-close:hover{color:var(--text)}
   .drawer-body{padding:1rem .75rem;flex:1}
-  .drawer-section-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.5rem .75rem .35rem;margin-top:.75rem}
-  .drawer-section-label:first-child{margin-top:0}
-  .drawer-link{display:flex;align-items:center;gap:.65rem;padding:.55rem .75rem;border-radius:8px;font-size:.88rem;color:var(--muted);font-weight:500;transition:all .15s;cursor:pointer}
+  .drawer-label{font-size:.67rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.5rem .75rem .35rem;margin-top:.75rem}
+  .drawer-link{display:flex;align-items:center;gap:.65rem;padding:.55rem .75rem;border-radius:8px;font-size:.88rem;color:var(--muted);font-weight:500;transition:all .15s}
   .drawer-link:hover{color:var(--text);background:rgba(255,255,255,.05)}
   .drawer-link.active{color:var(--purple3);background:rgba(108,99,255,.1)}
-  .drawer-link .di{font-size:1rem;width:20px;text-align:center}
-  /* Category expand */
-  .drawer-cat{display:flex;align-items:center;justify-content:space-between;padding:.55rem .75rem;border-radius:8px;font-size:.88rem;color:var(--muted);font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
-  .drawer-cat:hover{color:var(--text);background:rgba(255,255,255,.05)}
-  .drawer-cat.expanded{color:var(--purple3);background:rgba(108,99,255,.08)}
-  .drawer-cat .dc-left{display:flex;align-items:center;gap:.65rem}
-  .drawer-cat .dc-arrow{transition:transform .25s;font-size:.7rem;opacity:.5}
-  .drawer-cat.expanded .dc-arrow{transform:rotate(180deg);opacity:1}
-  .cat-endpoints{display:none;padding-left:2.4rem;padding-bottom:.25rem}
-  .cat-endpoints.open{display:block}
-  .cat-ep-link{display:flex;align-items:center;gap:.5rem;padding:.38rem .5rem;border-radius:6px;font-size:.8rem;font-family:var(--mono);color:var(--muted);transition:all .15s}
-  .cat-ep-link:hover{color:var(--purple3);background:rgba(108,99,255,.07)}
-  .cat-ep-method{font-size:.65rem;font-weight:700;padding:.1rem .35rem;border-radius:3px;background:rgba(34,211,160,.12);color:var(--green);letter-spacing:.05em}
 
-  /* ── Toast / Custom Alert ── */
+  /* Toast */
   .toast-container{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
   .toast{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:.7rem 1.4rem;border-radius:10px;font-size:.87rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:toastIn .25s ease;pointer-events:auto;max-width:340px;text-align:center;line-height:1.5}
-  .toast.toast-error{border-color:rgba(255,95,109,.35);color:var(--red)}
   .toast.toast-warn{border-color:rgba(255,197,66,.3);color:var(--yellow)}
   .toast.toast-out{animation:toastOut .25s ease forwards}
   @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   @keyframes toastOut{to{opacity:0;transform:translateY(8px)}}
 
-  /* ── Hero ── */
-  .hero{max-width:880px;margin:0 auto;padding:9rem 2rem 6rem;text-align:center;position:relative;flex:1}
-  .hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:450px;background:radial-gradient(ellipse at 50% 0%,rgba(108,99,255,.16) 0%,transparent 70%);pointer-events:none}
-  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.22);color:var(--purple3);font-size:.78rem;font-weight:600;letter-spacing:.08em;padding:.3rem 1rem;border-radius:99px;margin-bottom:2.5rem;text-transform:uppercase}
-  .pulse{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-  h1{font-size:clamp(2.6rem,6.5vw,4.4rem);font-weight:800;line-height:1.07;letter-spacing:-.03em;margin-bottom:1.5rem}
-  h1 .accent{background:linear-gradient(135deg,var(--purple2),var(--purple3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .hero-sub{font-size:1.15rem;color:var(--muted);max-width:520px;margin:0 auto 3rem;line-height:1.7}
-  .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:4.5rem}
-  .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.6rem;border-radius:9px;font-weight:700;font-size:.95rem;cursor:pointer;border:none;transition:all .2s}
-  .btn-primary{background:var(--purple);color:#fff;box-shadow:0 4px 20px rgba(108,99,255,.3)}
-  .btn-primary:hover{background:var(--purple2);transform:translateY(-2px);box-shadow:0 6px 28px rgba(108,99,255,.42)}
+  /* Hero — minimal */
+  .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 2rem 6rem;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse at 50% 10%,rgba(108,99,255,.13) 0%,transparent 65%);pointer-events:none;z-index:0}
+  .hero-inner{position:relative;z-index:1;max-width:680px}
+  .pulse-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:pulse 2s infinite;margin-right:.5rem;vertical-align:middle}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 7px var(--green)}50%{opacity:.4;box-shadow:0 0 2px var(--green)}}
+  .status-line{font-size:.78rem;font-weight:600;letter-spacing:.07em;color:var(--muted);text-transform:uppercase;margin-bottom:2.5rem}
+  h1{font-size:clamp(2.8rem,7vw,4.6rem);font-weight:800;line-height:1.06;letter-spacing:-.035em;margin-bottom:1.4rem}
+  h1 .accent{background:linear-gradient(130deg,var(--purple2),var(--purple3) 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-desc{font-size:1.05rem;color:var(--muted);line-height:1.75;margin-bottom:2.75rem;max-width:480px;margin-left:auto;margin-right:auto}
+  .hero-actions{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;border-radius:9px;font-weight:700;font-size:.93rem;cursor:pointer;border:none;transition:all .2s}
+  .btn-primary{background:var(--purple);color:#fff;box-shadow:0 4px 22px rgba(108,99,255,.28)}
+  .btn-primary:hover{background:var(--purple2);transform:translateY(-2px);box-shadow:0 6px 30px rgba(108,99,255,.4)}
   .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
   .btn-ghost:hover{border-color:var(--purple);color:var(--purple3);background:rgba(108,99,255,.06)}
 
-  /* ── Terminal ── */
-  .terminal-wrap{max-width:740px;margin:0 auto;text-align:left}
-  .terminal{background:#060610;border:1px solid var(--border);border-radius:14px;overflow:hidden;font-family:var(--mono);font-size:.83rem;box-shadow:0 24px 60px rgba(0,0,0,.55)}
-  .t-bar{display:flex;align-items:center;gap:.5rem;padding:.65rem 1.1rem;background:var(--surface);border-bottom:1px solid var(--border)}
-  .dot{width:11px;height:11px;border-radius:50%}
-  .dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
-  .t-addr{font-size:.75rem;color:var(--muted);margin-left:.6rem}
-  .t-body{padding:1.4rem 1.6rem;line-height:2}
-  .t-c{color:#333360}.t-m{color:var(--green)}.t-u{color:var(--purple2)}.t-k{color:var(--yellow)}.t-s{color:#a6e22e}.t-n{color:#ae81ff}.t-b{color:var(--red)}
+  /* Sandbox embed section */
+  .sandbox-section{background:var(--surface);border-top:1px solid var(--border);padding:3.5rem 2rem 4rem}
+  .sandbox-inner{max-width:800px;margin:0 auto}
+  .sandbox-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.14em;color:var(--purple);text-transform:uppercase;margin-bottom:.6rem}
+  .sandbox-title{font-size:1.55rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.5rem}
+  .sandbox-desc{color:var(--muted);font-size:.9rem;margin-bottom:2rem;line-height:1.7}
 
-  /* ── How it works ── */
-  .how-section{background:var(--surface);border-top:1px solid var(--border);padding:5rem 2rem}
-  .how-inner{max-width:960px;margin:0 auto}
-  .section-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;color:var(--purple);text-transform:uppercase;margin-bottom:.6rem}
-  .section-title{font-size:1.9rem;font-weight:800;letter-spacing:-.025em;margin-bottom:.5rem}
-  .section-desc{color:var(--muted);margin-bottom:2.5rem;font-size:.95rem}
-  .how-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem}
-  .how-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:1.5rem}
-  .how-num{width:32px;height:32px;border-radius:8px;background:rgba(108,99,255,.12);color:var(--purple3);font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
-  .how-card h3{font-size:.97rem;font-weight:700;margin-bottom:.4rem}
-  .how-card p{font-size:.84rem;color:var(--muted);line-height:1.6}
+  /* Inline sandbox */
+  .sandbox-box{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden}
+  .sb-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+  .sb-tabs::-webkit-scrollbar{display:none}
+  .sb-tab{flex-shrink:0;padding:.7rem 1.1rem;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none}
+  .sb-tab:hover{color:var(--text)}
+  .sb-tab.active{color:var(--purple3);border-bottom-color:var(--purple)}
+  .sb-body{padding:1.5rem}
+  .sb-row{display:flex;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap}
+  .sb-field{flex:1;min-width:180px}
+  .sb-label{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+  .sb-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:.55rem .85rem;font-size:.88rem;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+  .sb-input:focus{border-color:var(--purple)}
+  .sb-select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:.55rem .85rem;font-size:.88rem;color:var(--text);font-family:'Inter',sans-serif;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236868a0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;transition:border-color .2s}
+  .sb-select:focus{border-color:var(--purple)}
+  .sb-run{display:inline-flex;align-items:center;gap:.5rem;background:var(--purple);color:#fff;border:none;border-radius:8px;padding:.6rem 1.3rem;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+  .sb-run:hover{background:var(--purple2)}
+  .sb-run:disabled{opacity:.5;cursor:not-allowed}
+  .sb-result{background:#050510;border:1px solid var(--border);border-radius:8px;padding:1rem 1.1rem;font-family:var(--mono);font-size:.78rem;line-height:1.85;overflow-x:auto;min-height:80px;white-space:pre;color:var(--text)}
+  .sb-result.loading{color:var(--muted);font-style:italic}
+  .sb-result.error{color:var(--red)}
+  .j-k{color:var(--purple3)}.j-s{color:#a6e22e}.j-n{color:#ae81ff}.j-b{color:var(--red)}
 
-  /* ── Footer ── */
-  footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
-  .footer-left{font-size:.84rem;color:var(--muted)}
+  footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+  .footer-left{font-size:.83rem;color:var(--muted)}
   .footer-left a{color:var(--purple3)}
   .footer-links{display:flex;gap:1.75rem}
-  .footer-links a{color:var(--muted);font-size:.84rem;transition:color .2s}
+  .footer-links a{color:var(--muted);font-size:.83rem;transition:color .2s}
   .footer-links a:hover{color:var(--text)}
 
   @media(max-width:768px){
     nav{padding:.85rem 1.25rem}
-    .nav-center{display:none}
+    .nav-links{display:none}
     .hamburger{display:flex}
-    .hero{padding:5.5rem 1.25rem 4rem}
-    .how-section{padding:3.5rem 1.25rem}
-    footer{padding:1.75rem 1.25rem;flex-direction:column;align-items:flex-start}
+    .hero{padding:5rem 1.25rem 4rem}
+    .sandbox-section{padding:2.5rem 1.25rem 3rem}
+    footer{padding:1.5rem 1.25rem;flex-direction:column;align-items:flex-start}
   }
 </style>
 </head>
 <body>
 
-<!-- ── Custom Alert Toast ── -->
 <div class="toast-container" id="toast-container"></div>
-
-<!-- ── Drawer Overlay ── -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
-
-<!-- ── Drawer ── -->
 <div class="drawer" id="drawer">
   <div class="drawer-header">
     <span class="drawer-title">AlzApi</span>
@@ -156,115 +143,20 @@
     </button>
   </div>
   <div class="drawer-body">
-    <div class="drawer-section-label">Navigation</div>
-    <a href="/" class="drawer-link active" onclick="closeDrawer()"><span class="di">🏠</span> Home</a>
-    <a href="/docs" class="drawer-link" onclick="closeDrawer()"><span class="di">📖</span> Documentation</a>
-    <a href="/playground" class="drawer-link" onclick="closeDrawer()"><span class="di">⚡</span> Playground</a>
-    <a href="https://cloud.alz.name.ng" target="_blank" class="drawer-link" onclick="closeDrawer()"><span class="di">☁️</span> AlzCloud</a>
-
-    <div class="drawer-section-label">API Categories</div>
-
-    <div class="drawer-cat" onclick="toggleCat('cat-ai')">
-      <div class="dc-left"><span class="di">🤖</span> Artificial Intelligence</div>
-      <span class="dc-arrow">▼</span>
-    </div>
-    <div class="cat-endpoints" id="cat-ai">
-      <a href="/docs/ai#chat" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ai/chat</a>
-      <a href="/docs/ai#image" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ai/image</a>
-      <a href="/docs/ai#models" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ai/models</a>
-    </div>
-
-    <div class="drawer-cat" onclick="toggleCat('cat-yt')">
-      <div class="dc-left"><span class="di">▶</span> YouTube</div>
-      <span class="dc-arrow">▼</span>
-    </div>
-    <div class="cat-endpoints" id="cat-yt">
-      <a href="/docs/youtube#search" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/search</a>
-      <a href="/docs/youtube#info" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/info</a>
-      <a href="/docs/youtube#link" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/link</a>
-      <a href="/docs/youtube#stream" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/stream</a>
-      <a href="/docs/youtube#download" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/yt/download</a>
-    </div>
-
-    <div class="drawer-cat" onclick="toggleCat('cat-soc')">
-      <div class="dc-left"><span class="di">📲</span> Social Media</div>
-      <span class="dc-arrow">▼</span>
-    </div>
-    <div class="cat-endpoints" id="cat-soc">
-      <a href="/docs/social#platforms" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/social/platforms</a>
-      <a href="/docs/social#info" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/social/info</a>
-      <a href="/docs/social#download" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/social/download</a>
-    </div>
-
-    <div class="drawer-cat" onclick="toggleCat('cat-mov')">
-      <div class="dc-left"><span class="di">🎬</span> Movies & TV</div>
-      <span class="dc-arrow">▼</span>
-    </div>
-    <div class="cat-endpoints" id="cat-mov">
-      <a href="/docs/movies#search" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/movies/search</a>
-      <a href="/docs/movies#trending" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/movies/trending</a>
-      <a href="/docs/movies#popular" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/movies/popular</a>
-      <a href="/docs/movies#id" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/movies/:id</a>
-    </div>
-
-    <div class="drawer-cat" onclick="toggleCat('cat-mus')">
-      <div class="dc-left"><span class="di">🎵</span> Music</div>
-      <span class="dc-arrow">▼</span>
-    </div>
-    <div class="cat-endpoints" id="cat-mus">
-      <a href="/docs/music#search" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/search</a>
-      <a href="/docs/music#artist" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/artist</a>
-      <a href="/docs/music#track" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/track/:id</a>
-      <a href="/docs/music#artist-tracks" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/artist/:id/tracks</a>
-      <a href="/docs/music#preview" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/music/preview</a>
-    </div>
-
-    <div class="drawer-cat" onclick="toggleCat('cat-cur')">
-      <div class="dc-left"><span class="di">💱</span> Currency & Crypto</div>
-      <span class="dc-arrow">▼</span>
-    </div>
-    <div class="cat-endpoints" id="cat-cur">
-      <a href="/docs/currency#convert" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/convert</a>
-      <a href="/docs/currency#rates" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/rates</a>
-      <a href="/docs/currency#list" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/list</a>
-      <a href="/docs/currency#history" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/history</a>
-      <a href="/docs/currency#crypto" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/crypto</a>
-      <a href="/docs/currency#crypto-convert" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/currency/crypto/convert</a>
-    </div>
-
-    <div class="drawer-cat" onclick="toggleCat('cat-srch')">
-      <div class="dc-left"><span class="di">🔍</span> Search & Wikipedia</div>
-      <span class="dc-arrow">▼</span>
-    </div>
-    <div class="cat-endpoints" id="cat-srch">
-      <a href="/docs/search#wiki" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/wiki</a>
-      <a href="/docs/search#wiki-search" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/wiki/search</a>
-      <a href="/docs/search#wiki-random" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/wiki/random</a>
-      <a href="/docs/search#web" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/web</a>
-      <a href="/docs/search#suggest" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/search/suggest</a>
-    </div>
-
-    <div class="drawer-cat" onclick="toggleCat('cat-ip')">
-      <div class="dc-left"><span class="di">🌐</span> IP Geolocation</div>
-      <span class="dc-arrow">▼</span>
-    </div>
-    <div class="cat-endpoints" id="cat-ip">
-      <a href="/docs/ip#self" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ip</a>
-      <a href="/docs/ip#address" class="cat-ep-link" onclick="closeDrawer()"><span class="cat-ep-method">GET</span>/api/ip/:address</a>
-    </div>
-
-    <div class="drawer-section-label" style="margin-top:1.25rem"></div>
-    <a href="/api" class="drawer-link" onclick="closeDrawer()"><span class="di">{}</span> API Info JSON</a>
+    <div class="drawer-label">Navigation</div>
+    <a href="/" class="drawer-link active" onclick="closeDrawer()">🏠 &nbsp;Home</a>
+    <a href="/docs" class="drawer-link" onclick="closeDrawer()">📖 &nbsp;Documentation</a>
+    <a href="/playground" class="drawer-link" onclick="closeDrawer()">⚡ &nbsp;Playground</a>
+    <a href="https://cloud.alz.name.ng" target="_blank" class="drawer-link" onclick="closeDrawer()">☁️ &nbsp;AlzCloud</a>
   </div>
 </div>
 
-<!-- ── Nav ── -->
 <nav>
   <a href="/" class="logo">
     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
     <span class="logo-text">Alz<em>Api</em></span>
   </a>
-  <div class="nav-center">
+  <div class="nav-links">
     <a href="/" class="nav-link active">Home</a>
     <a href="/docs" class="nav-link">Docs</a>
     <a href="/playground" class="nav-link">Playground</a>
@@ -282,54 +174,143 @@
   </div>
 </nav>
 
-<!-- ── Hero ── -->
+<!-- Hero: minimal, just ~20 words + actions -->
 <div class="hero">
-  <div class="eyebrow">
-    <span class="pulse"></span>
-    Live · No API key required
-  </div>
-  <h1>One API.<br><span class="accent">Everything you need.</span></h1>
-  <p class="hero-sub">AI generation, YouTube, movies, social downloads, currency, and more — completely free, no sign-up, no key. Just call and go.</p>
-  <div class="hero-actions">
-    <a href="/playground" class="btn btn-primary">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Try the Playground
-    </a>
-    <a href="/docs" class="btn btn-ghost">Browse Docs</a>
-  </div>
-
-  <div class="terminal-wrap">
-    <div class="terminal">
-      <div class="t-bar">
-        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
-        <span class="t-addr">api.alz.name.ng</span>
-      </div>
-      <div class="t-body">
-        <div><span class="t-c"># Ask the AI anything</span></div>
-        <div><span class="t-m">GET</span> <span class="t-u">https://api.alz.name.ng/api/ai/chat?q=What+is+quantum+computing</span></div>
-        <br>
-        <div><span class="t-c"># Response</span></div>
-        <div>{</div>
-        <div>&nbsp;&nbsp;<span class="t-k">"success"</span>: <span class="t-b">true</span>,</div>
-        <div>&nbsp;&nbsp;<span class="t-k">"model"</span>: <span class="t-s">"openai"</span>,</div>
-        <div>&nbsp;&nbsp;<span class="t-k">"response"</span>: <span class="t-s">"Quantum computing uses quantum bits (qubits)..."</span></div>
-        <div>}</div>
-      </div>
+  <div class="hero-inner">
+    <div class="status-line"><span class="pulse-dot"></span>Live · No API key required</div>
+    <h1>One API.<br><span class="accent">Everything you need.</span></h1>
+    <p class="hero-desc">Free, keyless REST API for AI, YouTube, movies, social media, music, currency, and more.</p>
+    <div class="hero-actions">
+      <a href="/docs" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Read the Docs
+      </a>
+      <a href="/playground" class="btn btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Try Playground
+      </a>
     </div>
   </div>
 </div>
 
-<!-- ── How it works ── -->
-<div class="how-section">
-  <div class="how-inner">
-    <div class="section-eyebrow">Quick Start</div>
-    <h2 class="section-title">Zero setup. Just call.</h2>
-    <p class="section-desc">Works from any language, any platform, in seconds.</p>
-    <div class="how-grid">
-      <div class="how-card"><div class="how-num">1</div><h3>No API key</h3><p>Hit the URL directly. No signup, no dashboard, no token management — ever.</p></div>
-      <div class="how-card"><div class="how-num">2</div><h3>Standard JSON</h3><p>Every endpoint returns <code style="color:var(--purple3);font-family:var(--mono);font-size:.8em">{success, data}</code> — consistent, easy to parse anywhere.</p></div>
-      <div class="how-card"><div class="how-num">3</div><h3>30 req/min free</h3><p>Fair rate limit per IP. More than enough for personal projects, bots, and apps.</p></div>
-      <div class="how-card"><div class="how-num">4</div><h3>Any platform</h3><p>JavaScript, Python, PHP, Java, Telegram bots, WhatsApp bots — anywhere with HTTP.</p></div>
+<!-- Sandbox -->
+<div class="sandbox-section">
+  <div class="sandbox-inner">
+    <div class="sandbox-eyebrow">Sandbox</div>
+    <h2 class="sandbox-title">Test it right here</h2>
+    <p class="sandbox-desc">Pick an endpoint and run a live request — no setup, no key.</p>
+
+    <div class="sandbox-box">
+      <div class="sb-tabs">
+        <button class="sb-tab active" onclick="switchTab('ai',this)">🤖 AI Chat</button>
+        <button class="sb-tab" onclick="switchTab('yt',this)">▶ YouTube</button>
+        <button class="sb-tab" onclick="switchTab('ip',this)">🌐 IP Lookup</button>
+        <button class="sb-tab" onclick="switchTab('currency',this)">💱 Currency</button>
+        <button class="sb-tab" onclick="switchTab('wiki',this)">🔍 Wikipedia</button>
+      </div>
+
+      <div class="sb-body">
+        <!-- AI -->
+        <div id="tab-ai">
+          <div class="sb-row">
+            <div class="sb-field" style="flex:2">
+              <div class="sb-label">Prompt</div>
+              <input class="sb-input" id="ai-q" value="What is quantum computing?" placeholder="Ask anything...">
+            </div>
+            <div class="sb-field">
+              <div class="sb-label">Model</div>
+              <select class="sb-select" id="ai-model">
+                <option value="openai">openai (default)</option>
+                <option value="mistral">mistral</option>
+                <option value="claude">claude</option>
+                <option value="llama">llama</option>
+                <option value="gemini">gemini</option>
+              </select>
+            </div>
+          </div>
+          <button class="sb-run" onclick="runAI()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run
+          </button>
+          <div style="margin-top:1rem"><div class="sb-result" id="res-ai">// Response will appear here</div></div>
+        </div>
+
+        <!-- YT -->
+        <div id="tab-yt" style="display:none">
+          <div class="sb-row">
+            <div class="sb-field" style="flex:2">
+              <div class="sb-label">Search query</div>
+              <input class="sb-input" id="yt-q" value="Burna Boy" placeholder="Video title or artist...">
+            </div>
+            <div class="sb-field">
+              <div class="sb-label">Max results</div>
+              <select class="sb-select" id="yt-limit">
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+          </div>
+          <button class="sb-run" onclick="runYT()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run
+          </button>
+          <div style="margin-top:1rem"><div class="sb-result" id="res-yt">// Response will appear here</div></div>
+        </div>
+
+        <!-- IP -->
+        <div id="tab-ip" style="display:none">
+          <div class="sb-row">
+            <div class="sb-field">
+              <div class="sb-label">IP Address (leave blank for your IP)</div>
+              <input class="sb-input" id="ip-addr" placeholder="e.g. 8.8.8.8">
+            </div>
+          </div>
+          <button class="sb-run" onclick="runIP()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run
+          </button>
+          <div style="margin-top:1rem"><div class="sb-result" id="res-ip">// Response will appear here</div></div>
+        </div>
+
+        <!-- Currency -->
+        <div id="tab-currency" style="display:none">
+          <div class="sb-row">
+            <div class="sb-field">
+              <div class="sb-label">Amount</div>
+              <input class="sb-input" id="cur-amount" value="100" type="number">
+            </div>
+            <div class="sb-field">
+              <div class="sb-label">From</div>
+              <input class="sb-input" id="cur-from" value="USD">
+            </div>
+            <div class="sb-field">
+              <div class="sb-label">To</div>
+              <input class="sb-input" id="cur-to" value="NGN">
+            </div>
+          </div>
+          <button class="sb-run" onclick="runCurrency()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run
+          </button>
+          <div style="margin-top:1rem"><div class="sb-result" id="res-currency">// Response will appear here</div></div>
+        </div>
+
+        <!-- Wiki -->
+        <div id="tab-wiki" style="display:none">
+          <div class="sb-row">
+            <div class="sb-field" style="flex:2">
+              <div class="sb-label">Search topic</div>
+              <input class="sb-input" id="wiki-q" value="Artificial intelligence">
+            </div>
+          </div>
+          <button class="sb-run" onclick="runWiki()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run
+          </button>
+          <div style="margin-top:1rem"><div class="sb-result" id="res-wiki">// Response will appear here</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -337,7 +318,7 @@
 <footer>
   <div class="footer-left">
     AlzApi by <a href="https://cloud.alz.name.ng">Alz-Tech</a> · Free forever ·
-    Base: <code style="font-family:var(--mono);font-size:.8em;color:var(--purple3)">https://api.alz.name.ng</code>
+    <code style="font-family:var(--mono);font-size:.8em;color:var(--purple3)">https://api.alz.name.ng</code>
   </div>
   <div class="footer-links">
     <a href="/">Home</a>
@@ -349,48 +330,49 @@
 </footer>
 
 <script>
-// ── Drawer ───────────────────────────────────────────────
-function openDrawer() {
-  document.getElementById('drawer').classList.add('open');
-  document.getElementById('drawer-overlay').classList.add('open');
-  document.getElementById('hamburger-btn').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeDrawer() {
-  document.getElementById('drawer').classList.remove('open');
-  document.getElementById('drawer-overlay').classList.remove('open');
-  document.getElementById('hamburger-btn').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function toggleCat(id) {
-  const panel = document.getElementById(id);
-  const btn = panel.previousElementSibling;
-  const isOpen = panel.classList.contains('open');
-  // Close all
-  document.querySelectorAll('.cat-endpoints').forEach(p => p.classList.remove('open'));
-  document.querySelectorAll('.drawer-cat').forEach(b => b.classList.remove('expanded'));
-  if (!isOpen) {
-    panel.classList.add('open');
-    btn.classList.add('expanded');
-  }
-}
-// Close drawer on Escape
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+const BASE = 'https://api.alz.name.ng';
 
-// ── Toast (replaces alert()) ──────────────────────────────
-function showToast(msg, type = '') {
-  const container = document.getElementById('toast-container');
-  const el = document.createElement('div');
-  el.className = 'toast' + (type ? ' toast-' + type : '');
-  el.textContent = msg;
-  container.appendChild(el);
-  setTimeout(() => {
-    el.classList.add('toast-out');
-    el.addEventListener('animationend', () => el.remove());
-  }, 3000);
+function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('drawer-overlay').classList.add('open');document.getElementById('hamburger-btn').classList.add('open');document.body.style.overflow='hidden'}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawer-overlay').classList.remove('open');document.getElementById('hamburger-btn').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()})
+
+function switchTab(id,btn){
+  document.querySelectorAll('.sb-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('[id^="tab-"]').forEach(p=>p.style.display='none');
+  btn.classList.add('active');
+  document.getElementById('tab-'+id).style.display='block';
 }
-// Override window.alert
-window.alert = (msg) => showToast(msg, 'warn');
+
+function fmt(obj){
+  return JSON.stringify(obj,null,2)
+    .replace(/("[\w]+")\s*:/g,'<span class="j-k">$1</span>:')
+    .replace(/:\s*(".*?")/g,': <span class="j-s">$1</span>')
+    .replace(/:\s*(\d+\.?\d*)/g,': <span class="j-n">$1</span>')
+    .replace(/:\s*(true|false)/g,': <span class="j-b">$1</span>')
+    .replace(/:\s*(null)/g,': <span style="color:var(--muted)">$1</span>');
+}
+
+async function hit(el,url){
+  el.className='sb-result loading';el.textContent='Fetching...';
+  try{
+    const r=await fetch(url);
+    const d=await r.json();
+    el.className='sb-result';
+    el.innerHTML=fmt(d);
+  }catch(e){el.className='sb-result error';el.textContent='Error: '+e.message}
+}
+
+function runAI(){const q=document.getElementById('ai-q').value;const m=document.getElementById('ai-model').value;hit(document.getElementById('res-ai'),`${BASE}/api/ai/chat?q=${encodeURIComponent(q)}&model=${m}`)}
+function runYT(){const q=document.getElementById('yt-q').value;const l=document.getElementById('yt-limit').value;hit(document.getElementById('res-yt'),`${BASE}/api/yt/search?q=${encodeURIComponent(q)}&limit=${l}`)}
+function runIP(){const a=document.getElementById('ip-addr').value;const url=a?`${BASE}/api/ip/${encodeURIComponent(a)}`:`${BASE}/api/ip`;hit(document.getElementById('res-ip'),url)}
+function runCurrency(){const a=document.getElementById('cur-amount').value;const f=document.getElementById('cur-from').value;const t=document.getElementById('cur-to').value;hit(document.getElementById('res-currency'),`${BASE}/api/currency/convert?amount=${a}&from=${f}&to=${t}`)}
+function runWiki(){const q=document.getElementById('wiki-q').value;hit(document.getElementById('res-wiki'),`${BASE}/api/search/wiki?q=${encodeURIComponent(q)}`)}
+
+window.alert=(msg)=>{
+  const c=document.getElementById('toast-container');
+  const el=document.createElement('div');el.className='toast toast-warn';el.textContent=msg;c.appendChild(el);
+  setTimeout(()=>{el.classList.add('toast-out');el.addEventListener('animationend',()=>el.remove())},3000);
+}
 </script>
 </body>
 </html>

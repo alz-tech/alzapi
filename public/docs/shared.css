@@ -133,3 +133,9 @@ footer a{color:var(--purple3)}
   .ep-header{padding:1.25rem 1rem 1rem}
   .params-table th,.params-table td{padding:.45rem .5rem}
 }
+
+/* ── Drawer link variants for docs pages ── */
+.drawer-section-label2{font-size:.67rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.5rem .75rem .35rem;margin-top:.75rem}
+.drawer-link2{display:flex;align-items:center;padding:.5rem .75rem;border-radius:7px;font-size:.87rem;color:var(--muted);font-weight:500;transition:all .15s}
+.drawer-link2:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.drawer-link2.active{color:var(--purple3);background:rgba(108,99,255,.1)}
